@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Data Admin – Vinapharma</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#f0f2f5;color:#111;min-height:100vh}
+:root{--red:#cc1f1f;--red-pale:#fff5f5;--red-dark:#a01818;--sidebar:#0f1117;--sidebar2:#1a1d27}
+
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--sidebar);padding:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.sidebar-logo{padding:1.4rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo-text{color:#fff;font-weight:900;font-size:1rem;letter-spacing:-.01em}
+.logo-text span{color:var(--red)}
+.logo-sub{font-size:.68rem;color:rgba(255,255,255,.3);margin-top:.1rem;font-weight:400}
+.nav-section{padding:.8rem .7rem .3rem;font-size:.6rem;font-weight:800;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:.65rem;padding:.62rem .9rem;margin:.12rem .5rem;border-radius:.45rem;color:rgba(255,255,255,.5);text-decoration:none;font-size:.82rem;font-weight:500;cursor:pointer;transition:.15s;border:none;background:none;width:calc(100% - 1rem);text-align:left}
+.nav-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.nav-item.active{background:var(--red);color:#fff}
+.nav-item .ico{font-size:.95rem;width:18px;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:800;padding:.1rem .4rem;border-radius:99px}
+.sidebar-footer{margin-top:auto;padding:1rem .7rem;border-top:1px solid rgba(255,255,255,.06)}
+
+/* ── MAIN ── */
+.main{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e8e8e8;position:sticky;top:0;z-index:100}
+.topbar-title{font-size:1rem;font-weight:800}
+.topbar-sub{font-size:.75rem;color:#888;margin-top:.1rem}
+.topbar-user{display:flex;align-items:center;gap:.7rem;font-size:.82rem;font-weight:600}
+.avatar{width:32px;height:32px;background:var(--red);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.78rem}
+.content{padding:1.5rem;flex:1}
+
+/* ── STAT CARDS ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:#fff;border-radius:.7rem;padding:1.1rem 1.2rem;border:1px solid #e8e8e8}
+.stat-icon{font-size:1.5rem;margin-bottom:.5rem}
+.stat-val{font-size:1.5rem;font-weight:900;line-height:1}
+.stat-label{font-size:.72rem;color:#888;margin-top:.25rem;font-weight:500}
+
+/* ── TABLE SECTION ── */
+.section{background:#fff;border-radius:.7rem;border:1px solid #e8e8e8;margin-bottom:1.5rem;overflow:hidden}
+.section-header{padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0}
+.section-title{font-size:.9rem;font-weight:800;display:flex;align-items:center;gap:.5rem}
+.section-actions{display:flex;gap:.6rem;align-items:center}
+
+/* Search */
+.search-box{position:relative}
+.search-box input{padding:.45rem .8rem .45rem 2rem;border:1px solid #ddd;border-radius:.4rem;font-family:inherit;font-size:.8rem;outline:none;width:200px}
+.search-box::before{content:'🔍';position:absolute;left:.6rem;top:50%;transform:translateY(-50%);font-size:.75rem}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse}
+th{padding:.7rem 1rem;text-align:left;font-size:.7rem;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:.06em;background:#fafafa;border-bottom:1px solid #f0f0f0}
+td{padding:.7rem 1rem;font-size:.82rem;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.product-thumb{width:38px;height:38px;background:var(--red-pale);border-radius:.4rem;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.badge{padding:.18rem .55rem;border-radius:.25rem;font-size:.67rem;font-weight:800;text-transform:uppercase}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-red{background:#fee2e2;color:#dc2626}
+.badge-blue{background:#dbeafe;color:#1d4ed8}
+.badge-gray{background:#f3f4f6;color:#6b7280}
+
+/* ── BUTTONS ── */
+.btn{padding:.55rem 1.1rem;border-radius:.4rem;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer;transition:.15s;border:none;display:inline-flex;align-items:center;gap:.4rem}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red-dark)}
+.btn-outline{background:#fff;color:#333;border:1px solid #ddd}
+.btn-outline:hover{border-color:#aaa}
+.btn-ghost{background:transparent;color:#666;padding:.4rem .7rem;font-size:.75rem}
+.btn-ghost:hover{background:#f5f5f5;color:#111}
+.btn-danger{background:#fee2e2;color:#dc2626;border:none}
+.btn-danger:hover{background:#fca5a5}
+.btn-sm{padding:.35rem .75rem;font-size:.75rem}
+.icon-btn{width:28px;height:28px;border-radius:.35rem;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:.8rem;display:inline-flex;align-items:center;justify-content:center;transition:.15s}
+.icon-btn:hover{background:#f5f5f5}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem}
+.overlay.show{display:flex}
+.modal{background:#fff;border-radius:.8rem;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-header{padding:1.2rem 1.4rem;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.modal-title{font-size:.95rem;font-weight:800}
+.modal-close{background:none;border:none;font-size:1.2rem;cursor:pointer;color:#999;padding:.2rem}
+.modal-body{padding:1.4rem}
+.modal-footer{padding:1rem 1.4rem;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:.7rem}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.35rem}
+.form-group.full{grid-column:1/-1}
+label{font-size:.72rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.05em}
+input,select,textarea{padding:.6rem .8rem;border:1px solid #ddd;border-radius:.4rem;font-family:inherit;font-size:.84rem;outline:none;transition:.15s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(204,31,31,.08)}
+textarea{resize:vertical;min-height:80px}
+
+/* Drop zone */
+.drop-zone{border:2px dashed #ddd;border-radius:.5rem;padding:1.8rem;text-align:center;cursor:pointer;transition:.2s;background:#fafafa}
+.drop-zone:hover{border-color:var(--red);background:var(--red-pale)}
+.drop-zone input{display:none}
+.dz-text{font-size:.82rem;color:#888;margin-top:.5rem}
+.preview-img{width:100%;max-height:140px;object-fit:cover;border-radius:.4rem;margin-top:.7rem;display:none}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;gap:.4rem;padding:1rem 1.2rem;border-top:1px solid #f0f0f0;align-items:center;justify-content:flex-end}
+.page-btn{width:30px;height:30px;border-radius:.35rem;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:.78rem;font-weight:600;transition:.15s}
+.page-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
+.page-btn:hover:not(.active){background:#f5f5f5}
+
+/* ── LOGIN ── */
+.login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0f1117,#1a1d27);z-index:9999;display:flex;align-items:center;justify-content:center}
+.login-box{background:#fff;border-radius:.8rem;padding:2.2rem;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-logo{font-weight:900;font-size:1.2rem;margin-bottom:1.8rem;text-align:center;color:#111}
+.login-logo span{color:var(--red)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#111;color:#fff;padding:.75rem 1.2rem;border-radius:.5rem;font-size:.82rem;font-weight:600;transform:translateY(80px);opacity:0;transition:.25s;z-index:9999;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#16a34a}
+.toast.error{background:#dc2626}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:0;border-bottom:2px solid #f0f0f0;margin-bottom:1.5rem}
+.tab-item{padding:.65rem 1.2rem;font-size:.83rem;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:#888;transition:.15s}
+.tab-item.active{color:var(--red);border-bottom-color:var(--red)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ── RICHTEXT ── */
+.rich-toolbar{display:flex;gap:.3rem;padding:.5rem;border:1px solid #ddd;border-radius:.4rem .4rem 0 0;border-bottom:none;background:#fafafa;flex-wrap:wrap}
+.rich-btn{padding:.3rem .5rem;border:1px solid #ddd;border-radius:.25rem;background:#fff;cursor:pointer;font-size:.78rem;font-weight:700}
+.rich-btn:hover{background:#eee}
+.rich-content{border:1px solid #ddd;border-radius:0 0 .4rem .4rem;min-height:150px;padding:.7rem;font-size:.84rem;outline:none}
+.rich-content:focus{border-color:var(--red)}
+
+/* ── FILTER ── */
+.filter-bar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filter-chip{padding:.35rem .8rem;border-radius:99px;border:1px solid #ddd;background:#fff;font-size:.75rem;font-weight:600;cursor:pointer;transition:.15s}
+.filter-chip.active,.filter-chip:hover{background:var(--red);color:#fff;border-color:var(--red)}
+
+.empty-state{text-align:center;padding:3rem;color:#aaa;font-size:.88rem}
+.avatar-big{width:44px;height:44px;border-radius:50%;background:var(--red-pale);display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">❤️ <span>vina</span>pharma® <span style="color:#111;font-weight:500;font-size:.8rem">/ Admin</span></div>
+    <div class="form-group" style="margin-bottom:.9rem">
+      <label>Email</label>
+      <input type="email" id="lEmail" placeholder="admin@vinapharma.vn"/>
+    </div>
+    <div class="form-group" style="margin-bottom:1.2rem">
+      <label>Mật khẩu</label>
+      <input type="password" id="lPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn btn-red" style="width:100%;justify-content:center" onclick="doLogin()">Đăng nhập</button>
+    <div id="lErr" style="color:#dc2626;font-size:.78rem;margin-top:.7rem;text-align:center"></div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text">❤️ <span>vina</span>pharma®</div>
+      <div class="logo-sub">Data Admin Panel</div>
+    </div>
+    <div class="nav-section">Tổng quan</div>
+    <button class="nav-item active" onclick="showTab('dashboard',this)"><span class="ico">📊</span>Dashboard</button>
+    <div class="nav-section">Nội dung</div>
+    <button class="nav-item" onclick="showTab('products',this)"><span class="ico">📦</span>Sản phẩm</button>
+    <button class="nav-item" onclick="showTab('brands',this)"><span class="ico">🏷️</span>Thương hiệu</button>
+    <button class="nav-item" onclick="showTab('posts',this)"><span class="ico">📰</span>Tin tức</button>
+    <button class="nav-item" onclick="showTab('banners',this)"><span class="ico">🖼️</span>Banner</button>
+    <div class="nav-section">Hệ thống</div>
+    <button class="nav-item" onclick="showTab('users',this)"><span class="ico">👥</span>Người dùng</button>
+    <button class="nav-item" onclick="showTab('contacts',this)"><span class="ico">📩</span>Liên hệ <span class="nav-badge" id="contactBadge">0</span></button>
+    <div class="sidebar-footer">
+      <button class="nav-item" onclick="window.open('index.html','_blank')"><span class="ico">🏠</span>Xem trang chủ</button>
+      <button class="nav-item" onclick="doLogout()"><span class="ico">🚪</span>Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div><div class="topbar-title" id="topbarTitle">Dashboard</div><div class="topbar-sub" id="topbarSub">Tổng quan hệ thống</div></div>
+      <div class="topbar-user"><div class="avatar" id="adminAvatar">A</div><span id="adminName">Admin</span></div>
+    </div>
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div id="tab-dashboard" class="tab-pane active">
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-val" id="statProducts">–</div><div class="stat-label">Sản phẩm</div></div>
+          <div class="stat-card"><div class="stat-icon">📰</div><div class="stat-val" id="statPosts">–</div><div class="stat-label">Bài viết</div></div>
+          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="statUsers">–</div><div class="stat-label">Người dùng</div></div>
+          <div class="stat-card"><div class="stat-icon">📩</div><div class="stat-val" id="statContacts">–</div><div class="stat-label">Liên hệ mới</div></div>
+        </div>
+        <div class="section">
+          <div class="section-header"><div class="section-title">📩 Liên hệ gần đây</div></div>
+          <table><thead><tr><th>Họ tên</th><th>Điện thoại</th><th>Chủ đề</th><th>Trạng thái</th><th>Thời gian</th></tr></thead>
+          <tbody id="recentContacts"><tr><td colspan="5" class="empty-state">Đang tải...</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── PRODUCTS ── -->
+      <div id="tab-products" class="tab-pane">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">📦 Danh sách sản phẩm</div>
+            <div class="section-actions">
+              <div class="search-box"><input placeholder="Tìm sản phẩm..." oninput="filterProducts(this.value)" id="productSearch"/></div>
+              <button class="btn btn-red" onclick="openProductModal()">+ Thêm sản phẩm</button>
+            </div>
+          </div>
+          <div style="padding:.8rem 1.2rem">
+            <div class="filter-bar" id="brandFilter">
+              <span class="filter-chip active" data-brand="">Tất cả</span>
+              <span class="filter-chip" data-brand="TH1">TH1 – VitaNature</span>
+              <span class="filter-chip" data-brand="TH2">TH2 – GreenLife</span>
+              <span class="filter-chip" data-brand="TH3">TH3 – PharmaPlus</span>
+              <span class="filter-chip" data-brand="TH4">TH4 – AquaVita</span>
+              <span class="filter-chip" data-brand="TH5">TH5 – GoldCare</span>
+            </div>
+          </div>
+          <table><thead><tr><th>Sản phẩm</th><th>Thương hiệu</th><th>Danh mục</th><th>Giá</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+          <tbody id="productTable"><tr><td colspan="6" class="empty-state">Đang tải...</td></tr></tbody></table>
+          <div class="pagination" id="productPagination"></div>
+        </div>
+      </div>
+
+      <!-- ── BRANDS ── -->
+      <div id="tab-brands" class="tab-pane">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">🏷️ Danh sách thương hiệu</div>
+            <div class="section-actions"><button class="btn btn-red" onclick="openBrandModal()">+ Thêm thương hiệu</button></div>
+          </div>
+          <table><thead><tr><th>Mã</th><th>Tên thương hiệu</th><th>Mô tả</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+          <tbody id="brandTable"><tr><td colspan="5" class="empty-state">Đang tải...</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── POSTS ── -->
+      <div id="tab-posts" class="tab-pane">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">📰 Bài viết tin tức</div>
+            <div class="section-actions">
+              <div class="search-box"><input placeholder="Tìm bài viết..." id="postSearch" oninput="filterPosts(this.value)"/></div>
+              <button class="btn btn-red" onclick="openPostModal()">+ Viết bài mới</button>
+            </div>
+          </div>
+          <table><thead><tr><th>Bài viết</th><th>Danh mục</th><th>Tác giả</th><th>Trạng thái</th><th>Ngày đăng</th><th>Thao tác</th></tr></thead>
+          <tbody id="postTable"><tr><td colspan="6" class="empty-state">Đang tải...</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── BANNERS ── -->
+      <div id="tab-banners" class="tab-pane">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">🖼️ Quản lý Banner</div>
+            <div class="section-actions"><button class="btn btn-red" onclick="openBannerModal()">+ Thêm banner</button></div>
+          </div>
+          <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGrid">
+            <div class="empty-state">Đang tải...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── USERS ── -->
+      <div id="tab-users" class="tab-pane">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">👥 Người dùng</div>
+            <div class="section-actions"><div class="search-box"><input placeholder="Tìm người dùng..." id="userSearch" oninput="filterUsers(this.value)"/></div></div>
+          </div>
+          <table><thead><tr><th>Người dùng</th><th>Email</th><th>Điện thoại</th><th>Vai trò</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
+          <tbody id="userTable"><tr><td colspan="6" class="empty-state">Đang tải...</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- ── CONTACTS ── -->
+      <div id="tab-contacts" class="tab-pane">
+        <div class="section">
+          <div class="section-header"><div class="section-title">📩 Tin nhắn liên hệ</div></div>
+          <table><thead><tr><th>Họ tên</th><th>Điện thoại</th><th>Email</th><th>Chủ đề</th><th>Nội dung</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+          <tbody id="contactTable"><tr><td colspan="7" class="empty-state">Đang tải...</td></tr></tbody></table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── BRAND MODAL ── -->
+<div class="overlay" id="brandOverlay">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <div class="modal-title" id="brandModalTitle">Thêm thương hiệu</div>
+      <button class="modal-close" onclick="closeModal('brandOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="bId"/>
+      <div class="form-grid">
+        <div class="form-group"><label>Mã thương hiệu *</label><input id="bCode" placeholder="VD: PHARMED"/></div>
+        <div class="form-group"><label>Tên thương hiệu *</label><input id="bName" placeholder="VD: PharMed"/></div>
+        <div class="form-group full"><label>Mô tả</label><textarea id="bDesc" rows="2" placeholder="Mô tả thương hiệu..."></textarea></div>
+        <div class="form-group"><label>Trạng thái</label>
+          <select id="bActive"><option value="true">✅ Hoạt động</option><option value="false">❌ Ẩn</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('brandOverlay')">Hủy</button>
+      <button class="btn btn-red" onclick="saveBrand()">Lưu thương hiệu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── PRODUCT MODAL ── -->
+<div class="overlay" id="productOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="productModalTitle">Thêm sản phẩm</div>
+      <button class="modal-close" onclick="closeModal('productOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pId"/>
+      <div class="form-grid">
+        <div class="form-group full"><label>Tên sản phẩm *</label><input id="pName" placeholder="VD: VitaImmune Pro"/></div>
+        <div class="form-group"><label>Thương hiệu *</label>
+          <select id="pBrand"></select>
+        </div>
+        <div class="form-group"><label>Danh mục</label>
+          <select id="pCategory">
+            <option>Tăng đề kháng</option><option>Xương khớp</option><option>Tim mạch</option>
+            <option>Làm đẹp</option><option>Trí não</option><option>Giấc ngủ</option>
+            <option>Tiêu hóa</option><option>Mắt</option><option>Khác</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Giá bán (₫) *</label><input type="number" id="pPrice" placeholder="350000"/></div>
+        <div class="form-group"><label>Giá gốc (₫)</label><input type="number" id="pOriginalPrice" placeholder="420000"/></div>
+        <div class="form-group"><label>Trọng lượng / đơn vị</label><input id="pWeight" placeholder="60 viên · 500mg"/></div>
+        <div class="form-group"><label>Badge</label><input id="pBadge" placeholder="Bán chạy / Mới / Hot"/></div>
+        <div class="form-group"><label>Icon (emoji)</label><input id="pIcon" placeholder="💊"/></div>
+        <div class="form-group full"><label>Mô tả sản phẩm</label><textarea id="pDesc" rows="3" placeholder="Mô tả ngắn về sản phẩm..."></textarea></div>
+        <div class="form-group full">
+          <label>Hình ảnh sản phẩm</label>
+          <div class="drop-zone" onclick="document.getElementById('pImgInput').click()" ondragover="ev.preventDefault()" ondrop="dropImg(event,'pImgInput','pImgPreview')">
+            <div style="font-size:2rem">🖼️</div>
+            <div class="dz-text" id="pImgText">Bấm để chọn ảnh hoặc kéo thả</div>
+            <input type="file" id="pImgInput" accept="image/*" onchange="previewImg(this,'pImgPreview','pImgText')"/>
+          </div>
+          <img id="pImgPreview" class="preview-img"/>
+        </div>
+        <div class="form-group"><label>Trạng thái</label>
+          <select id="pActive"><option value="true">✅ Đang bán</option><option value="false">❌ Ngừng bán</option></select>
+        </div>
+        <div class="form-group"><label>Sản phẩm nổi bật</label>
+          <select id="pFeatured"><option value="false">Không</option><option value="true">✅ Có</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('productOverlay')">Hủy</button>
+      <button class="btn btn-red" onclick="saveProduct()">💾 Lưu sản phẩm</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── POST MODAL ── -->
+<div class="overlay" id="postOverlay">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title" id="postModalTitle">Viết bài mới</div>
+      <button class="modal-close" onclick="closeModal('postOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="postId"/>
+      <div class="form-grid">
+        <div class="form-group full"><label>Tiêu đề bài viết *</label><input id="postTitle" placeholder="Tiêu đề bài viết..."/></div>
+        <div class="form-group"><label>Danh mục</label>
+          <select id="postCategory">
+            <option>Dinh dưỡng</option><option>Sức khỏe</option><option>Lối sống</option>
+            <option>Sản phẩm</option><option>Tin tức</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Icon (emoji)</label><input id="postIcon" placeholder="📰"/></div>
+        <div class="form-group"><label>Thời gian đọc (phút)</label><input type="number" id="postReadTime" value="5"/></div>
+        <div class="form-group"><label>Trạng thái</label>
+          <select id="postPublished"><option value="true">✅ Đã đăng</option><option value="false">📝 Nháp</option></select>
+        </div>
+        <div class="form-group full"><label>Tóm tắt</label><textarea id="postExcerpt" rows="2" placeholder="Mô tả ngắn hiển thị ở trang danh sách..."></textarea></div>
+        <div class="form-group full">
+          <label>Hình ảnh thumbnail</label>
+          <div class="drop-zone" onclick="document.getElementById('postImgInput').click()">
+            <div style="font-size:2rem">🖼️</div>
+            <div class="dz-text" id="postImgText">Bấm để chọn ảnh thumbnail</div>
+            <input type="file" id="postImgInput" accept="image/*" onchange="previewImg(this,'postImgPreview','postImgText')"/>
+          </div>
+          <img id="postImgPreview" class="preview-img"/>
+        </div>
+        <div class="form-group full">
+          <label>Nội dung bài viết</label>
+          <div class="rich-toolbar">
+            <button class="rich-btn" onclick="fmt('bold')"><b>B</b></button>
+            <button class="rich-btn" onclick="fmt('italic')"><i>I</i></button>
+            <button class="rich-btn" onclick="fmt('underline')"><u>U</u></button>
+            <button class="rich-btn" onclick="fmtBlock('h2')">H2</button>
+            <button class="rich-btn" onclick="fmtBlock('h3')">H3</button>
+            <button class="rich-btn" onclick="fmt('insertUnorderedList')">• List</button>
+            <button class="rich-btn" onclick="fmt('insertOrderedList')">1. List</button>
+          </div>
+          <div class="rich-content" id="postContent" contenteditable="true"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('postOverlay')">Hủy</button>
+      <button class="btn btn-red" onclick="savePost()">💾 Đăng bài</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BANNER MODAL ── -->
+<div class="overlay" id="bannerOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Thêm Banner</div>
+      <button class="modal-close" onclick="closeModal('bannerOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Tiêu đề *</label><input id="bTitle" placeholder="Tiêu đề banner..."/></div>
+        <div class="form-group"><label>Phụ đề</label><input id="bSubtitle" placeholder="Mô tả ngắn..."/></div>
+        <div class="form-group"><label>Text nút bấm</label><input id="bBtn" value="Khám phá ngay"/></div>
+        <div class="form-group"><label>Link nút bấm</label><input id="bLink" value="san-pham.html"/></div>
+        <div class="form-group"><label>Vị trí</label>
+          <select id="bPos"><option value="hero">🏠 Hero Slider</option><option value="promo">📢 Quảng cáo</option></select>
+        </div>
+        <div class="form-group"><label>Thứ tự</label><input type="number" id="bOrder" value="0"/></div>
+        <div class="form-group full">
+          <label>Ảnh banner *</label>
+          <div class="drop-zone" onclick="document.getElementById('bImgInput').click()">
+            <div style="font-size:2rem">🖼️</div>
+            <div class="dz-text" id="bImgText">Bấm để chọn ảnh (1920×600px)</div>
+            <input type="file" id="bImgInput" accept="image/*" onchange="previewImg(this,'bImgPreview','bImgText')"/>
+          </div>
+          <img id="bImgPreview" class="preview-img"/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('bannerOverlay')">Hủy</button>
+      <button class="btn btn-red" onclick="saveBanner()">💾 Lưu banner</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── USER MODAL ── -->
+<div class="overlay" id="userOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="userModalTitle">Chỉnh sửa người dùng</div>
+      <button class="modal-close" onclick="closeModal('userOverlay')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="uId"/>
+      <div class="form-grid">
+        <div class="form-group"><label>Họ tên</label><input id="uName"/></div>
+        <div class="form-group"><label>Email</label><input id="uEmail" type="email"/></div>
+        <div class="form-group"><label>Số điện thoại</label><input id="uPhone"/></div>
+        <div class="form-group"><label>Vai trò</label>
+          <select id="uRole"><option value="user">👤 User</option><option value="admin">⭐ Admin</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('userOverlay')">Hủy</button>
+      <button class="btn btn-red" onclick="saveUser()">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="authClient.js"></script>
+<script>
+const API = 'http://localhost:5000';
+let token = null;
+
+// ── AUTHENTICATED FETCH dùng AuthClient ──
+async function authFetch(url, options = {}) {
+  return AuthClient.authFetch(url, options);
+}
+
+
+let currentUser = null;
+let allProducts = [], allPosts = [], allUsers = [], allBanners = [];
+let selectedFiles = {};
+
+// ── FORMAT ──
+const fmt = cmd => document.execCommand(cmd, false, null);
+const fmtBlock = tag => document.execCommand('formatBlock', false, tag);
+const formatPrice = p => new Intl.NumberFormat('vi-VN').format(p) + ' ₫';
+const formatDate = d => new Date(d).toLocaleDateString('vi-VN');
+
+// ── AUTH ──
+async function doLogin() {
+  const email = document.getElementById('lEmail').value;
+  const pass  = document.getElementById('lPass').value;
+  try {
+    const data = await AuthClient.login(email, pass);
+    if (data.success && data.user.role === 'admin') {
+      token = AuthClient.getToken();
+      currentUser = data.user;
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('adminName').textContent = data.user.name;
+      document.getElementById('adminAvatar').textContent = data.user.name[0].toUpperCase();
+      initData();
+    } else {
+      document.getElementById('lErr').textContent = data.message || 'Không phải tài khoản admin';
+    }
+  } catch(e) { document.getElementById('lErr').textContent = 'Không kết nối được server'; }
+}
+
+function doLogout() {
+  AuthClient.logout();
+}
+
+// ── TABS ──
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const titles = { dashboard:'Dashboard', products:'Sản phẩm', brands:'Thương hiệu', posts:'Tin tức', banners:'Banner', users:'Người dùng', contacts:'Liên hệ' };
+  document.getElementById('topbarTitle').textContent = titles[name];
+  if (name === 'products') loadProducts();
+  if (name === 'brands') loadBrands();
+  if (name === 'posts') loadPosts();
+  if (name === 'banners') loadBanners();
+  if (name === 'users') loadUsers();
+  if (name === 'contacts') loadContacts();
+}
+
+// ── INIT ──
+async function initData() {
+  await loadBrands();
+  loadDashboard();
+}
+
+async function loadDashboard() {
+  try {
+    const [prRes, poRes, coRes] = await Promise.all([
+      fetch(API + '/api/products?limit=1'),
+      authFetch(API + '/api/posts/admin/all', { headers:{} }),
+      authFetch(API + '/api/contacts', { headers:{} })
+    ]);
+    const prData = await prRes.json();
+    const poData = await poRes.json();
+    const coData = await coRes.json();
+    if (prData.success) document.getElementById('statProducts').textContent = prData.total || 0;
+    if (poData.success) document.getElementById('statPosts').textContent = poData.total || 0;
+    if (coData.success) {
+      const newCount = coData.data.filter(c => c.status === 'Chưa xử lý').length;
+      document.getElementById('statContacts').textContent = newCount;
+      document.getElementById('contactBadge').textContent = newCount;
+      const tbody = document.getElementById('recentContacts');
+      tbody.innerHTML = coData.data.slice(0,5).map(c => `
+        <tr>
+          <td><b>${c.ho_ten}</b></td>
+          <td>${c.dien_thoai}</td>
+          <td>${c.chu_de}</td>
+          <td><span class="badge ${c.status==='Chưa xử lý'?'badge-red':c.status==='Đang xử lý'?'badge-blue':'badge-green'}">${c.status}</span></td>
+          <td>${formatDate(c.createdAt)}</td>
+        </tr>`).join('');
+    }
+  } catch(e) {}
+}
+
+// ── BRANDS ──
+let allBrands = [];
+
+async function loadBrands() {
+  const tbody = document.getElementById('brandTable');
+  if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Đang tải...</td></tr>';
+  try {
+    const res = await fetch(API + '/api/brands');
+    const data = await res.json();
+    if (data.success) { allBrands = data.data; renderBrands(allBrands); refreshBrandUI(); }
+  } catch(e) { if(tbody) tbody.innerHTML = '<tr><td colspan="5" class="empty-state">❌ Lỗi tải dữ liệu</td></tr>'; }
+}
+
+function renderBrands(list) {
+  const tbody = document.getElementById('brandTable');
+  if (!tbody) return;
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Chưa có thương hiệu nào</td></tr>'; return; }
+  tbody.innerHTML = list.map(b => `
+    <tr>
+      <td><span class="badge badge-blue">${b.code}</span></td>
+      <td><b>${b.name}</b></td>
+      <td style="color:#888;font-size:.8rem">${b.description||'–'}</td>
+      <td><span class="badge ${b.active!==false?'badge-green':'badge-gray'}">${b.active!==false?'Hoạt động':'Ẩn'}</span></td>
+      <td><div style="display:flex;gap:.4rem">
+        <button class="icon-btn" onclick='openBrandModal(${JSON.stringify(b)})'>✏️</button>
+        <button class="icon-btn" onclick="deleteBrand('${b._id}','${b.name}')">🗑️</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function refreshBrandUI() {
+  // Cập nhật filter chips
+  const bf = document.getElementById('brandFilter');
+  if (bf) {
+    bf.innerHTML = '<span class="filter-chip active" data-brand="">Tất cả</span>' +
+      allBrands.filter(b=>b.active!==false).map(b=>`<span class="filter-chip" data-brand="${b.code}">${b.code} – ${b.name}</span>`).join('');
+  }
+  // Cập nhật pBrand select
+  const sel = document.getElementById('pBrand');
+  if (sel) {
+    const cur = sel.value;
+    sel.innerHTML = allBrands.filter(b=>b.active!==false).map(b=>`<option value="${b.code}">${b.code} – ${b.name}</option>`).join('');
+    if (cur) sel.value = cur;
+  }
+}
+
+function openBrandModal(b = null) {
+  document.getElementById('brandModalTitle').textContent = b ? 'Sửa thương hiệu' : 'Thêm thương hiệu';
+  document.getElementById('bId').value = b?._id || '';
+  document.getElementById('bCode').value = b?.code || '';
+  document.getElementById('bName').value = b?.name || '';
+  document.getElementById('bDesc').value = b?.description || '';
+  document.getElementById('bActive').value = String(b?.active !== false);
+  document.getElementById('brandOverlay').classList.add('show');
+}
+
+async function saveBrand() {
+  const id = document.getElementById('bId').value;
+  const body = {
+    code: document.getElementById('bCode').value.trim().toUpperCase(),
+    name: document.getElementById('bName').value.trim(),
+    description: document.getElementById('bDesc').value.trim(),
+    active: document.getElementById('bActive').value === 'true',
+  };
+  if (!body.code || !body.name) return showToast('Vui lòng nhập mã và tên thương hiệu', 'error');
+  try {
+    const url = id ? `${API}/api/brands/${id}` : `${API}/api/brands`;
+    const method = id ? 'PUT' : 'POST';
+    const res = await authFetch(url, { method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.success) {
+      showToast(id ? '✅ Đã cập nhật thương hiệu' : '✅ Đã thêm thương hiệu', 'success');
+      closeModal('brandOverlay');
+      await loadBrands();
+    } else { showToast(data.message||'Lỗi', 'error'); }
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function deleteBrand(id, name) {
+  if (!confirm(`Xóa thương hiệu "${name}"?`)) return;
+  const res = await authFetch(`${API}/api/brands/${id}`, { method:'DELETE', headers:{} });
+  const data = await res.json();
+  if (data.success) { showToast('🗑️ Đã xóa thương hiệu', 'success'); await loadBrands(); }
+}
+
+// ── PRODUCTS ──
+async function loadProducts() {
+  const tbody = document.getElementById('productTable');
+  tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Đang tải...</td></tr>';
+  try {
+    const res = await fetch(API + '/api/products?limit=100');
+    const data = await res.json();
+    if (data.success) { allProducts = data.data; renderProducts(allProducts); }
+  } catch(e) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">❌ Lỗi tải dữ liệu</td></tr>'; }
+}
+
+function renderProducts(list) {
+  const tbody = document.getElementById('productTable');
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Chưa có sản phẩm nào</td></tr>'; return; }
+  tbody.innerHTML = list.map(p => `
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:.7rem">
+        <div class="product-thumb">${p.icon||'💊'}</div>
+        <div><div style="font-weight:700;font-size:.83rem">${p.name}</div><div style="font-size:.72rem;color:#888">${p.weight||''}</div></div>
+      </div></td>
+      <td><span class="badge badge-blue">${p.brand}</span></td>
+      <td>${p.category||'–'}</td>
+      <td><b style="color:var(--red)">${formatPrice(p.price)}</b>${p.originalPrice?`<br><span style="font-size:.7rem;color:#aaa;text-decoration:line-through">${formatPrice(p.originalPrice)}</span>`:''}</td>
+      <td><span class="badge ${p.active!==false?'badge-green':'badge-gray'}">${p.active!==false?'Đang bán':'Ngừng'}</span></td>
+      <td><div style="display:flex;gap:.4rem">
+        <button class="icon-btn" title="Sửa" onclick='editProduct(${JSON.stringify(p)})'>✏️</button>
+        <button class="icon-btn" title="Xóa" onclick="deleteProduct('${p._id}','${p.name}')">🗑️</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function filterProducts(q) {
+  const brand = document.querySelector('#brandFilter .filter-chip.active')?.dataset.brand || '';
+  renderProducts(allProducts.filter(p =>
+    (!brand || p.brand === brand) &&
+    (!q || p.name.toLowerCase().includes(q.toLowerCase()))
+  ));
+}
+
+// Brand filter chips
+document.getElementById('brandFilter').addEventListener('click', e => {
+  const chip = e.target.closest('.filter-chip');
+  if (!chip) return;
+  document.querySelectorAll('#brandFilter .filter-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  filterProducts(document.getElementById('productSearch').value);
+});
+
+function openProductModal(p = null) {
+  document.getElementById('productModalTitle').textContent = p ? 'Sửa sản phẩm' : 'Thêm sản phẩm';
+  document.getElementById('pId').value = p?._id || '';
+  document.getElementById('pName').value = p?.name || '';
+  refreshBrandUI();
+  document.getElementById('pBrand').value = p?.brand || (allBrands[0]?.code || '');
+  document.getElementById('pCategory').value = p?.category || 'Tăng đề kháng';
+  document.getElementById('pPrice').value = p?.price || '';
+  document.getElementById('pOriginalPrice').value = p?.originalPrice || '';
+  document.getElementById('pWeight').value = p?.weight || '';
+  document.getElementById('pBadge').value = p?.badge || '';
+  document.getElementById('pIcon').value = p?.icon || '';
+  document.getElementById('pDesc').value = p?.description || '';
+  document.getElementById('pActive').value = String(p?.active !== false);
+  document.getElementById('pFeatured').value = String(p?.featured === true);
+  document.getElementById('pImgPreview').style.display = 'none';
+  document.getElementById('pImgText').textContent = 'Bấm để chọn ảnh hoặc kéo thả';
+  selectedFiles['product'] = null;
+  document.getElementById('productOverlay').classList.add('show');
+}
+
+function editProduct(p) { openProductModal(p); }
+
+async function saveProduct() {
+  const id = document.getElementById('pId').value;
+  const body = {
+    name:          document.getElementById('pName').value.trim(),
+    brand:         document.getElementById('pBrand').value,
+    category:      document.getElementById('pCategory').value,
+    price:         Number(document.getElementById('pPrice').value),
+    originalPrice: document.getElementById('pOriginalPrice').value ? Number(document.getElementById('pOriginalPrice').value) : undefined,
+    weight:        document.getElementById('pWeight').value.trim(),
+    badge:         document.getElementById('pBadge').value.trim(),
+    icon:          document.getElementById('pIcon').value.trim() || '💊',
+    description:   document.getElementById('pDesc').value.trim(),
+    active:        document.getElementById('pActive').value === 'true',
+    featured:      document.getElementById('pFeatured').value === 'true',
+  };
+  if (!body.name)  return showToast('Vui lòng nhập tên sản phẩm', 'error');
+  if (!body.brand) return showToast('Vui lòng chọn thương hiệu', 'error');
+  if (!body.price) return showToast('Vui lòng nhập giá sản phẩm', 'error');
+  try {
+    const url = id ? `${API}/api/products/${id}` : `${API}/api/products`;
+    const method = id ? 'PUT' : 'POST';
+    const res = await authFetch(url, { method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.success) {
+      showToast(id ? '✅ Đã cập nhật sản phẩm' : '✅ Đã thêm sản phẩm', 'success');
+      closeModal('productOverlay');
+      loadProducts();
+    } else { showToast(data.message||'Lỗi server', 'error'); }
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm(`Xóa sản phẩm "${name}"?`)) return;
+  const res = await authFetch(`${API}/api/products/${id}`, { method:'DELETE', headers:{} });
+  const data = await res.json();
+  if (data.success) { showToast('🗑️ Đã xóa sản phẩm', 'success'); loadProducts(); }
+}
+
+// ── POSTS ──
+async function loadPosts() {
+  const tbody = document.getElementById('postTable');
+  tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Đang tải...</td></tr>';
+  try {
+    const res = await authFetch(API + '/api/posts/admin/all', { headers:{} });
+    const data = await res.json();
+    if (data.success) { allPosts = data.data; renderPosts(allPosts); }
+  } catch(e) {}
+}
+
+function renderPosts(list) {
+  const tbody = document.getElementById('postTable');
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Chưa có bài viết nào</td></tr>'; return; }
+  tbody.innerHTML = list.map(p => `
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:.7rem">
+        <div style="font-size:1.5rem">${p.icon||'📰'}</div>
+        <div><div style="font-weight:700;font-size:.83rem">${p.title}</div><div style="font-size:.72rem;color:#888">${p.readTime||5} phút đọc · ${p.views||0} lượt xem</div></div>
+      </div></td>
+      <td><span class="badge badge-blue">${p.category}</span></td>
+      <td>${p.author?.name||'Admin'}</td>
+      <td><span class="badge ${p.published?'badge-green':'badge-gray'}">${p.published?'Đã đăng':'Nháp'}</span></td>
+      <td>${p.publishedAt?formatDate(p.publishedAt):'–'}</td>
+      <td><div style="display:flex;gap:.4rem">
+        <button class="icon-btn" onclick='editPost(${JSON.stringify(p).replace(/'/g,"&#39;")})'>✏️</button>
+        <button class="icon-btn" onclick="deletePost('${p._id}','${p.title.replace(/'/g,'')}')">🗑️</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function filterPosts(q) {
+  renderPosts(allPosts.filter(p => !q || p.title.toLowerCase().includes(q.toLowerCase())));
+}
+
+function openPostModal() {
+  document.getElementById('postModalTitle').textContent = 'Viết bài mới';
+  document.getElementById('postId').value = '';
+  document.getElementById('postTitle').value = '';
+  document.getElementById('postExcerpt').value = '';
+  document.getElementById('postContent').innerHTML = '';
+  document.getElementById('postIcon').value = '📰';
+  document.getElementById('postReadTime').value = '5';
+  document.getElementById('postPublished').value = 'true';
+  document.getElementById('postImgPreview').style.display = 'none';
+  selectedFiles['post'] = null;
+  document.getElementById('postOverlay').classList.add('show');
+}
+
+function editPost(p) {
+  document.getElementById('postModalTitle').textContent = 'Sửa bài viết';
+  document.getElementById('postId').value = p._id;
+  document.getElementById('postTitle').value = p.title;
+  document.getElementById('postExcerpt').value = p.excerpt || '';
+  document.getElementById('postContent').innerHTML = p.content || '';
+  document.getElementById('postCategory').value = p.category;
+  document.getElementById('postIcon').value = p.icon || '📰';
+  document.getElementById('postReadTime').value = p.readTime || 5;
+  document.getElementById('postPublished').value = String(p.published);
+  if (p.thumbnail) {
+    document.getElementById('postImgPreview').src = API + p.thumbnail;
+    document.getElementById('postImgPreview').style.display = 'block';
+  }
+  document.getElementById('postOverlay').classList.add('show');
+}
+
+async function savePost() {
+  const id = document.getElementById('postId').value;
+  const formData = new FormData();
+  formData.append('title', document.getElementById('postTitle').value);
+  formData.append('category', document.getElementById('postCategory').value);
+  formData.append('excerpt', document.getElementById('postExcerpt').value);
+  formData.append('content', document.getElementById('postContent').innerHTML);
+  formData.append('icon', document.getElementById('postIcon').value);
+  formData.append('readTime', document.getElementById('postReadTime').value);
+  formData.append('published', document.getElementById('postPublished').value);
+  if (selectedFiles['post']) formData.append('thumbnail', selectedFiles['post']);
+
+  try {
+    const url = id ? `${API}/api/posts/${id}` : `${API}/api/posts`;
+    const method = id ? 'PUT' : 'POST';
+    const res = await authFetch(url, { method, headers:{}, body: formData });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Đã lưu bài viết', 'success');
+      closeModal('postOverlay');
+      loadPosts();
+    } else { showToast(data.message, 'error'); }
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function deletePost(id, title) {
+  if (!confirm(`Xóa bài "${title}"?`)) return;
+  const res = await authFetch(`${API}/api/posts/${id}`, { method:'DELETE', headers:{} });
+  const data = await res.json();
+  if (data.success) { showToast('🗑️ Đã xóa bài viết', 'success'); loadPosts(); }
+}
+
+// ── BANNERS ──
+async function loadBanners() {
+  const grid = document.getElementById('bannerGrid');
+  grid.innerHTML = '<div class="empty-state">Đang tải...</div>';
+  try {
+    const res = await fetch(API + '/api/banners');
+    const data = await res.json();
+    if (data.success) {
+      allBanners = data.data;
+      if (!allBanners.length) { grid.innerHTML = '<div class="empty-state">Chưa có banner nào</div>'; return; }
+      grid.innerHTML = allBanners.map(b => `
+        <div style="background:#fff;border-radius:.6rem;border:1px solid #e8e8e8;overflow:hidden">
+          <div style="height:140px;overflow:hidden;background:#f5f5f5">
+            <img src="${API+b.image}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='🖼️'"/>
+          </div>
+          <div style="padding:.8rem">
+            <div style="font-weight:700;font-size:.83rem;margin-bottom:.3rem">${b.title}</div>
+            <div style="display:flex;gap:.5rem;margin-bottom:.6rem;align-items:center">
+              <span class="badge ${b.position==='hero'?'badge-blue':'badge-green'}">${b.position==='hero'?'Hero':'Promo'}</span>
+              <span class="badge ${b.active?'badge-green':'badge-gray'}">${b.active?'Hiển thị':'Ẩn'}</span>
+            </div>
+            <div style="display:flex;gap:.4rem">
+              <button class="btn btn-sm btn-outline" onclick="toggleBanner('${b._id}',${!b.active})">${b.active?'Ẩn':'Hiện'}</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteBanner('${b._id}')">Xóa</button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+  } catch(e) { grid.innerHTML = '<div class="empty-state">❌ Lỗi tải dữ liệu</div>'; }
+}
+
+function openBannerModal() {
+  ['bTitle','bSubtitle'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('bBtn').value = 'Khám phá ngay';
+  document.getElementById('bLink').value = 'san-pham.html';
+  document.getElementById('bPos').value = 'hero';
+  document.getElementById('bOrder').value = '0';
+  document.getElementById('bImgPreview').style.display = 'none';
+  selectedFiles['banner'] = null;
+  document.getElementById('bannerOverlay').classList.add('show');
+}
+
+async function saveBanner() {
+  if (!selectedFiles['banner']) return showToast('Vui lòng chọn ảnh', 'error');
+  const formData = new FormData();
+  formData.append('title', document.getElementById('bTitle').value || 'Banner');
+  formData.append('subtitle', document.getElementById('bSubtitle').value);
+  formData.append('buttonText', document.getElementById('bBtn').value);
+  formData.append('buttonLink', document.getElementById('bLink').value);
+  formData.append('position', document.getElementById('bPos').value);
+  formData.append('order', document.getElementById('bOrder').value);
+  formData.append('image', selectedFiles['banner']);
+  try {
+    const res = await authFetch(API + '/api/banners', { method:'POST', headers:{}, body: formData });
+    const data = await res.json();
+    if (data.success) { showToast('✅ Đã thêm banner', 'success'); closeModal('bannerOverlay'); loadBanners(); }
+    else showToast(data.message, 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function toggleBanner(id, active) {
+  const res = await authFetch(`${API}/api/banners/${id}`, { method:'PUT', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ active }) });
+  const data = await res.json();
+  if (data.success) { showToast(active?'✅ Đã hiện banner':'🙈 Đã ẩn banner', 'success'); loadBanners(); }
+}
+
+async function deleteBanner(id) {
+  if (!confirm('Xóa banner này?')) return;
+  const res = await authFetch(`${API}/api/banners/${id}`, { method:'DELETE', headers:{} });
+  const data = await res.json();
+  if (data.success) { showToast('🗑️ Đã xóa banner', 'success'); loadBanners(); }
+}
+
+// ── USERS ──
+async function loadUsers() {
+  try {
+    const res = await authFetch(API + '/api/users', { headers:{} });
+    const data = await res.json();
+    if (data.success) { allUsers = data.data; renderUsers(allUsers); document.getElementById('statUsers').textContent = data.data.length; }
+  } catch(e) {}
+}
+
+function renderUsers(list) {
+  const tbody = document.getElementById('userTable');
+  if (!list.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Chưa có người dùng</td></tr>'; return; }
+  tbody.innerHTML = list.map(u => `
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:.7rem">
+        <div class="avatar-big">${u.name?.[0]?.toUpperCase()||'?'}</div>
+        <div style="font-weight:700;font-size:.83rem">${u.name}</div>
+      </div></td>
+      <td>${u.email}</td>
+      <td>${u.phone||'–'}</td>
+      <td><span class="badge ${u.role==='admin'?'badge-red':'badge-blue'}">${u.role==='admin'?'⭐ Admin':'👤 User'}</span></td>
+      <td>${formatDate(u.createdAt)}</td>
+      <td><div style="display:flex;gap:.4rem">
+        <button class="icon-btn" onclick='editUser(${JSON.stringify(u)})'>✏️</button>
+        <button class="icon-btn" onclick="deleteUser('${u._id}','${u.name}')">🗑️</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function filterUsers(q) {
+  renderUsers(allUsers.filter(u => !q || u.name.toLowerCase().includes(q.toLowerCase()) || u.email.includes(q)));
+}
+
+function editUser(u) {
+  document.getElementById('uId').value = u._id;
+  document.getElementById('uName').value = u.name;
+  document.getElementById('uEmail').value = u.email;
+  document.getElementById('uPhone').value = u.phone || '';
+  document.getElementById('uRole').value = u.role;
+  document.getElementById('userOverlay').classList.add('show');
+}
+
+async function saveUser() {
+  const id = document.getElementById('uId').value;
+  const body = { name: document.getElementById('uName').value, email: document.getElementById('uEmail').value, phone: document.getElementById('uPhone').value, role: document.getElementById('uRole').value };
+  try {
+    const res = await authFetch(`${API}/api/users/${id}`, { method:'PUT', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.success) { showToast('✅ Đã cập nhật', 'success'); closeModal('userOverlay'); loadUsers(); }
+    else showToast(data.message, 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function deleteUser(id, name) {
+  if (!confirm(`Xóa người dùng "${name}"?`)) return;
+  const res = await authFetch(`${API}/api/users/${id}`, { method:'DELETE', headers:{} });
+  const data = await res.json();
+  if (data.success) { showToast('🗑️ Đã xóa người dùng', 'success'); loadUsers(); }
+}
+
+// ── CONTACTS ──
+async function loadContacts() {
+  try {
+    const res = await authFetch(API + '/api/contacts', { headers:{} });
+    const data = await res.json();
+    if (data.success) {
+      const tbody = document.getElementById('contactTable');
+      tbody.innerHTML = data.data.map(c => `
+        <tr>
+          <td><b>${c.ho_ten}</b></td>
+          <td>${c.dien_thoai}</td>
+          <td>${c.email}</td>
+          <td>${c.chu_de}</td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.noi_dung}</td>
+          <td><span class="badge ${c.status==='Chưa xử lý'?'badge-red':c.status==='Đang xử lý'?'badge-blue':'badge-green'}">${c.status}</span></td>
+          <td>
+            <select onchange="updateContact('${c._id}',this.value)" style="padding:.3rem;font-size:.75rem;border:1px solid #ddd;border-radius:.3rem">
+              <option ${c.status==='Chưa xử lý'?'selected':''}>Chưa xử lý</option>
+              <option ${c.status==='Đang xử lý'?'selected':''}>Đang xử lý</option>
+              <option ${c.status==='Đã xử lý'?'selected':''}>Đã xử lý</option>
+            </select>
+          </td>
+        </tr>`).join('');
+    }
+  } catch(e) {}
+}
+
+async function updateContact(id, status) {
+  const res = await authFetch(`${API}/api/contacts/${id}`, { method:'PUT', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ status }) });
+  const data = await res.json();
+  if (data.success) showToast('✅ Đã cập nhật trạng thái', 'success');
+}
+
+// ── FILE PREVIEW ──
+function previewImg(input, previewId, textId) {
+  const file = input.files[0];
+  if (!file) return;
+  const key = previewId.includes('pImg') ? 'product' : previewId.includes('postImg') ? 'post' : 'banner';
+  selectedFiles[key] = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(previewId);
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+  document.getElementById(textId).textContent = file.name;
+}
+
+function dropImg(e, inputId, previewId) {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    const input = document.getElementById(inputId);
+    input.files = dt.files;
+    previewImg(input, previewId, inputId.replace('Input','Text'));
+  }
+}
+
+// ── MODAL ──
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }));
+
+// ── TOAST ──
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+// ── INIT ──
+window.__vpAuthReady.then(function(user) {
+  if (user && user.role === 'admin') {
+    token = AuthClient.getToken();
+    currentUser = user;
+    document.getElementById('loginOverlay').style.display = 'none';
+    document.getElementById('adminName').textContent = user.name;
+    document.getElementById('adminAvatar').textContent = user.name[0].toUpperCase();
+    initData();
+  } else {
+    document.getElementById('loginOverlay').style.display = 'flex';
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Thông tin tài khoản – Vinapharma</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#f5f5f5;color:#111;min-height:100vh}
+:root{--red:#cc1f1f;--red-pale:#fff5f5}
+.header{background:#fff;padding:.9rem 4%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e8e8e8}
+.logo{font-weight:900;font-size:1.1rem;color:#111;text-decoration:none}
+.logo span{color:var(--red)}
+.back-btn{display:flex;align-items:center;gap:.5rem;color:#666;text-decoration:none;font-size:.83rem;font-weight:600}
+.page{max-width:640px;margin:2rem auto;padding:0 1rem}
+.card{background:#fff;border-radius:.8rem;border:1px solid #e8e8e8;overflow:hidden;margin-bottom:1rem}
+.card-header{padding:1.1rem 1.4rem;border-bottom:1px solid #f0f0f0;font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:.5rem}
+.card-body{padding:1.4rem}
+.avatar-section{display:flex;align-items:center;gap:1.2rem;margin-bottom:1.5rem}
+.avatar{width:64px;height:64px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900}
+.avatar-info h3{font-size:1rem;font-weight:800}
+.avatar-info p{font-size:.78rem;color:#888;margin-top:.2rem}
+.form-group{margin-bottom:1rem}
+label{display:block;font-size:.72rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem}
+input{width:100%;padding:.65rem .9rem;border:1.5px solid #e0e0e0;border-radius:.45rem;font-family:inherit;font-size:.88rem;outline:none;transition:.15s}
+input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(204,31,31,.08)}
+input:disabled{background:#f9f9f9;color:#888}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.btn{padding:.65rem 1.4rem;border:none;border-radius:.45rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;transition:.2s}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#a01818}
+.btn-outline{background:#fff;color:#333;border:1.5px solid #ddd}
+.pw-wrap{position:relative}.pw-wrap input{padding-right:2.6rem;width:100%}.pw-eye{position:absolute;right:.7rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:#bbb;padding:.2rem;line-height:1}.pw-eye:hover{color:#555}
+.btn-outline:hover{border-color:#aaa}
+.actions{display:flex;gap:.7rem;justify-content:flex-end;margin-top:.5rem}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#111;color:#fff;padding:.75rem 1.2rem;border-radius:.5rem;font-size:.82rem;font-weight:600;transform:translateY(80px);opacity:0;transition:.25s;z-index:9999}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#16a34a}
+.toast.error{background:#dc2626}
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="index.html" class="logo">❤️ <span>vina</span>pharma®</a>
+  <a href="index.html" class="back-btn">← Quay lại trang chủ</a>
+</div>
+
+<div class="page">
+  <div class="card">
+    <div class="card-header">👤 Thông tin cá nhân</div>
+    <div class="card-body">
+      <div class="avatar-section">
+        <div class="avatar" id="avatarEl">?</div>
+        <div class="avatar-info">
+          <h3 id="displayName">Đang tải...</h3>
+          <p id="displayEmail"></p>
+          <p id="displayRole" style="margin-top:.3rem"></p>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Họ và tên *</label>
+          <input type="text" id="uName"/>
+        </div>
+        <div class="form-group">
+          <label>Số điện thoại</label>
+          <input type="tel" id="uPhone" placeholder="090 000 00 00"/>
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Email (không thể thay đổi)</label>
+          <input type="email" id="uEmail" disabled/>
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Địa chỉ</label>
+          <input type="text" id="uAddress" placeholder="Số nhà, đường, quận, tỉnh/thành phố"/>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-red" onclick="saveProfile()">💾 Lưu thông tin</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🔒 Đổi mật khẩu</div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Mật khẩu hiện tại</label>
+        <div class="pw-wrap"><input type="password" id="oldPass" placeholder="••••••••"/><button class="pw-eye" type="button" onclick="togglePw('oldPass',this)">👁️</button></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Mật khẩu mới</label>
+          <div class="pw-wrap"><input type="password" id="newPass" placeholder="Tối thiểu 6 ký tự"/><button class="pw-eye" type="button" onclick="togglePw('newPass',this)">👁️</button></div>
+        </div>
+        <div class="form-group">
+          <label>Xác nhận mật khẩu mới</label>
+          <div class="pw-wrap"><input type="password" id="confirmPass" placeholder="Nhập lại mật khẩu"/><button class="pw-eye" type="button" onclick="togglePw('confirmPass',this)">👁️</button></div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" onclick="changePassword()">🔒 Đổi mật khẩu</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:1rem">
+    <button class="btn btn-outline" onclick="logout()" style="color:#dc2626;border-color:#fca5a5">🚪 Đăng xuất</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="authClient.js"></script>
+<script>
+const API = 'http://localhost:5000';
+
+function togglePw(id, btn) {
+  var input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+  btn.textContent = input.type === 'password' ? '👁️' : '🙈';
+}
+
+async function loadProfile() {
+  const user = AuthClient.getUser();
+  if (!user) { window.location.href = 'tai-khoan.html'; return; }
+  try {
+    const res = await AuthClient.authFetch(API + '/api/auth/me');
+    const data = await res.json();
+    if (data.success) {
+      const u = data.user;
+      document.getElementById('avatarEl').textContent = u.name?.[0]?.toUpperCase() || '?';
+      document.getElementById('displayName').textContent = u.name;
+      document.getElementById('displayEmail').textContent = u.email;
+      document.getElementById('displayRole').innerHTML = u.role === 'admin'
+        ? '<span style="background:#fee2e2;color:#dc2626;padding:.15rem .5rem;border-radius:.25rem;font-size:.72rem;font-weight:800">⭐ Admin</span>'
+        : '<span style="background:#dbeafe;color:#1d4ed8;padding:.15rem .5rem;border-radius:.25rem;font-size:.72rem;font-weight:800">👤 Thành viên</span>';
+      document.getElementById('uName').value = u.name || '';
+      document.getElementById('uEmail').value = u.email || '';
+      document.getElementById('uPhone').value = u.phone || '';
+      document.getElementById('uAddress').value = u.address || '';
+    }
+  } catch(e) {}
+}
+
+async function saveProfile() {
+  try {
+    const body = {
+      name: document.getElementById('uName').value,
+      phone: document.getElementById('uPhone').value,
+      address: document.getElementById('uAddress').value
+    };
+    const res = await AuthClient.authFetch(API + '/api/users/me/profile', {
+      method: 'PUT', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Đã lưu thông tin', 'success');
+      loadProfile();
+    } else showToast(data.message, 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function changePassword() {
+  const oldPass = document.getElementById('oldPass').value;
+  const newPass = document.getElementById('newPass').value;
+  const confirm = document.getElementById('confirmPass').value;
+  if (!oldPass || !newPass) return showToast('Vui lòng điền đầy đủ', 'error');
+  if (newPass.length < 6) return showToast('Mật khẩu mới ít nhất 6 ký tự', 'error');
+  if (newPass !== confirm) return showToast('Mật khẩu xác nhận không khớp', 'error');
+  try {
+    const res = await AuthClient.authFetch(API + '/api/auth/change-password', {
+      method:'PUT', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ currentPassword: oldPass, newPassword: newPass })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Đã đổi mật khẩu', 'success');
+      document.getElementById('oldPass').value = '';
+      document.getElementById('newPass').value = '';
+      document.getElementById('confirmPass').value = '';
+    } else showToast(data.message, 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+function logout() { AuthClient.logout(); }
+
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+// Chờ AuthClient init xong rồi mới load
+window.__vpAuthReady.then(function(user) {
+  if (!user) { window.location.href = 'tai-khoan.html'; return; }
+  loadProfile();
+});
+</script>
+</body>
+</html>

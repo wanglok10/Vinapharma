@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Quản lý Banner – Vinapharma</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#f5f5f5;color:#111}
+:root{--red:#cc1f1f;--red-pale:#fff5f5}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* Sidebar */
+.sidebar{background:#111;padding:1.5rem;display:flex;flex-direction:column;gap:.4rem}
+.sidebar-logo{color:#fff;font-weight:800;font-size:1.1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo span{color:var(--red)}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;border-radius:.5rem;color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:500;cursor:pointer;transition:.2s}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:var(--red);color:#fff}
+
+/* Main */
+.main{padding:2rem}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+.page-title{font-size:1.3rem;font-weight:800}
+.page-sub{font-size:.82rem;color:#666;margin-top:.2rem}
+
+/* Tabs */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem}
+.tab{padding:.5rem 1.2rem;border-radius:.4rem;border:1px solid #ddd;background:#fff;font-size:.83rem;font-weight:600;cursor:pointer;transition:.2s}
+.tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* Upload Box */
+.upload-card{background:#fff;border-radius:.8rem;border:1px solid #e8e8e8;padding:1.5rem;margin-bottom:1.5rem}
+.upload-card h3{font-size:.95rem;font-weight:700;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+.form-group label{font-size:.75rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.05em}
+.form-group input,.form-group select,.form-group textarea{padding:.6rem .8rem;border:1px solid #ddd;border-radius:.4rem;font-family:inherit;font-size:.85rem;outline:none;transition:.2s}
+.form-group input:focus,.form-group select:focus{border-color:var(--red)}
+.form-group.full{grid-column:1/-1}
+
+/* Drop Zone */
+.drop-zone{border:2px dashed #ddd;border-radius:.6rem;padding:2.5rem;text-align:center;cursor:pointer;transition:.2s;background:#fafafa}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--red);background:var(--red-pale)}
+.drop-zone .dz-icon{font-size:2.5rem;margin-bottom:.7rem}
+.drop-zone .dz-text{font-size:.85rem;color:#666;font-weight:500}
+.drop-zone .dz-sub{font-size:.75rem;color:#999;margin-top:.3rem}
+.drop-zone input{display:none}
+
+/* Preview */
+.preview-img{width:100%;max-height:180px;object-fit:cover;border-radius:.5rem;margin-top:.8rem;display:none}
+
+/* Buttons */
+.btn{padding:.65rem 1.4rem;border-radius:.45rem;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;transition:.2s;border:none}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:#a91a1a}
+.btn-outline{background:#fff;color:#333;border:1px solid #ddd}
+.btn-outline:hover{border-color:#999}
+.btn-sm{padding:.4rem .9rem;font-size:.78rem}
+.btn-danger{background:#fee2e2;color:#dc2626;border:none}
+.btn-danger:hover{background:#fca5a5}
+.actions{display:flex;gap:.7rem;margin-top:1.2rem;justify-content:flex-end}
+
+/* Banner List */
+.banner-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.banner-card{background:#fff;border-radius:.8rem;border:1px solid #e8e8e8;overflow:hidden;transition:.2s}
+.banner-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.banner-thumb{width:100%;height:160px;object-fit:cover;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#ccc}
+.banner-thumb img{width:100%;height:100%;object-fit:cover}
+.banner-info{padding:1rem}
+.banner-title{font-weight:700;font-size:.9rem;margin-bottom:.3rem}
+.banner-meta{font-size:.75rem;color:#888;display:flex;gap:.8rem;margin-bottom:.8rem}
+.banner-pos{padding:.15rem .5rem;border-radius:.25rem;font-size:.68rem;font-weight:700;text-transform:uppercase}
+.pos-hero{background:#dbeafe;color:#1d4ed8}
+.pos-promo{background:#dcfce7;color:#166534}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:.3rem}
+.status-active{background:#22c55e}
+.status-inactive{background:#d1d5db}
+.banner-actions{display:flex;gap:.5rem}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#111;color:#fff;padding:.8rem 1.2rem;border-radius:.5rem;font-size:.83rem;font-weight:600;transform:translateY(100px);opacity:0;transition:.3s;z-index:9999}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#16a34a}
+.toast.error{background:#dc2626}
+
+/* Empty */
+.empty{text-align:center;padding:3rem;color:#aaa;font-size:.9rem}
+
+/* Login */
+.login-overlay{position:fixed;inset:0;background:#f5f5f5;display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:#fff;border-radius:.8rem;padding:2rem;width:360px;box-shadow:0 4px 24px rgba(0,0,0,.1)}
+.login-logo{font-size:1.2rem;font-weight:800;margin-bottom:1.5rem;text-align:center}
+.login-logo span{color:var(--red)}
+</style>
+</head>
+<body>
+
+<!-- Login Overlay -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">❤️ <span>vina</span>pharma® Admin</div>
+    <div class="form-group" style="margin-bottom:1rem">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="admin@vinapharma.vn"/>
+    </div>
+    <div class="form-group" style="margin-bottom:1.5rem">
+      <label>Mật khẩu</label>
+      <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"/>
+    </div>
+    <button class="btn btn-red" style="width:100%" onclick="login()">Đăng nhập</button>
+    <div id="loginErr" style="color:#dc2626;font-size:.8rem;margin-top:.8rem;text-align:center"></div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">❤️ <span>vina</span>pharma®<br><small style="font-weight:400;font-size:.7rem;color:#888">Admin Panel</small></div>
+    <a class="nav-item" href="index.html" target="_blank">🏠 Trang chủ</a>
+    <a class="nav-item active" href="admin-banner.html">🖼️ Quản lý Banner</a>
+    <a class="nav-item" href="#" style="margin-top:auto;color:#666" onclick="logout()">🚪 Đăng xuất</a>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">🖼️ Quản lý Banner</div>
+        <div class="page-sub">Upload và quản lý banner hero slider & quảng cáo</div>
+      </div>
+    </div>
+
+    <!-- Upload Form -->
+    <div class="upload-card">
+      <h3>➕ Thêm Banner Mới</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Tiêu đề banner *</label>
+          <input type="text" id="bannerTitle" placeholder="VD: Sức khoẻ toàn diện từ thiên nhiên"/>
+        </div>
+        <div class="form-group">
+          <label>Phụ đề</label>
+          <input type="text" id="bannerSubtitle" placeholder="VD: Giảm 20% tất cả sản phẩm"/>
+        </div>
+        <div class="form-group">
+          <label>Nút bấm (text)</label>
+          <input type="text" id="bannerBtn" placeholder="Khám phá ngay" value="Khám phá ngay"/>
+        </div>
+        <div class="form-group">
+          <label>Link nút bấm</label>
+          <input type="text" id="bannerLink" placeholder="san-pham.html" value="san-pham.html"/>
+        </div>
+        <div class="form-group">
+          <label>Vị trí hiển thị *</label>
+          <select id="bannerPos">
+            <option value="hero">🏠 Hero Slider (trang chủ)</option>
+            <option value="promo">📢 Banner Quảng cáo (giữa trang)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Thứ tự (số nhỏ = lên trước)</label>
+          <input type="number" id="bannerOrder" value="0" min="0"/>
+        </div>
+        <div class="form-group full">
+          <label>Ảnh banner *</label>
+          <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+            <div class="dz-icon">🖼️</div>
+            <div class="dz-text">Bấm để chọn ảnh hoặc kéo thả vào đây</div>
+            <div class="dz-sub">JPG, PNG, WEBP – Tối đa 5MB – Khuyến nghị: 1920×600px cho hero</div>
+            <input type="file" id="fileInput" accept="image/*" onchange="previewFile(this)"/>
+          </div>
+          <img id="previewImg" class="preview-img"/>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline" onclick="resetForm()">Xóa form</button>
+        <button class="btn btn-red" onclick="uploadBanner()">⬆️ Upload Banner</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="filterBanners('all',this)">Tất cả</button>
+      <button class="tab" onclick="filterBanners('hero',this)">🏠 Hero Slider</button>
+      <button class="tab" onclick="filterBanners('promo',this)">📢 Quảng cáo</button>
+    </div>
+
+    <!-- Banner List -->
+    <div class="banner-grid" id="bannerGrid">
+      <div class="empty">Đang tải...</div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'http://localhost:5000';
+let token = localStorage.getItem('vp_token');
+let allBanners = [];
+let selectedFile = null;
+
+// ── AUTH ──
+async function login() {
+  const email = document.getElementById('loginEmail').value;
+  const pass  = document.getElementById('loginPass').value;
+  try {
+    const res  = await fetch(API + '/api/auth/login', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass })
+    });
+    const data = await res.json();
+    if (data.success && data.user.role === 'admin') {
+      token = data.token;
+      localStorage.setItem('vp_token', token);
+      document.getElementById('loginOverlay').style.display = 'none';
+      loadBanners();
+    } else {
+      document.getElementById('loginErr').textContent = data.message || 'Sai thông tin hoặc không phải admin';
+    }
+  } catch(e) {
+    document.getElementById('loginErr').textContent = 'Không kết nối được server';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('vp_token');
+  location.reload();
+}
+
+// ── FILE PREVIEW ──
+function previewFile(input) {
+  selectedFile = input.files[0];
+  if (!selectedFile) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('previewImg');
+    img.src = e.target.result;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(selectedFile);
+  document.querySelector('.dz-text').textContent = selectedFile.name;
+}
+
+function dragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
+function dragLeave(e) { document.getElementById('dropZone').classList.remove('drag-over'); }
+function dropFile(e) {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    selectedFile = file;
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('fileInput').files = dt.files;
+    previewFile(document.getElementById('fileInput'));
+  }
+}
+
+function resetForm() {
+  ['bannerTitle','bannerSubtitle','bannerBtn','bannerLink','bannerOrder'].forEach(id => {
+    const el = document.getElementById(id);
+    if (id === 'bannerBtn') el.value = 'Khám phá ngay';
+    else if (id === 'bannerLink') el.value = 'san-pham.html';
+    else if (id === 'bannerOrder') el.value = '0';
+    else el.value = '';
+  });
+  selectedFile = null;
+  document.getElementById('previewImg').style.display = 'none';
+  document.querySelector('.dz-text').textContent = 'Bấm để chọn ảnh hoặc kéo thả vào đây';
+  document.getElementById('bannerPos').value = 'hero';
+}
+
+// ── UPLOAD ──
+async function uploadBanner() {
+  const title = document.getElementById('bannerTitle').value.trim();
+  if (!title) return showToast('Vui lòng nhập tiêu đề banner', 'error');
+  if (!selectedFile) return showToast('Vui lòng chọn ảnh banner', 'error');
+
+  const formData = new FormData();
+  formData.append('image', selectedFile);
+  formData.append('title', title);
+  formData.append('subtitle', document.getElementById('bannerSubtitle').value);
+  formData.append('buttonText', document.getElementById('bannerBtn').value || 'Khám phá ngay');
+  formData.append('buttonLink', document.getElementById('bannerLink').value || 'san-pham.html');
+  formData.append('position', document.getElementById('bannerPos').value);
+  formData.append('order', document.getElementById('bannerOrder').value || 0);
+
+  try {
+    const res = await fetch(API + '/api/banners', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      body: formData
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Upload banner thành công!', 'success');
+      resetForm();
+      loadBanners();
+    } else {
+      showToast(data.message || 'Upload thất bại', 'error');
+    }
+  } catch(e) {
+    showToast('Lỗi kết nối server', 'error');
+  }
+}
+
+// ── LOAD BANNERS ──
+async function loadBanners() {
+  try {
+    const res = await fetch(API + '/api/banners');
+    const data = await res.json();
+    if (data.success) {
+      allBanners = data.data;
+      renderBanners(allBanners);
+    }
+  } catch(e) {
+    document.getElementById('bannerGrid').innerHTML = '<div class="empty">❌ Không kết nối được server</div>';
+  }
+}
+
+function filterBanners(pos, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = pos === 'all' ? allBanners : allBanners.filter(b => b.position === pos);
+  renderBanners(filtered);
+}
+
+function renderBanners(banners) {
+  const grid = document.getElementById('bannerGrid');
+  if (!banners.length) {
+    grid.innerHTML = '<div class="empty">Chưa có banner nào. Upload banner đầu tiên của bạn! 🖼️</div>';
+    return;
+  }
+  grid.innerHTML = banners.map(b => `
+    <div class="banner-card">
+      <div class="banner-thumb">
+        <img src="${API + b.image}" alt="${b.title}" onerror="this.parentElement.innerHTML='🖼️'"/>
+      </div>
+      <div class="banner-info">
+        <div class="banner-title">${b.title}</div>
+        <div class="banner-meta">
+          <span class="banner-pos ${b.position === 'hero' ? 'pos-hero' : 'pos-promo'}">${b.position === 'hero' ? '🏠 Hero' : '📢 Promo'}</span>
+          <span><span class="status-dot ${b.active ? 'status-active' : 'status-inactive'}"></span>${b.active ? 'Đang hiển thị' : 'Ẩn'}</span>
+          <span>Thứ tự: ${b.order}</span>
+        </div>
+        <div class="banner-actions">
+          <button class="btn btn-sm btn-outline" onclick="toggleBanner('${b._id}', ${!b.active})">${b.active ? '🙈 Ẩn' : '👁️ Hiện'}</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteBanner('${b._id}', '${b.title}')">🗑️ Xóa</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function toggleBanner(id, active) {
+  try {
+    const res = await fetch(API + '/api/banners/' + id, {
+      method: 'PUT', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ active })
+    });
+    const data = await res.json();
+    if (data.success) { showToast(active ? '✅ Đã hiển thị banner' : '🙈 Đã ẩn banner', 'success'); loadBanners(); }
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function deleteBanner(id, title) {
+  if (!confirm(`Xóa banner "${title}"?`)) return;
+  try {
+    const res = await fetch(API + '/api/banners/' + id, {
+      method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.success) { showToast('🗑️ Đã xóa banner', 'success'); loadBanners(); }
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+// ── Init ──
+if (token) {
+  document.getElementById('loginOverlay').style.display = 'none';
+  loadBanners();
+}
+</script>
+</body>
+</html>

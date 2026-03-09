@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Đặt lại mật khẩu – Vinapharma</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#f5f5f5;min-height:100vh;display:flex;flex-direction:column}
+:root{--red:#cc1f1f}
+.mini-header{background:#fff;border-bottom:1px solid #eee;padding:.8rem 5%;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:900;font-size:1.1rem;text-decoration:none;color:#111}
+.logo span{color:var(--red)}
+.page{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem 1rem}
+.card{background:#fff;border-radius:.9rem;width:100%;max-width:420px;box-shadow:0 4px 32px rgba(0,0,0,.08);overflow:hidden}
+.card-top{background:var(--red);padding:1.8rem 2rem;text-align:center;color:#fff}
+.card-logo{font-weight:900;font-size:1.2rem}
+.card-sub{font-size:.8rem;opacity:.75;margin-top:.25rem}
+.card-body{padding:1.8rem 2rem}
+.form-group{margin-bottom:1rem}
+label{display:block;font-size:.72rem;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem}
+.pw-wrap{position:relative}
+.pw-wrap input{width:100%;padding:.7rem 2.5rem .7rem .9rem;border:1.5px solid #e0e0e0;border-radius:.45rem;font-family:inherit;font-size:.88rem;outline:none;transition:.15s}
+.pw-wrap input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(204,31,31,.08)}
+.pw-toggle{position:absolute;right:.7rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:#aaa}
+.btn-submit{width:100%;padding:.8rem;background:var(--red);color:#fff;border:none;border-radius:.45rem;font-family:inherit;font-size:.92rem;font-weight:800;cursor:pointer;transition:.2s;margin-top:.3rem}
+.btn-submit:hover{background:#a01818}
+.btn-submit:disabled{background:#ccc;cursor:not-allowed}
+.err{color:#dc2626;font-size:.78rem;margin-top:.6rem;min-height:1.1rem;font-weight:500}
+.success-box{background:#dcfce7;border:1px solid #86efac;border-radius:.4rem;padding:1rem;font-size:.85rem;color:#166534;font-weight:600;margin-top:.7rem;text-align:center;display:none}
+.invalid-box{background:#fee2e2;border:1px solid #fca5a5;border-radius:.4rem;padding:1rem;font-size:.85rem;color:#dc2626;text-align:center}
+.rule{font-size:.75rem;color:#888;margin-top:.4rem}
+</style>
+</head>
+<body>
+<div class="mini-header">
+  <a class="logo" href="index.html">❤️ <span>vina</span>pharma®</a>
+</div>
+<div class="page">
+  <div class="card">
+    <div class="card-top">
+      <div class="card-logo">🔐 Đặt lại mật khẩu</div>
+      <div class="card-sub">Nhập mật khẩu mới cho tài khoản của bạn</div>
+    </div>
+    <div class="card-body">
+      <div id="invalidToken" class="invalid-box" style="display:none">
+        ❌ Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn (15 phút).<br><br>
+        <a href="tai-khoan.html" style="color:var(--red);font-weight:700">→ Yêu cầu link mới</a>
+      </div>
+      <div id="resetForm">
+        <div class="form-group">
+          <label>Mật khẩu mới *</label>
+          <div class="pw-wrap">
+            <input type="password" id="newPass" placeholder="Tối thiểu 6 ký tự"/>
+            <button class="pw-toggle" onclick="togglePw('newPass',this)">👁️</button>
+          </div>
+          <div class="rule">Ít nhất 6 ký tự</div>
+        </div>
+        <div class="form-group">
+          <label>Xác nhận mật khẩu mới *</label>
+          <div class="pw-wrap">
+            <input type="password" id="confirmPass" placeholder="Nhập lại mật khẩu" onkeydown="if(event.key==='Enter')doReset()"/>
+            <button class="pw-toggle" onclick="togglePw('confirmPass',this)">👁️</button>
+          </div>
+        </div>
+        <button class="btn-submit" id="resetBtn" onclick="doReset()">✅ Xác nhận mật khẩu mới</button>
+        <div class="err" id="rErr"></div>
+        <div class="success-box" id="rSuccess">
+          ✅ Mật khẩu đã được cập nhật thành công!<br>
+          <a href="tai-khoan.html" style="color:#166534;font-weight:700;display:inline-block;margin-top:.5rem">→ Đăng nhập ngay</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const API = 'http://localhost:5000';
+const params = new URLSearchParams(window.location.search);
+const token  = params.get('token');
+const email  = params.get('email');
+
+if (!token || !email) {
+  document.getElementById('resetForm').style.display = 'none';
+  document.getElementById('invalidToken').style.display = 'block';
+}
+
+function togglePw(id, btn) {
+  var input = document.getElementById(id);
+  input.type = input.type === 'password' ? 'text' : 'password';
+  btn.textContent = input.type === 'password' ? '👁️' : '🙈';
+}
+
+async function doReset() {
+  var newPass = document.getElementById('newPass').value;
+  var confirm = document.getElementById('confirmPass').value;
+  var errEl   = document.getElementById('rErr');
+  var btn     = document.getElementById('resetBtn');
+  errEl.textContent = '';
+  if (!newPass || !confirm) return errEl.textContent = 'Vui lòng điền đầy đủ';
+  if (newPass.length < 6) return errEl.textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
+  if (newPass !== confirm) return errEl.textContent = 'Mật khẩu xác nhận không khớp';
+  btn.disabled = true; btn.textContent = 'Đang cập nhật...';
+  try {
+    var res = await fetch(API + '/api/auth/reset-password', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ token:token, email:email, newPassword:newPass })
+    });
+    var data = await res.json();
+    if (data.success) {
+      document.getElementById('rSuccess').style.display = 'block';
+      btn.style.display = 'none';
+      // Xóa session cũ
+      localStorage.removeItem('vp_token');
+      localStorage.removeItem('vp_user');
+    } else {
+      errEl.textContent = data.message || 'Có lỗi xảy ra';
+      if (data.message && data.message.includes('hết hạn')) {
+        document.getElementById('resetForm').style.display = 'none';
+        document.getElementById('invalidToken').style.display = 'block';
+      }
+      btn.disabled = false; btn.textContent = '✅ Xác nhận mật khẩu mới';
+    }
+  } catch(e) {
+    errEl.textContent = 'Không kết nối được server';
+    btn.disabled = false; btn.textContent = '✅ Xác nhận mật khẩu mới';
+  }
+}
+</script>
+</body>
+</html>

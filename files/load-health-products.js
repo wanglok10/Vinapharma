@@ -8,9 +8,7 @@
   let allProducts = [];
 
   function renderProductCard(product) {
-    const priceHtml = product.originalPrice && product.originalPrice > product.price
-      ? `<span class="product-price-old">${(product.originalPrice || 0).toLocaleString('vi-VN')} ₫</span><span class="product-price">${(product.price || 0).toLocaleString('vi-VN')} ₫</span>`
-      : `<span class="product-price">${(product.price || 0).toLocaleString('vi-VN')} ₫</span>`;
+    const priceHtml = '';
     
     const badgeHtml = product.badge ? `<span class="product-badge">${product.badge}</span>` : '';
     

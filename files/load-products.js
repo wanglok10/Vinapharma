@@ -3,11 +3,14 @@
  * Hỗ trợ lọc theo brand, category, tìm kiếm
  */
 (function() {
-  const API = 'http://localhost:5000';
+  const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://vinapharma-pwv2.onrender.com';
   let allBrands = [];
   let allProducts = [];
   let currentBrand = 'all';
   let currentCategory = 'all';
+  let currentAgeGroup = 'all';
   let currentSearch = '';
 
   async function loadBrands() {
@@ -48,21 +51,34 @@
     return allCategories;
   }
 
+  // Brand icon map
+  const BRAND_ICONS = {
+    'ACTIVLAB': '🏋️', 'EUV': '👁️', 'HBW': '🌿', 'HERA': '✨',
+    'No1EU': '🇪🇺', 'No1USA': '🇺🇸', 'ROYAL': '👑', 'VIN': '🌸', 'VP': '💊'
+  };
+
   function renderBrandFilters(brands) {
-    const filterBar = document.querySelector('.filter-bar');
+    const filterBar = document.getElementById('brandScrollTrack') || document.querySelector('.filter-bar');
     if (!filterBar) return;
-    
-    // Xóa old buttons (trừ "Tất cả")
-    const oldBtns = filterBar.querySelectorAll('.filter-btn[data-brand]');
-    oldBtns.forEach(btn => btn.remove());
-    
-    // Thêm brand buttons
+
+    filterBar.innerHTML = '';
+
+    // Tất cả
+    const allBtn = document.createElement('button');
+    allBtn.className = 'brand-card active';
+    allBtn.dataset.brand = 'all';
+    allBtn.innerHTML = '<span class="brand-card-icon">🛒</span><span class="brand-card-name">Tất cả</span>';
+    filterBar.appendChild(allBtn);
+
     brands.forEach(brand => {
       const btn = document.createElement('button');
-      btn.className = 'filter-btn';
-      btn.dataset.brand = brand.code;
-      btn.dataset.type = 'brand';
-      btn.textContent = brand.code || brand.name;
+      btn.className = 'brand-card';
+      btn.dataset.brand = brand._id;
+      btn.dataset.brandCode = brand.code;
+      const icon = brand.logo
+        ? `<img src="${brand.logo}" class="brand-card-img" alt="${brand.name}">`
+        : `<span class="brand-card-icon">${BRAND_ICONS[brand.code] || brand.name[0]}</span>`;
+      btn.innerHTML = icon + `<span class="brand-card-name">${brand.name}</span>`;
       filterBar.appendChild(btn);
     });
   }
@@ -94,6 +110,28 @@
     });
   }
 
+  function renderAgeGroupFilters() {
+    const filterBar = document.querySelector('.filter-bar-age');
+    if (!filterBar) return;
+
+    const groups = [
+      { value: 'all', label: 'Tất cả' },
+      { value: 'Trẻ em', label: 'Trẻ em' },
+      { value: 'Nam', label: 'Người lớn (Nam)' },
+      { value: 'Nữ', label: 'Người lớn (Nữ)' },
+      { value: 'Người già', label: 'Người già' },
+    ];
+
+    filterBar.innerHTML = '';
+    groups.forEach(g => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (g.value === currentAgeGroup ? ' active' : '');
+      btn.dataset.ageGroup = g.value;
+      btn.textContent = g.label;
+      filterBar.appendChild(btn);
+    });
+  }
+
   function filterProducts() {
     let filtered = allProducts;
 
@@ -105,6 +143,10 @@
       filtered = filtered.filter(p => p.category === currentCategory);
     }
 
+    if (currentAgeGroup !== 'all') {
+      filtered = filtered.filter(p => !p.ageGroup || p.ageGroup === 'Tất cả' || p.ageGroup === currentAgeGroup);
+    }
+
     if (currentSearch) {
       const q = currentSearch.toLowerCase();
       filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
@@ -113,13 +155,19 @@
     return filtered;
   }
 
+  function showLoading() {
+    document.querySelectorAll('.products-grid').forEach(grid => {
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:3rem;text-align:center;color:#999"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--red)"></i><div style="margin-top:.8rem;font-size:.85rem">Đang tải sản phẩm...</div></div>';
+    });
+  }
+
   function renderProducts(products) {
     const grids = document.querySelectorAll('.products-grid');
     if (grids.length === 0) return;
-    
+
     grids.forEach(grid => {
       grid.innerHTML = '';
-      
+
       if (products.length === 0) {
         grid.innerHTML = '<div style="grid-column:1/-1;padding:2rem;text-align:center;color:#999">Không có sản phẩm</div>';
         return;
@@ -131,17 +179,19 @@
         card.dataset.brand = product.brand;
         card.dataset.cat = product.category;
         
-        const priceHtml = product.originalPrice && product.originalPrice > product.price
-          ? `<span class="product-price-old">${(product.originalPrice || 0).toLocaleString('vi-VN')} ₫</span><span class="product-price">${(product.price || 0).toLocaleString('vi-VN')} ₫</span>`
-          : `<span class="product-price">${(product.price || 0).toLocaleString('vi-VN')} ₫</span>`;
+        const priceHtml = '';
         
         const badgeHtml = product.badge ? `<span class="product-badge">${product.badge}</span>` : '';
         
         card.innerHTML = `
           ${badgeHtml}
-          <div class="product-img">${product.icon || '<i class="fa-solid fa-box" style="color:#9ca3af;font-size:2rem"></i>'}</div>
+          <div class="product-img">${
+            (product.image || (product.images && product.images[0]))
+              ? `<img src="${((s=>(s.startsWith('http')?s:API+s))(product.image||product.images[0]))}" alt="${product.name}" style="width:100%;height:100%;object-fit:contain;padding:.5rem">`
+              : (product.icon || '<i class="fa-solid fa-box" style="color:#9ca3af;font-size:2rem"></i>')
+          }</div>
           <div class="product-body">
-            <div class="product-brand">${product.brand}</div>
+            <div class="product-brand">${product.brandName||product.brand}</div>
             <div class="product-name">${product.name}</div>
             <div class="product-weight">${product.weight || ''}</div>
             <div class="product-footer">
@@ -160,7 +210,39 @@
       });
     });
 
+    const countEl = document.getElementById('spCount');
+    if (countEl) countEl.textContent = products.length + ' sản phẩm';
+    grids.forEach(g => { g.style.opacity = '1'; g.style.transform = 'none'; });
     console.log('[VP] ✅ Render ' + products.length + ' sản phẩm');
+  }
+
+  function initAccordion() {
+    document.querySelectorAll('.sp-acc-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const body = document.getElementById(btn.dataset.target);
+        if (!body) return;
+        btn.classList.toggle('open');
+        body.classList.toggle('open');
+      });
+    });
+
+    // Scroll arrows
+    const track = document.getElementById('brandScrollTrack');
+    document.getElementById('brandScrollPrev')?.addEventListener('click', () => track && (track.scrollLeft -= 240));
+    document.getElementById('brandScrollNext')?.addEventListener('click', () => track && (track.scrollLeft += 240));
+
+    const clearBtn = document.getElementById('spClearBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        currentBrand = 'all'; currentCategory = 'all'; currentAgeGroup = 'all';
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          const isAll = b.dataset.brand === 'all' || b.dataset.category === 'all' || b.dataset.ageGroup === 'all';
+          b.classList.toggle('active', isAll);
+        });
+        renderProducts(filterProducts());
+        window.history.pushState({}, '', window.location.pathname);
+      });
+    }
   }
 
   async function init() {
@@ -168,6 +250,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     currentBrand    = urlParams.get('brand')    || 'all';
     currentCategory = urlParams.get('category') || 'all';
+    currentAgeGroup = urlParams.get('ageGroup') || 'all';
     currentSearch   = urlParams.get('search')   || '';
 
     // Pre-fill search input nếu có ?search=
@@ -176,62 +259,78 @@
       if (inp) inp.value = currentSearch;
     }
     
+    // Show loading state while API warms up
+    showLoading();
+
     // Load brands & products
     allBrands = await loadBrands();
     allProducts = await loadAllProducts();
-    
+
+    // Convert brand code in URL to _id
+    if (currentBrand !== 'all') {
+      const matched = allBrands.find(b => b.code === currentBrand || b._id === currentBrand);
+      if (matched) currentBrand = matched._id;
+      else currentBrand = 'all';
+    }
+
     // Render filters
     renderBrandFilters(allBrands);
     renderCategoryFilters(allProducts);
+    renderAgeGroupFilters();
     
     // Render products
     const filtered = filterProducts();
     renderProducts(filtered);
     
-    // Setup filter buttons
+    // Setup filter buttons & accordion
     setupFilterButtons();
+    initAccordion();
   }
 
   function setupFilterButtons() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    
-    filterBtns.forEach(btn => {
-      const isBrandBtn = btn.dataset.brand !== undefined;
-      const isCatBtn = btn.dataset.category !== undefined;
-      
+    document.querySelectorAll('.brand-card, .filter-btn').forEach(btn => {
+      const isBrandBtn    = btn.dataset.brand    !== undefined;
+      const isCatBtn      = btn.dataset.category !== undefined;
+      const isAgeGroupBtn = btn.dataset.ageGroup !== undefined;
+
       if (isBrandBtn) {
-        btn.classList.toggle('active', btn.dataset.brand === currentBrand);
+        btn.classList.toggle('active', btn.dataset.brand === currentBrand || (currentBrand === 'all' && btn.dataset.brand === 'all'));
       } else if (isCatBtn) {
         btn.classList.toggle('active', btn.dataset.category === currentCategory);
+      } else if (isAgeGroupBtn) {
+        btn.classList.toggle('active', btn.dataset.ageGroup === currentAgeGroup);
       }
-      
+
       btn.addEventListener('click', () => {
         if (isBrandBtn) {
           currentBrand = btn.dataset.brand;
-          // Update active state for brand buttons
-          document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.brand-card').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
         } else if (isCatBtn) {
           currentCategory = btn.dataset.category;
-          // Update active state for category buttons
           document.querySelectorAll('.filter-bar-category .filter-btn').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
+        } else if (isAgeGroupBtn) {
+          currentAgeGroup = btn.dataset.ageGroup;
+          document.querySelectorAll('.filter-bar-age .filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
         }
-        
-        // Re-render
+
         const filtered = filterProducts();
         renderProducts(filtered);
-        
-        // Update URL
+
         const params = new URLSearchParams();
-        if (currentBrand !== 'all') params.set('brand', currentBrand);
+        if (currentBrand !== 'all') {
+          const b = allBrands.find(x => x._id === currentBrand);
+          params.set('brand', b ? b.code : currentBrand);
+        }
         if (currentCategory !== 'all') params.set('category', currentCategory);
-        if (currentSearch) params.set('search', currentSearch);
-        
-        const newUrl = params.toString() 
+        if (currentAgeGroup !== 'all') params.set('ageGroup', currentAgeGroup);
+        if (currentSearch)             params.set('search', currentSearch);
+
+        window.history.pushState({}, '', params.toString()
           ? window.location.pathname + '?' + params.toString()
-          : window.location.pathname;
-        window.history.pushState({}, '', newUrl);
+          : window.location.pathname);
       });
     });
   }

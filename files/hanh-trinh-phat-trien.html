@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Hành trình phát triển – Vinapharma</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#cc1f1f;--red-hover:#e02828;--red-dark:#8a1010;--red-pale:#fff5f5;--dark:#111;--gray:#555;--light:#f5f5f5;--border:#e8e8e8}
+html{scroll-behavior:smooth}
+body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);overflow-x:hidden}
+.header{position:sticky;top:0;z-index:200;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.header-top{display:flex;align-items:center;gap:1.2rem;padding:.7rem 4%;border-bottom:1px solid var(--border)}
+.logo img{height:34px;display:block}
+.search-bar{flex:1;max-width:540px;margin:0 auto;display:flex;align-items:center;border:1.5px solid var(--border);border-radius:2rem;padding:.42rem 1.1rem;gap:.5rem;transition:border-color .2s}
+.search-bar:focus-within{border-color:var(--red)}
+.search-bar input{border:none;outline:none;background:transparent;font-family:inherit;font-size:.87rem;flex:1}
+.search-bar button{background:var(--red);border:none;color:#fff;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.search-bar button:hover{background:var(--red-hover)}
+.header-actions{display:flex;align-items:center;gap:.55rem;margin-left:auto}
+.icon-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.12rem;font-size:.63rem;color:#666;padding:.22rem .42rem;border-radius:.4rem;transition:color .2s,background .2s;position:relative}
+.icon-btn:hover{color:var(--red);background:var(--red-pale)}
+.icon-btn .ico{font-size:1.15rem}
+.breadcrumb{background:var(--light);padding:.75rem 4%;font-size:.79rem;color:#666}
+.breadcrumb a{color:var(--red);text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb span{margin:0 .38rem;color:#ccc}
+.page-hero{background:linear-gradient(120deg,var(--red) 0%,var(--red-dark) 100%);padding:3.5rem 4%;color:#fff;position:relative;overflow:hidden}
+.page-hero::after{content:'';position:absolute;right:0;top:0;bottom:0;width:35%;background:rgba(255,255,255,.04);clip-path:polygon(20% 0,100% 0,100% 100%,0 100%)}
+.page-hero-label{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.5rem}
+.page-hero-title{font-size:clamp(1.7rem,3vw,2.7rem);font-weight:900;margin-bottom:.65rem;position:relative;z-index:1}
+.page-hero-sub{font-size:.92rem;color:rgba(255,255,255,.85);max-width:700px;line-height:1.75;position:relative;z-index:1}
+.article-wrap{max-width:860px;margin:0 auto;padding:3rem 4% 5rem}
+.back-link{display:inline-flex;align-items:center;gap:.45rem;font-size:.8rem;font-weight:700;color:var(--red);text-decoration:none;margin-bottom:2.5rem;transition:gap .2s}
+.back-link:hover{gap:.7rem}
+h2{font-size:1.2rem;font-weight:800;color:var(--dark);margin:2.2rem 0 .85rem;padding-top:.5rem;border-top:2px solid var(--light)}
+h2:first-of-type{border-top:none;margin-top:0}
+p{font-size:.9rem;color:var(--gray);line-height:1.85;margin-bottom:.9rem}
+.timeline{display:flex;flex-direction:column;gap:0;margin:1rem 0 1.5rem;border-left:3px solid var(--red);padding-left:1.5rem}
+.tl-item{position:relative;padding-bottom:1.5rem}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-1.96rem;top:.3rem;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid #fff;box-shadow:0 0 0 2px var(--red)}
+.tl-year{font-size:.85rem;font-weight:800;color:var(--red);margin-bottom:.25rem}
+.tl-text{font-size:.87rem;color:var(--gray);line-height:1.75}
+footer{background:#1a1a1a;color:#aaa;font-size:.78rem;text-align:center;padding:1.5rem;margin-top:4rem}
+footer a{color:#cc1f1f;text-decoration:none}
+
+.footer-top{background:#111;padding:2.2rem 4%;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1.5fr;gap:2.2rem}
+.footer-logo img{height:22px;filter:brightness(0) invert(1);margin-bottom:.8rem;display:block}
+.footer-desc{font-size:.78rem;color:#999;line-height:1.7;margin-bottom:.9rem}
+.footer-socials{display:flex;gap:.45rem}
+.social-btn{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,opacity .2s;text-decoration:none;overflow:hidden;padding:0}
+.social-btn:hover{background:#cc1f1f}
+.footer-col h4{font-size:.68rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin-bottom:.85rem}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:.42rem}
+.footer-links a{font-size:.78rem;color:#888;text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#cc1f1f}
+.footer-newsletter p{font-size:.78rem;color:#999;line-height:1.6;margin-bottom:.85rem}
+.newsletter-form{display:flex;gap:.45rem}
+.newsletter-form input{flex:1;padding:.58rem .85rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:.38rem;color:#fff;font-family:inherit;font-size:.78rem;outline:none}
+.newsletter-form input::placeholder{color:#666}
+.newsletter-form button{background:#cc1f1f;color:#fff;border:none;padding:.58rem .85rem;border-radius:.38rem;font-family:inherit;font-size:.76rem;font-weight:700;cursor:pointer;transition:background .2s;white-space:nowrap}
+.newsletter-form button:hover{background:#e02828}
+.footer-contact-bar{background:#1a1a1a;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.06);padding:.9rem 4%}
+.footer-contact-inner{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem 3rem}
+.footer-contact-item{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:#aaa}
+.footer-contact-item .fci-icon{font-size:.95rem}
+.footer-contact-item a{color:#aaa;text-decoration:none;transition:color .2s}
+.footer-contact-item a:hover{color:#cc1f1f}
+.footer-bottom{background:#0a0a0a;padding:.85rem 4%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.65rem}
+.footer-bottom p{font-size:.73rem;color:#555}
+.footer-cert{display:flex;gap:.55rem}
+.cert-badge{background:rgba(255,255,255,.07);color:#777;font-size:.66rem;font-weight:600;padding:.22rem .6rem;border-radius:.3rem;border:1px solid rgba(255,255,255,.08)}
+@media(max-width:1024px){.footer-top{grid-template-columns:1fr 1fr 1fr;gap:1.8rem}}
+@media(max-width:768px){.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}}
+@media(max-width:500px){.footer-top{grid-template-columns:1fr}}
+.header-nav{display:flex;align-items:center;padding:0 4%;background:#fff;overflow-x:auto}
+.nav-list{display:flex;list-style:none;gap:0}
+.nav-list>li>a{display:flex;align-items:center;gap:.2rem;padding:.75rem .92rem;font-size:.82rem;font-weight:600;text-decoration:none;color:var(--dark);white-space:nowrap;border-bottom:3px solid transparent;transition:color .2s,border-color .2s}
+.nav-list>li>a:hover,.nav-list>li.open>a,.nav-list>li>a.active{color:var(--red);border-bottom-color:var(--red)}
+.nav-list>li.has-mega>a::after{content:"\25BE";font-size:.58rem;opacity:.5;margin-left:.1rem;display:inline-block;transition:transform .2s}
+.nav-list>li.open>a::after{transform:rotate(180deg)}
+.nav-highlight>a{color:var(--red)!important}
+.nav-badge{background:var(--red);color:#fff;font-size:.57rem;font-weight:800;padding:.08rem .38rem;border-radius:2rem;margin-left:.25rem}
+.mega-wrap{position:fixed;top:0;left:0;right:0;background:#fff;border-top:3px solid var(--red);box-shadow:0 16px 48px rgba(0,0,0,.12);padding:1.7rem 4%;z-index:199;display:none;animation:megaIn .18s ease both;max-height:80vh;overflow-y:auto}
+.nav-list>li.open .mega-wrap{display:block}
+@keyframes megaIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.mega-all-layout{display:grid;grid-template-columns:185px 1fr;gap:0;max-width:1280px;margin:0 auto;min-height:230px}
+.mega-sidebar{border-right:1px solid #f0f0f0;padding:.2rem 0}
+.mega-sidebar-label{display:block;font-size:.59rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#ccc;padding:.2rem 1rem .6rem}
+.mega-sidebar-btn{display:flex;align-items:center;justify-content:space-between;padding:.72rem 1rem;font-size:.81rem;font-weight:600;color:#555;cursor:pointer;border:none;border-left:3px solid transparent;background:none;width:100%;text-align:left;transition:background .14s,color .14s,border-color .14s;font-family:inherit}
+.mega-sidebar-btn::after{content:"\203A";font-size:1.15rem;color:#ccc;transition:color .14s}
+.mega-sidebar-btn:hover,.mega-sidebar-btn.active{background:var(--red-pale);color:var(--red);border-left-color:var(--red)}
+.mega-sidebar-btn:hover::after,.mega-sidebar-btn.active::after{color:var(--red)}
+.mega-content-area{padding:.3rem 0 .5rem 2rem;flex:1;overflow:hidden}
+.mega-panel{display:none;grid-template-columns:repeat(4,1fr);gap:0 2rem}
+.mega-panel.active{display:grid}
+.mega-panel-col-title{font-size:.62rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--red);margin-bottom:.65rem;padding-bottom:.38rem;border-bottom:1.5px solid #f5f5f5}
+.mega-panel-links{list-style:none;display:flex;flex-direction:column;gap:.06rem;margin:0;padding:0}
+.mega-panel-links a{font-size:.8rem;color:#444;text-decoration:none;padding:.27rem 0;display:block;transition:color .15s}
+.mega-panel-links a:hover{color:var(--red)}
+.mega-see-all-link{font-size:.72rem;font-weight:700;color:var(--red);text-decoration:none;margin-top:.6rem;display:inline-block;opacity:.85}
+.mega-see-all-link:hover{opacity:1;text-decoration:underline}
+.mega-danh-muc-products{display:grid;grid-template-columns:repeat(2,120px);gap:.6rem;padding:.1rem 0}
+.mega-pc{display:flex;flex-direction:column;align-items:center;text-align:center;text-decoration:none;padding:.9rem .6rem 1rem;border-radius:.9rem;border:1.5px solid #f0f0f0;transition:border-color .15s,box-shadow .15s;background:#fff;width:120px;height:130px;overflow:hidden;flex-shrink:0}
+.mega-pc:hover{border-color:var(--red);box-shadow:0 4px 16px rgba(204,31,31,.1)}
+.mega-pc-icon{font-size:2.1rem;margin-bottom:.55rem;line-height:1}
+.mega-pc-img{width:72px;height:72px;object-fit:contain;margin-bottom:.55rem;border-radius:.5rem}
+.mega-pc-name{font-size:.76rem;font-weight:700;color:#222;line-height:1.35;margin-bottom:.3rem}
+.mega-brand-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;padding:.2rem 0}
+.mega-brand-card{display:flex;align-items:center;justify-content:center;text-decoration:none;padding:.5rem 1.2rem;border:1.5px solid #ebebeb;border-radius:.7rem;font-size:.8rem;font-weight:700;color:#333;background:#fff;white-space:nowrap;transition:border-color .15s,color .15s,box-shadow .15s}
+.mega-brand-card:hover{border-color:var(--red);color:var(--red);box-shadow:0 2px 10px rgba(204,31,31,.1)}
+</style>
+<link rel="stylesheet" href="mobile.css"/>
+</head>
+<body>
+<header class="header">
+  <div class="header-top">
+    <button class="mob-menu-btn" id="mobMenuBtn">&#9776;</button>
+    <a class="logo" href="index.html"><img src="logo-header.png" alt="Vinapharma"/></a>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm, bài viết..."/>
+      <button onclick="goSearch()"><i class="fa-solid fa-magnifying-glass" style="color:#fff"></i></button>
+    </div>
+    <div class="header-actions">
+      <div class="header-hotline"><div class="label">Hotline</div><div class="number">090 168 33 80</div></div>
+      <button class="icon-btn"><span class="ico"><i class="fa-solid fa-user" style="color:#6b7280"></i></span><span>Tài khoản</span></button>
+      <button class="icon-btn" style="display:none"><span class="ico"><i class="fa-solid fa-cart-shopping" style="color:#cc1f1f"></i></span><span>Giỏ hàng</span><span class="cart-badge">0</span></button>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <ul class="nav-list">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="gioi-thieu.html" class="active">Giới thiệu</a></li>
+      <li class="has-mega">
+        <a href="san-pham.html">Tất cả sản phẩm</a>
+        <div class="mega-wrap">
+          <div class="mega-all-layout">
+            <div class="mega-sidebar">
+              <span class="mega-sidebar-label">Browse by</span>
+              <button class="mega-sidebar-btn active" data-panel="danh-muc">Danh mục sức khỏe</button>
+              <button class="mega-sidebar-btn" data-panel="thuong-hieu">Thương hiệu</button>
+              <button class="mega-sidebar-btn" data-panel="do-tuoi">Độ tuổi</button>
+            </div>
+            <div class="mega-content-area">
+              <div class="mega-panel active" id="mega-panel-danh-muc" style="grid-template-columns:1fr auto">
+                <div>
+                  <div class="mega-panel-col-title">Danh mục sức khỏe</div>
+                  <div class="mega-brand-cards">
+                    <a class="mega-brand-card" href="san-pham.html?category=T%C4%83ng%20%C4%91%E1%BB%81%20kháng">Tăng đề kháng</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Xương%20khớp">Xương khớp</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Tim%20mạch">Tim mạch</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Trí%20não">Trí não</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Giấc%20ngủ">Giấc ngủ</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Vitamin">Vitamin</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Khoáng%20chất">Khoáng chất</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Omega">Omega</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Probiotics">Probiotics</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Detox">Detox</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Làm%20đẹp">Làm đẹp</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Giảm%20cân">Giảm cân</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=T%C4%83ng%20cơ">Tăng cơ</a>
+                    <a class="mega-brand-card" href="san-pham.html?category=Khác">Khác</a>
+                    <a class="mega-brand-card" href="san-pham.html" style="border-color:var(--red);color:var(--red);font-weight:700">Tất cả →</a>
+                  </div>
+                </div>
+                <div>
+                  <div class="mega-panel-col-title">Sản phẩm nổi bật</div>
+                  <div class="mega-danh-muc-products" id="mega-danh-muc-products"></div>
+                </div>
+              </div>
+              <div class="mega-panel" id="mega-panel-thuong-hieu" style="display:none;grid-template-columns:1fr auto">
+                <div>
+                  <div class="mega-panel-col-title">Thương hiệu</div>
+                  <div class="mega-brand-cards mega-brand-list"></div>
+                </div>
+                <div>
+                  <div class="mega-panel-col-title">Sản phẩm nổi bật</div>
+                  <div class="mega-danh-muc-products" id="mega-thuong-hieu-products"></div>
+                </div>
+              </div>
+              <div class="mega-panel" id="mega-panel-do-tuoi" style="display:none;grid-template-columns:1fr auto">
+                <div>
+                  <div class="mega-panel-col-title">Theo nhóm tuổi</div>
+                  <div class="mega-brand-cards">
+                    <a class="mega-brand-card" href="san-pham.html?ageGroup=Trẻ%20em">🧒 Trẻ em</a>
+                    <a class="mega-brand-card" href="san-pham.html?ageGroup=Nam">👨 Người lớn (Nam)</a>
+                    <a class="mega-brand-card" href="san-pham.html?ageGroup=Nữ">👩 Người lớn (Nữ)</a>
+                    <a class="mega-brand-card" href="san-pham.html?ageGroup=Người%20già">🧓 Người cao tuổi</a>
+                    <a class="mega-brand-card" href="san-pham.html">Tất cả →</a>
+                  </div>
+                </div>
+                <div>
+                  <div class="mega-panel-col-title">Sản phẩm nổi bật</div>
+                  <div class="mega-danh-muc-products" id="mega-do-tuoi-products"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="tin-tuc.html">Tin tức</a></li>
+      <li class="nav-highlight"><a href="khuyen-mai.html">Khuyến mãi <span class="nav-badge">HOT</span></a></li>
+      <li><a href="lien-he.html">Liên hệ</a></li>
+    </ul>
+  </nav>
+</header>
+<script>
+function goSearch(){var v=document.getElementById('searchInput').value.trim();if(v)location.href='tim-kiem.html?q='+encodeURIComponent(v);}
+document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')goSearch();});
+function positionMega(){
+  var hh=document.querySelector('.header')?.offsetHeight||0;
+  document.querySelectorAll('.mega-wrap').forEach(function(m){m.style.top=hh+'px';});
+}
+positionMega(); window.addEventListener('resize',positionMega);
+document.querySelectorAll('.has-mega').forEach(function(li){
+  li.querySelector(':scope > a').addEventListener('click',function(e){
+    var wasOpen=li.classList.contains('open');
+    document.querySelectorAll('.has-mega').forEach(function(x){x.classList.remove('open');});
+    if(!wasOpen) li.classList.add('open');
+    e.preventDefault();
+  });
+});
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.has-mega')) document.querySelectorAll('.has-mega').forEach(function(x){x.classList.remove('open');});
+});
+</script>
+
+<div class="breadcrumb">
+  <a href="index.html">Trang chủ</a><span>›</span>
+  <a href="gioi-thieu.html">Our Company</a><span>›</span>
+  Hành trình phát triển
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-label">Our Company</div>
+  <div class="page-hero-title">Hành trình phát triển của VinaPharma</div>
+  <div class="page-hero-sub">Hành trình phát triển của VinaPharma là quá trình xây dựng một doanh nghiệp phân phối trong lĩnh vực chăm sóc sức khỏe trên nền tảng chọn lọc, trách nhiệm và phát triển bền vững. Từ những bước đi đầu tiên vào năm 2018 đến mạng lưới hiện diện tại 24/34 tỉnh thành, mỗi cột mốc đều phản ánh nỗ lực không ngừng trong việc mở rộng giá trị, củng cố niềm tin và đồng hành dài hạn cùng đối tác, nhà thuốc và thị trường.</div>
+</div>
+
+<div class="article-wrap">
+  <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
+
+  <h2>Khởi đầu với định hướng rõ ràng</h2>
+  <p>VinaPharma được thành lập vào năm 2018 với mục tiêu xây dựng một doanh nghiệp hoạt động trong lĩnh vực phân phối sản phẩm chăm sóc sức khỏe theo định hướng chuyên nghiệp, minh bạch và bền vững. Ngay từ giai đoạn đầu, công ty đã lựa chọn con đường phát triển dựa trên chất lượng danh mục, uy tín hợp tác và khả năng đồng hành lâu dài cùng thị trường.</p>
+  <p>Thay vì mở rộng theo hướng dàn trải, VinaPharma tập trung đặt nền móng cho một hệ thống phát triển có chiều sâu. Điều đó được thể hiện qua việc lựa chọn những nhóm sản phẩm phù hợp với nhu cầu thực tế, xây dựng quan hệ hợp tác có chọn lọc và hình thành phong cách vận hành nhất quán ngay từ những bước đi đầu tiên.</p>
+  <p>Chính định hướng rõ ràng từ đầu đã tạo nên nền tảng để VinaPharma phát triển ổn định, từng bước mở rộng hiện diện và giữ được bản sắc của một doanh nghiệp chú trọng giá trị dài hạn.</p>
+
+  <h2>Từng bước mở rộng năng lực và hệ thống đối tác</h2>
+  <p>Trên nền tảng ban đầu, VinaPharma từng bước mở rộng danh mục hoạt động trong lĩnh vực thực phẩm chức năng, dược mỹ phẩm và các sản phẩm bổ sung hỗ trợ sức khỏe. Song song với đó, công ty chú trọng phát triển năng lực lựa chọn thương hiệu, tổ chức phân phối và xây dựng sự hiện diện phù hợp với đặc thù của thị trường Việt Nam.</p>
+  <p>Một trong những dấu ấn quan trọng trong hành trình phát triển của VinaPharma là việc hình thành và mở rộng mạng lưới đối tác nhà thuốc trải dài từ Nam ra Bắc. Đây không chỉ là sự gia tăng về độ phủ, mà còn là quá trình tích lũy niềm tin và thiết lập những mối quan hệ hợp tác có chất lượng, dựa trên sự thấu hiểu, tính ổn định và tinh thần đồng hành.</p>
+  <p>Thông qua quá trình đó, VinaPharma dần khẳng định được vai trò của mình như một doanh nghiệp phân phối đáng tin cậy, có khả năng kết nối những thương hiệu chất lượng với hệ thống nhà thuốc theo cách bền vững và có chiều sâu.</p>
+
+  <h2>Củng cố nền tảng phát triển bền vững</h2>
+  <p>Cùng với sự mở rộng về hiện diện thị trường, VinaPharma liên tục củng cố các nền tảng vận hành để bảo đảm sự phát triển không chỉ được đo bằng quy mô, mà còn được bảo đảm bằng chất lượng. Công ty chú trọng giữ vững tính nhất quán trong lựa chọn sản phẩm, trong hợp tác với đối tác và trong cách triển khai hệ thống phân phối.</p>
+  <p>Sự phát triển bền vững của VinaPharma được xây dựng trên ba yếu tố: chọn lọc kỹ lưỡng, vận hành chuyên nghiệp và quan hệ hợp tác dài hạn. Nhờ đó, mỗi giai đoạn phát triển của công ty đều gắn liền với sự củng cố nội lực, thay vì chỉ tập trung vào mở rộng bề mặt hiện diện.</p>
+  <p>Đây cũng là cách VinaPharma định hình bản sắc thương hiệu của mình: phát triển chắc chắn, giữ chuẩn mực rõ ràng và tạo dựng niềm tin qua từng giai đoạn của hành trình.</p>
+
+  <h2>Dấu mốc hiện diện và phát triển</h2>
+  <p>Từ năm 2018 đến nay, hành trình phát triển của VinaPharma được đánh dấu bằng quá trình mở rộng ổn định và có định hướng. Công ty từng bước phát triển danh mục thương hiệu, mở rộng mạng lưới đối tác và gia tăng hiện diện trên thị trường chăm sóc sức khỏe tại Việt Nam.</p>
+  <p>Hiện nay, VinaPharma đã có mặt tại 24/34 tỉnh thành sau sáp nhập, hợp tác cùng các nhà thuốc lâu đời và những đối tác uy tín trên toàn quốc. Đây là cột mốc quan trọng cho thấy sự phát triển của công ty không chỉ dựa trên mục tiêu tăng trưởng, mà còn được xây dựng trên nền tảng niềm tin và giá trị hợp tác lâu dài.</p>
+  <p>Mỗi dấu mốc trong hành trình phát triển của VinaPharma vì vậy không chỉ mang ý nghĩa về mặt quy mô, mà còn là sự ghi nhận cho quá trình kiên định theo đuổi một hướng đi đúng đắn, chuyên nghiệp và bền vững.</p>
+
+  <h2>Hành trình phát triển</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-year">2018</div>
+      <div class="tl-text">VinaPharma chính thức được thành lập, đặt nền móng cho định hướng phát triển trong lĩnh vực phân phối sản phẩm chăm sóc sức khỏe.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2019</div>
+      <div class="tl-text">Từng bước xây dựng hệ thống đối tác và mở rộng hoạt động phân phối theo hướng chọn lọc, ổn định và phù hợp với nhu cầu thị trường.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2020</div>
+      <div class="tl-text">Phát triển thêm danh mục thực phẩm chức năng, dược mỹ phẩm và các sản phẩm bổ sung hỗ trợ sức khỏe từ các thương hiệu uy tín ngoài nước. Đầu tư, phát triển và nhập khẩu các sản phẩm, thiết bị y tế trong mùa dịch.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2021</div>
+      <div class="tl-text">Nhờ sự chuẩn bị và có được nguồn cung, dự trữ cần thiết. VinaPharma đã đồng hành cùng quý nhà thuốc vượt qua giai đoạn Covid-19 vô cùng khó khăn.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2022</div>
+      <div class="tl-text">Mở rộng hợp tác với các thương hiệu đến từ nhiều thị trường phát triển, đồng thời tăng cường năng lực lựa chọn và phân phối sản phẩm chất lượng.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2023</div>
+      <div class="tl-text">Gia tăng sự hiện diện trên thị trường, phát triển chiều sâu hệ thống đối tác và tiếp tục khẳng định vai trò doanh nghiệp đồng hành cùng nhà thuốc Việt Nam.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2024</div>
+      <div class="tl-text">Tiếp tục nâng cao chất lượng hợp tác, mở rộng độ phủ và củng cố niềm tin với các đối tác, dược sĩ và hệ thống nhà thuốc trên toàn quốc.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2025</div>
+      <div class="tl-text">Hoàn thiện hơn nữa năng lực phân phối, phát triển danh mục theo hướng bền vững và gia tăng giá trị đồng hành cùng thị trường chăm sóc sức khỏe.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2026</div>
+      <div class="tl-text">VinaPharma hiện diện tại 24/34 tỉnh thành sau sáp nhập, tiếp tục khẳng định định hướng phát triển vì một Việt Nam khỏe đẹp.</div>
+    </div>
+  </div>
+
+  <h2>Hướng đến chặng đường tiếp theo</h2>
+  <p>Bước sang giai đoạn tiếp theo, VinaPharma tiếp tục phát triển trên nền tảng những giá trị đã được xây dựng trong suốt hành trình vừa qua: chất lượng, uy tín, sự chọn lọc và tinh thần đồng hành dài hạn. Công ty sẽ tiếp tục mở rộng theo hướng phù hợp với nhu cầu thị trường, đồng thời giữ vững sự nhất quán trong định vị thương hiệu và chuẩn mực vận hành.</p>
+  <p>Hành trình phía trước của VinaPharma không chỉ là câu chuyện của tăng trưởng, mà là hành trình tiếp tục mở rộng tác động tích cực đối với đối tác, hệ thống nhà thuốc và cộng đồng. Với định hướng đó, mỗi bước phát triển tiếp theo sẽ tiếp tục được xây dựng trên nền tảng bền vững, có trách nhiệm và đáng tin cậy.</p>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo"><img src="logo-header.png" alt="Vinapharma"/></div>
+      <p class="footer-desc">Vinapharma – Đơn vị hàng đầu trong lĩnh vực thực phẩm chức năng tại Việt Nam.</p>
+      <div class="footer-socials"><a href="https://www.facebook.com/vinapharmastore.vn" target="_blank" class="social-btn" title="Facebook"><img src="logoFB.png" style="width:36px;height:36px;object-fit:cover;display:block"></a><a href="https://zalo.me/0901683380" target="_blank" class="social-btn" title="Zalo"><img src="LogoZalo.png" style="width:36px;height:36px;object-fit:cover;display:block"></a></div>
+      <div style="margin-top:.9rem;font-size:.8rem;color:#999;line-height:1.9"><div><i class="fa-solid fa-phone" style="color:#cc1f1f;margin-right:.4rem"></i> 090 168 33 80</div><div><i class="fa-solid fa-envelope" style="color:#cc1f1f;margin-right:.4rem"></i> vinapharmapartner@gmail.com</div></div>
+    </div>
+    <div class="footer-col"><h4>Sản phẩm</h4><ul id="footerBrandLinks" class="footer-links">
+      <li><a href="san-pham.html">Tất cả sản phẩm</a></li>
+      <li><a href="khuyen-mai.html">Khuyến mãi</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Về Vinapharma</h4><ul class="footer-links">
+      <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+      <li><a href="tin-tuc.html">Tin tức</a></li>
+      <li><a href="#">Tuyển dụng</a></li>
+      <li><a href="#">Đại lý phân phối</a></li>
+      <li><a href="#">Chính sách bảo mật</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Hỗ trợ</h4><ul class="footer-links">
+      <li><a href="#">Hướng dẫn mua hàng</a></li>
+      <li><a href="#">Chính sách đổi trả</a></li>
+      <li><a href="#">Tra cứu đơn hàng</a></li>
+      <li><a href="lien-he.html">Liên hệ</a></li>
+    </ul></div>
+    <div class="footer-col footer-newsletter"><h4>Nhận ưu đãi</h4>
+      <p>Đăng ký nhận thông tin KM và kiến thức sức khỏe.</p>
+      <div class="newsletter-form"><input type="email" placeholder="Email của bạn"/><button>Đăng ký</button></div>
+    </div>
+  </div>
+  <div class="footer-contact-bar">
+    <div class="footer-contact-inner">
+      <div class="footer-contact-item">
+        <span class="fci-icon"><i class="fa-solid fa-location-dot" style="color:#cc1f1f"></i></span>
+        <span>311 Cộng Hòa, Phường 13, Quận Tân Bình, TP.HCM</span>
+      </div>
+      <div class="footer-contact-item">
+        <span class="fci-icon"><i class="fa-solid fa-phone" style="color:#cc1f1f"></i></span>
+        <span>090 168 33 80</span>
+      </div>
+      <div class="footer-contact-item">
+        <span class="fci-icon"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></span>
+        <a href="https://www.facebook.com/vinapharmastore.vn" target="_blank">facebook.com/vinapharmastore.vn</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Vinapharma. Bảo lưu mọi quyền. Thực phẩm chức năng không thay thế thuốc chữa bệnh.</p>
+    <div class="footer-cert"><span class="cert-badge">Bộ Y tế</span><span class="cert-badge">GMP</span><span class="cert-badge">ISO 9001</span></div>
+  </div>
+</footer>
+<script src="authClient.js"></script>
+<script src="header.js?v=3"></script>
+<script src="mega-brands.js"></script>
+<script src="popup-offer.js"></script>
+<script>
+(function(){
+  var btn = document.getElementById('mobMenuBtn');
+  var nav = document.querySelector('.header-nav');
+  if (!btn || !nav) return;
+  var bd = document.createElement('div');
+  bd.className = 'mob-nav-backdrop';
+  document.body.appendChild(bd);
+  function openNav(){ nav.classList.add('open'); bd.classList.add('show'); }
+  function closeNav(){ nav.classList.remove('open'); bd.classList.remove('show'); }
+  btn.addEventListener('click', function(e){ e.stopPropagation(); nav.classList.contains('open') ? closeNav() : openNav(); });
+  bd.addEventListener('click', closeNav);
+  document.querySelectorAll('.nav-list > li.has-mega > a').forEach(function(a){
+    a.addEventListener('click', function(e){
+      if (window.innerWidth <= 768){ e.preventDefault(); this.closest('li').classList.toggle('mob-open'); }
+    });
+  });
+})();
+</script>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Về đầu trang" style="position:fixed;bottom:100px;right:24px;width:44px;height:44px;border-radius:50%;background:#cc1f1f;color:#fff;border:none;cursor:pointer;font-size:1.1rem;box-shadow:0 4px 12px rgba(204,31,31,.35);display:none;align-items:center;justify-content:center;z-index:100000;transition:opacity .2s"><i class="fa-solid fa-chevron-up"></i></button>
+<script>(function(){var b=document.getElementById('backToTop');window.addEventListener('scroll',function(){b.style.display=window.scrollY>300?'flex':'none';});})();</script>
+<script src="chat-widget.js"></script>
+<script src="search-widget.js"></script>
+<script src="footer-brands.js"></script>
+</body>
+</html>

@@ -81,4 +81,12 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
   } catch (e) { res.status(400).json({ success: false, message: e.message }); }
 });
 
+// DELETE xóa bản ghi đổi thưởng (admin)
+router.delete('/:id', protect, adminOnly, async (req, res) => {
+  try {
+    await Redemption.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Đã xóa bản ghi đổi thưởng' });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+});
+
 module.exports = router;

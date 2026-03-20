@@ -28,9 +28,30 @@ const productSchema = new mongoose.Schema({
       'Vitamin', 'Khoáng chất', 'Omega', 'Probiotics', 'Khác'
     ]
   },
+  ageGroup: {
+    type: String,
+    enum: ['Trẻ em', 'Nam', 'Nữ', 'Người già', 'Tất cả'],
+    default: 'Tất cả'
+  },
   description: {
     type: String,
     required: [true, 'Vui lòng nhập mô tả sản phẩm']
+  },
+  uses: {
+    type: String,
+    default: ''
+  },
+  dosage: {
+    type: String,
+    default: ''
+  },
+  ingredients: {
+    type: String,
+    default: ''
+  },
+  packaging: {
+    type: String,
+    default: ''
   },
   weight: {
     type: String, // VD: "60 viên · 500mg"
@@ -55,7 +76,11 @@ const productSchema = new mongoose.Schema({
     default: '💊'
   },
   image: {
-    type: String // URL ảnh thật
+    type: String // URL ảnh thật (ảnh đầu tiên, backward compat)
+  },
+  images: {
+    type: [String], // Mảng URL nhiều ảnh
+    default: []
   },
   inStock: {
     type: Boolean,

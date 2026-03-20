@@ -2,7 +2,7 @@ const express = require('express');
 const router  = express.Router();
 const Post    = require('../models/Post');
 const { protect, adminOnly } = require('../middleware/auth');
-const { createUpload } = require('../utils/cloudinaryUpload');
+const { createUpload, fileUrl } = require('../utils/cloudinaryUpload');
 
 const upload = createUpload('posts', 8);
 
@@ -15,7 +15,7 @@ function parseTags(val) {
 // POST /api/posts/upload-image — admin, upload ảnh vào nội dung bài viết
 router.post('/upload-image', protect, adminOnly, upload.single('image'), (req, res) => {
   if (!req.file) return res.status(400).json({ success: false, message: 'Không có file' });
-  res.json({ success: true, url: req.file.path });
+  res.json({ success: true, url: fileUrl(req, req.file, 'posts') });
 });
 
 // GET public list

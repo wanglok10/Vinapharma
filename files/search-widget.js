@@ -100,14 +100,12 @@
           html += `<div style="padding:.55rem 1rem .3rem;font-size:.68rem;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #f3f4f6"><i class="fa-solid fa-box" style="color:#cc1f1f;margin-right:.3rem"></i>Sản phẩm</div>`;
           products.forEach(p => {
             const img = p.image
-              ? `<img src="${API + p.image}" style="width:38px;height:38px;object-fit:cover;border-radius:.4rem;flex-shrink:0" />`
+              ? `<img src="${p.image.startsWith('http') ? p.image : API + p.image}" style="width:38px;height:38px;object-fit:cover;border-radius:.4rem;flex-shrink:0" />`
               : `<div style="width:38px;height:38px;border-radius:.4rem;background:#f5f5f5;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-box" style="color:#d1d5db"></i></div>`;
-            const price = p.price ? p.price.toLocaleString('vi-VN') + ' ₫' : '';
             html += `<a href="san-pham-chi-tiet.html?id=${p._id}" class="sr-item" style="display:flex;align-items:center;gap:.75rem;padding:.65rem 1rem;text-decoration:none;color:inherit;transition:background .15s" onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background=''">
               ${img}
               <div style="min-width:0">
                 <div style="font-size:.84rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(p.name)}</div>
-                ${price ? `<div style="font-size:.75rem;color:#cc1f1f;font-weight:700;margin-top:.1rem">${price}</div>` : ''}
               </div>
             </a>`;
           });
@@ -117,7 +115,7 @@
           html += `<div style="padding:.55rem 1rem .3rem;font-size:.68rem;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6"><i class="fa-regular fa-newspaper" style="color:#6b7280;margin-right:.3rem"></i>Bài viết</div>`;
           posts.forEach(a => {
             const img = a.image
-              ? `<img src="${API + a.image}" style="width:38px;height:38px;object-fit:cover;border-radius:.4rem;flex-shrink:0" />`
+              ? `<img src="${a.image.startsWith('http') ? a.image : API + a.image}" style="width:38px;height:38px;object-fit:cover;border-radius:.4rem;flex-shrink:0" />`
               : `<div style="width:38px;height:38px;border-radius:.4rem;background:#f5f5f5;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-regular fa-newspaper" style="color:#d1d5db"></i></div>`;
             html += `<a href="tin-tuc-chi-tiet.html?id=${a._id}" class="sr-item" style="display:flex;align-items:center;gap:.75rem;padding:.65rem 1rem;text-decoration:none;color:inherit;transition:background .15s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background=''">
               ${img}

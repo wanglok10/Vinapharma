@@ -149,12 +149,10 @@ async function doSearch(query) {
         const img = p.image
           ? `<img src="${API + p.image}" alt="${escHtml(p.name)}"/>`
           : `<i class="fa-solid fa-box" style="color:#d1d5db;font-size:2.5rem"></i>`;
-        const price = p.price ? p.price.toLocaleString('vi-VN') + ' ₫' : '';
         return `<a class="product-card" href="san-pham-chi-tiet.html?id=${p._id}">
           <div class="product-img">${img}</div>
           <div class="product-body">
             <div class="product-name">${escHtml(p.name)}</div>
-            ${price ? `<div class="product-price">${price}</div>` : ''}
           </div>
         </a>`;
       }).join('');

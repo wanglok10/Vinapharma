@@ -6,15 +6,17 @@
  */
 
 const AuthClient = (() => {
-  const API = 'http://localhost:5000';
+  const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://vinapharma-pwv2.onrender.com';
   let _accessToken = null;
   let _user        = null;
   let _refreshing  = null; // Promise đang refresh (tránh gọi nhiều lần)
 
   // ── Khởi tạo: thử lấy user từ refresh token khi load trang ──
   async function init() {
-    // Thử restore từ localStorage (tab reload)
-    const saved = localStorage.getItem('vp_access');
+    // Thử restore từ sessionStorage trước (không ghi nhớ), rồi localStorage (ghi nhớ)
+    const saved = sessionStorage.getItem('vp_access') || localStorage.getItem('vp_access');
     if (saved) {
       try {
         const p = JSON.parse(saved);
@@ -43,9 +45,14 @@ const AuthClient = (() => {
         localStorage.setItem('vp_access', JSON.stringify({ token: _accessToken, user: _user }));
         return _user;
       }
-      _accessToken = null;
-      _user        = null;
-      localStorage.removeItem('vp_access');
+      // Chỉ xóa localStorage khi server xác nhận token hết hạn/không hợp lệ
+      // Không xóa khi server down, cookie không gửi được (NO_REFRESH), hoặc lỗi mạng
+      const definitiveErrors = ['REFRESH_EXPIRED', 'REFRESH_INVALID', 'USER_NOT_FOUND'];
+      if (definitiveErrors.includes(data.code)) {
+        _accessToken = null;
+        _user        = null;
+        localStorage.removeItem('vp_access');
+      }
       return null;
     })
     .catch(() => { _refreshing = null; return null; });
@@ -83,7 +90,7 @@ const AuthClient = (() => {
   }
 
   // ── Login ──
-  async function login(identifier, password) {
+  async function login(identifier, password, remember = true) {
     const res  = await fetch(API + '/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -94,7 +101,8 @@ const AuthClient = (() => {
     if (data.success) {
       _accessToken = data.accessToken;
       _user        = data.user;
-      localStorage.setItem('vp_access', JSON.stringify({ token: _accessToken, user: _user }));
+      const store = remember ? localStorage : sessionStorage;
+      store.setItem('vp_access', JSON.stringify({ token: _accessToken, user: _user }));
     }
     return data;
   }
@@ -138,6 +146,7 @@ const AuthClient = (() => {
     _accessToken = null;
     _user        = null;
     localStorage.removeItem('vp_access');
+    sessionStorage.removeItem('vp_access');
     await fetch(API + '/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
     window.location.href = 'tai-khoan.html';
   }

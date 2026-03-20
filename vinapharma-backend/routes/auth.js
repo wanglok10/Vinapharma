@@ -15,7 +15,7 @@ const signRefresh  = (id) => jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, { 
 const COOKIE_OPTS = {
   httpOnly: true,           // JS không đọc được
   secure:   process.env.NODE_ENV === 'production', // HTTPS only trên production
-  sameSite: 'lax',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // none để gửi cross-origin trong production
   maxAge:   30 * 24 * 60 * 60 * 1000  // 30 ngày (ms)
 };
 

@@ -2,7 +2,7 @@ const express  = require('express');
 const router   = express.Router();
 const Brand    = require('../models/Brand');
 const { protect, adminOnly } = require('../middleware/auth');
-const { createUpload } = require('../utils/cloudinaryUpload');
+const { createUpload, fileUrl } = require('../utils/cloudinaryUpload');
 
 const upload = createUpload('brands', 2);
 
@@ -19,11 +19,12 @@ router.get('/', async (req, res) => {
 // POST /api/brands — admin
 router.post('/', protect, adminOnly, upload.single('logo'), async (req, res) => {
   try {
-    const { code, name, description, active } = req.body;
+    const { code, name, description, active, logo } = req.body;
     if (!code || !name) return res.status(400).json({ success: false, message: 'Thiếu code hoặc tên' });
     const body = { code: code.toUpperCase(), name, description };
     if (active !== undefined) body.active = active === 'true' || active === true;
-    if (req.file) body.logo = req.file.path;
+    if (req.file) body.logo = fileUrl(req, req.file, 'brands');
+    else if (logo) body.logo = logo;
     const brand = await Brand.create(body);
     res.json({ success: true, data: brand });
   } catch (err) {
@@ -35,11 +36,12 @@ router.post('/', protect, adminOnly, upload.single('logo'), async (req, res) => 
 // PUT /api/brands/:id — admin
 router.put('/:id', protect, adminOnly, upload.single('logo'), async (req, res) => {
   try {
-    const { code, name, description, active } = req.body;
+    const { code, name, description, active, logo } = req.body;
     const update = { name, description };
     if (code) update.code = code.toUpperCase();
     if (active !== undefined) update.active = active === 'true' || active === true;
-    if (req.file) update.logo = req.file.path;
+    if (req.file) update.logo = fileUrl(req, req.file, 'brands');
+    else if (logo !== undefined) update.logo = logo;
     const brand = await Brand.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
     if (!brand) return res.status(404).json({ success: false, message: 'Không tìm thấy' });
     res.json({ success: true, data: brand });

@@ -507,6 +507,18 @@ i.fa-solid,i.fa-regular{line-height:1}
         <div class="form-group"><label>Mã thương hiệu *</label><input id="bCode" placeholder="VD: PHARMED"/></div>
         <div class="form-group"><label>Tên thương hiệu *</label><input id="bName" placeholder="VD: PharMed"/></div>
         <div class="form-group full"><label>Mô tả</label><textarea id="bDesc" rows="2" placeholder="Mô tả thương hiệu..."></textarea></div>
+        <div class="form-group">
+          <label>Logo thương hiệu</label>
+          <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
+            <div class="drop-zone" style="width:80px;height:80px;flex-shrink:0;padding:0;display:flex;align-items:center;justify-content:center;overflow:hidden" onclick="document.getElementById('bLogoInput').click()">
+              <img id="bLogoPreview" style="display:none;width:100%;height:100%;object-fit:contain;border-radius:.4rem"/>
+              <span id="bLogoText" style="font-size:.65rem;color:#bbb;text-align:center;padding:.3rem">Chọn ảnh</span>
+            </div>
+            <input type="file" id="bLogoInput" accept="image/*" style="display:none" onchange="uploadBrandLogo(this)"/>
+            <input type="hidden" id="bLogo"/>
+            <span style="font-size:.72rem;color:#999">PNG/JPG · nền trắng hoặc trong suốt</span>
+          </div>
+        </div>
         <div class="form-group"><label>Trạng thái</label>
           <select id="bActive"><option value="true"><i class="fa-solid fa-circle-check ic-green"></i> Hoạt động</option><option value="false"><i class="fa-solid fa-circle-xmark ic-red"></i> Ẩn</option></select>
         </div>
@@ -541,20 +553,33 @@ i.fa-solid,i.fa-regular{line-height:1}
             <option>Probiotics</option><option>Khác</option>
           </select>
         </div>
+        <div class="form-group"><label>Độ tuổi</label>
+          <select id="pAgeGroup">
+            <option value="Tất cả">Tất cả</option>
+            <option value="Trẻ em">Trẻ em</option>
+            <option value="Nam">Người lớn (Nam)</option>
+            <option value="Nữ">Người lớn (Nữ)</option>
+            <option value="Người già">Người già</option>
+          </select>
+        </div>
         <div class="form-group"><label>Giá bán (₫) *</label><input type="number" id="pPrice" placeholder="350000"/></div>
         <div class="form-group"><label>Giá gốc (₫)</label><input type="number" id="pOriginalPrice" placeholder="420000"/></div>
         <div class="form-group"><label>Trọng lượng / đơn vị</label><input id="pWeight" placeholder="60 viên · 500mg"/></div>
         <div class="form-group"><label>Badge</label><input id="pBadge" placeholder="Bán chạy / Mới / Hot"/></div>
         <div class="form-group"><label>Icon (emoji)</label><input id="pIcon" placeholder="💊"/></div>
         <div class="form-group full"><label>Mô tả sản phẩm</label><textarea id="pDesc" rows="3" placeholder="Mô tả ngắn về sản phẩm..."></textarea></div>
+        <div class="form-group full"><label>Công dụng</label><textarea id="pUses" rows="3" placeholder="Liệt kê các công dụng của sản phẩm..."></textarea></div>
+        <div class="form-group full"><label>Liều lượng</label><textarea id="pDosage" rows="2" placeholder="VD: 1 viên/ngày sau khi ăn sáng..."></textarea></div>
+        <div class="form-group full"><label>Thành phần</label><textarea id="pIngredients" rows="3" placeholder="VD: Vitamin C 1000mg, Kẽm 25mg..."></textarea></div>
+        <div class="form-group"><label>Quy cách đóng gói</label><input id="pPackaging" placeholder="VD: 1 hộp x 60 viên nang"/></div>
         <div class="form-group full">
-          <label>Hình ảnh sản phẩm</label>
-          <div class="drop-zone" onclick="document.getElementById('pImgInput').click()" ondragover="ev.preventDefault()" ondrop="dropImg(event,'pImgInput','pImgPreview')">
-            <div style="font-size:2rem"><i class="fa-solid fa-image ic-gray"></i></div>
-            <div class="dz-text" id="pImgText">Bấm để chọn ảnh hoặc kéo thả<br/><span style="font-size:.72rem;color:#bbb">Khuyến nghị: 800×800px · JPG/PNG/WEBP</span></div>
-            <input type="file" id="pImgInput" accept="image/*" onchange="previewImg(this,'pImgPreview','pImgText')"/>
+          <label>Hình ảnh sản phẩm <span style="font-size:.72rem;color:#888">(tối đa 10 ảnh)</span></label>
+          <div class="drop-zone" onclick="document.getElementById('pImgInput').click()" ondragover="event.preventDefault()" ondrop="dropImgMulti(event)">
+            <div style="font-size:2rem"><i class="fa-solid fa-images ic-gray"></i></div>
+            <div class="dz-text" id="pImgText">Bấm để chọn ảnh hoặc kéo thả<br/><span style="font-size:.72rem;color:#bbb">Khuyến nghị: 800×800px · JPG/PNG/WEBP · Chọn nhiều ảnh cùng lúc</span></div>
+            <input type="file" id="pImgInput" accept="image/*" multiple onchange="addProductImgs(this)"/>
           </div>
-          <img id="pImgPreview" class="preview-img"/>
+          <div id="pImgGrid" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem"></div>
         </div>
         <div class="form-group"><label>Trạng thái</label>
           <select id="pActive"><option value="true"><i class="fa-solid fa-circle-check ic-green"></i> Đang bán</option><option value="false"><i class="fa-solid fa-circle-xmark ic-red"></i> Ngừng bán</option></select>
@@ -1288,13 +1313,13 @@ function refreshBrandUI() {
   const bf = document.getElementById('brandFilter');
   if (bf) {
     bf.innerHTML = '<span class="filter-chip active" data-brand="">Tất cả</span>' +
-      allBrands.filter(b=>b.active!==false).map(b=>`<span class="filter-chip" data-brand="${b.code}">${b.code} – ${b.name}</span>`).join('');
+      allBrands.filter(b=>b.active!==false).map(b=>`<span class="filter-chip" data-brand="${b._id}">${b.name}</span>`).join('');
   }
   // Cập nhật pBrand select
   const sel = document.getElementById('pBrand');
   if (sel) {
     const cur = sel.value;
-    sel.innerHTML = allBrands.filter(b=>b.active!==false).map(b=>`<option value="${b.code}">${b.code} – ${b.name}</option>`).join('');
+    sel.innerHTML = allBrands.filter(b=>b.active!==false).map(b=>`<option value="${b._id}">${b.code} – ${b.name}</option>`).join('');
     if (cur) sel.value = cur;
   }
 }
@@ -1306,7 +1331,34 @@ function openBrandModal(b = null) {
   document.getElementById('bName').value = b?.name || '';
   document.getElementById('bDesc').value = b?.description || '';
   document.getElementById('bActive').value = String(b?.active !== false);
+  document.getElementById('bLogo').value = b?.logo || '';
+  const prev = document.getElementById('bLogoPreview');
+  const txt = document.getElementById('bLogoText');
+  if (b?.logo) { prev.src = b.logo; prev.style.display = 'block'; txt.style.display = 'none'; }
+  else { prev.style.display = 'none'; prev.src = ''; txt.style.display = 'block'; }
   document.getElementById('brandOverlay').classList.add('show');
+}
+
+async function uploadBrandLogo(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const fd = new FormData();
+  fd.append('image', file);
+  try {
+    showToast('Đang upload logo...', 'info');
+    const res = await AuthClient.authFetch(`${API}/api/posts/upload-image`, {
+      method: 'POST',
+      body: fd
+    });
+    const data = await res.json();
+    if (!data.success) return showToast('Upload thất bại: ' + (data.message || ''), 'error');
+    const url = data.url.startsWith('http') ? data.url : API + data.url;
+    document.getElementById('bLogo').value = url;
+    const prev = document.getElementById('bLogoPreview');
+    prev.src = url; prev.style.display = 'block';
+    document.getElementById('bLogoText').style.display = 'none';
+    showToast('Upload logo thành công', 'success');
+  } catch(e) { showToast('Lỗi upload logo: ' + e.message, 'error'); }
 }
 
 async function saveBrand() {
@@ -1314,7 +1366,7 @@ async function saveBrand() {
   const code = document.getElementById('bCode').value.trim().toUpperCase();
   const name = document.getElementById('bName').value.trim();
   if (!code || !name) return showToast('Vui lòng nhập mã và tên thương hiệu', 'error');
-  const body = { code, name, description: document.getElementById('bDesc').value.trim(), active: document.getElementById('bActive').value };
+  const body = { code, name, description: document.getElementById('bDesc').value.trim(), active: document.getElementById('bActive').value, logo: document.getElementById('bLogo').value.trim() };
   try {
     const url = id ? `${API}/api/brands/${id}` : `${API}/api/brands`;
     const method = id ? 'PUT' : 'POST';
@@ -1340,7 +1392,7 @@ async function loadProducts() {
   const tbody = document.getElementById('productTable');
   tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Đang tải...</td></tr>';
   try {
-    const res = await fetch(API + '/api/products?limit=100');
+    const res = await fetch(API + '/api/products?limit=200');
     const data = await res.json();
     if (data.success) { allProducts = data.data; renderProducts(allProducts); }
   } catch(e) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Lỗi tải dữ liệu</td></tr>'; }
@@ -1352,16 +1404,16 @@ function renderProducts(list) {
   tbody.innerHTML = list.map(p => `
     <tr>
       <td><div style="display:flex;align-items:center;gap:.7rem">
-        <div class="product-thumb">${p.icon||'💊'}</div>
+        <div class="product-thumb">${(p.image||(p.images&&p.images[0]))?('<img src="'+API+(p.image||(p.images&&p.images[0]))+'" style="width:100%;height:100%;object-fit:contain;border-radius:.3rem">'):(p.icon||'💊')}</div>
         <div><div style="font-weight:700;font-size:.83rem">${p.name}</div><div style="font-size:.72rem;color:#888">${p.weight||''}</div></div>
       </div></td>
-      <td><span class="badge badge-blue">${p.brand}</span></td>
+      <td><span class="badge badge-blue">${allBrands.find(b=>b._id===p.brand)?.name || p.brandName || p.brand}</span></td>
       <td>${p.category||'–'}</td>
       <td><b style="color:var(--red)">${formatPrice(p.price)}</b>${p.originalPrice?`<br><span style="font-size:.7rem;color:#aaa;text-decoration:line-through">${formatPrice(p.originalPrice)}</span>`:''}</td>
       <td><span class="badge ${p.active!==false?'badge-green':'badge-gray'}">${p.active!==false?'Đang bán':'Ngừng'}</span></td>
       <td><div style="display:flex;gap:.4rem">
-        <button class="icon-btn" title="Sửa" onclick='editProduct(${JSON.stringify(p)})'><i class="fa-solid fa-pen"></i></button>
-        <button class="icon-btn" title="Xóa" onclick="deleteProduct('${p._id}','${p.name}')"><i class="fa-solid fa-trash"></i></button>
+        <button class="icon-btn" title="Sửa" onclick="editProduct('${p._id}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="icon-btn" title="Xóa" onclick="deleteProduct('${p._id}','${p.name.replace(/'/g,"\\'")}')"><i class="fa-solid fa-trash"></i></button>
       </div></td>
     </tr>`).join('');
 }
@@ -1388,65 +1440,78 @@ function openProductModal(p = null) {
   document.getElementById('pId').value = p?._id || '';
   document.getElementById('pName').value = p?.name || '';
   refreshBrandUI();
-  document.getElementById('pBrand').value = p?.brand || (allBrands[0]?.code || '');
-  document.getElementById('pCategory').value = p?.category || 'Tăng cơ';
+  document.getElementById('pBrand').value = p?.brand || (allBrands[0]?._id || '');
+  document.getElementById('pCategory').value  = p?.category  || 'Tăng cơ';
+  document.getElementById('pAgeGroup').value  = p?.ageGroup  || 'Tất cả';
   document.getElementById('pPrice').value = p?.price || '';
   document.getElementById('pOriginalPrice').value = p?.originalPrice || '';
   document.getElementById('pWeight').value = p?.weight || '';
   document.getElementById('pBadge').value = p?.badge || '';
   document.getElementById('pIcon').value = p?.icon || '';
   document.getElementById('pDesc').value = p?.description || '';
+  document.getElementById('pUses').value = p?.uses || '';
+  document.getElementById('pDosage').value = p?.dosage || '';
+  document.getElementById('pIngredients').value = p?.ingredients || '';
+  document.getElementById('pPackaging').value = p?.packaging || '';
   document.getElementById('pActive').value = String(p?.active !== false);
   document.getElementById('pFeatured').value = String(p?.featured === true);
-  document.getElementById('pImgPreview').style.display = 'none';
-  document.getElementById('pImgText').innerHTML = 'Bấm để chọn ảnh hoặc kéo thả<br/><span style="font-size:.72rem;color:#bbb">Khuyến nghị: 800×800px · JPG/PNG/WEBP</span>';
-  selectedFiles['product'] = null;
+  // Reset image state
+  productImgFiles = [];
+  productImgKeep = p?.images?.length ? [...p.images] : (p?.image ? [p.image] : []);
+  renderImgGrid();
   document.getElementById('productOverlay').classList.add('show');
 }
 
-function editProduct(p) { openProductModal(p); }
+function editProduct(id) { const p = allProducts.find(x => x._id === id); if(p) openProductModal(p); }
 
 async function saveProduct() {
   const id = document.getElementById('pId').value;
-  const body = {
-    name:          document.getElementById('pName').value.trim(),
-    brand:         document.getElementById('pBrand').value,
-    category:      document.getElementById('pCategory').value,
-    price:         Number(document.getElementById('pPrice').value),
-    originalPrice: document.getElementById('pOriginalPrice').value ? Number(document.getElementById('pOriginalPrice').value) : undefined,
-    weight:        document.getElementById('pWeight').value.trim(),
-    badge:         document.getElementById('pBadge').value.trim(),
-    icon:          document.getElementById('pIcon').value.trim() || '💊',
-    description:   document.getElementById('pDesc').value.trim(),
-    active:        document.getElementById('pActive').value === 'true',
-    featured:      document.getElementById('pFeatured').value === 'true',
-  };
-  if (!body.name)        return showToast('Vui lòng nhập tên sản phẩm', 'error');
-  if (!body.brand)       return showToast('Vui lòng chọn thương hiệu', 'error');
-  if (!body.category)    return showToast('Vui lòng chọn chức năng/danh mục', 'error');
-  if (!body.price)       return showToast('Vui lòng nhập giá sản phẩm', 'error');
-  if (!body.weight)      return showToast('Vui lòng nhập weight (VD: 60 viên · 500mg)', 'error');
-  if (!body.description) return showToast('Vui lòng nhập mô tả sản phẩm', 'error');
+  const name = document.getElementById('pName').value.trim();
+  const brand = document.getElementById('pBrand').value;
+  const category = document.getElementById('pCategory').value;
+  const weight = document.getElementById('pWeight').value.trim();
+  const description = document.getElementById('pDesc').value.trim();
+  if (!name)        return showToast('Vui lòng nhập tên sản phẩm', 'error');
+  if (!brand)       return showToast('Vui lòng chọn thương hiệu', 'error');
+  if (!category)    return showToast('Vui lòng chọn chức năng/danh mục', 'error');
+  if (!weight)      return showToast('Vui lòng nhập weight (VD: 60 viên · 500mg)', 'error');
+  if (!description) return showToast('Vui lòng nhập mô tả sản phẩm', 'error');
+  
+  const fd = new FormData();
+  fd.append('name', name);
+  fd.append('brand', brand);
+  fd.append('category', category);
+  fd.append('ageGroup', document.getElementById('pAgeGroup').value);
+  fd.append('price', document.getElementById('pPrice').value);
+  if (document.getElementById('pOriginalPrice').value)
+    fd.append('originalPrice', document.getElementById('pOriginalPrice').value);
+  fd.append('weight', weight);
+  fd.append('badge', document.getElementById('pBadge').value.trim());
+  fd.append('icon', document.getElementById('pIcon').value.trim() || '💊');
+  fd.append('description', description);
+  fd.append('uses', document.getElementById('pUses').value.trim());
+  fd.append('dosage', document.getElementById('pDosage').value.trim());
+  fd.append('ingredients', document.getElementById('pIngredients').value.trim());
+  fd.append('packaging', document.getElementById('pPackaging').value.trim());
+  fd.append('active', document.getElementById('pActive').value);
+  fd.append('featured', document.getElementById('pFeatured').value);
+  // Ảnh cũ giữ lại
+  if (productImgKeep.length > 0)
+    fd.append('keepImages', JSON.stringify(productImgKeep));
+  // Ảnh mới
+  productImgFiles.forEach(f => fd.append('images', f));
+  
   try {
     const url = id ? `${API}/api/products/${id}` : `${API}/api/products`;
     const method = id ? 'PUT' : 'POST';
-    console.log('[VP] Save Product:', { method, url, body });
-    const res = await authFetch(url, { method, headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
-    console.log('[VP] Response Status:', res.status, res.statusText);
+    const res = await authFetch(url, { method, headers:{}, body: fd });
     const data = await res.json();
-    console.log('[VP] Response Data:', data);
     if (data.success) {
       showToast(id ? 'Đã cập nhật sản phẩm' : 'Đã thêm sản phẩm', 'success');
       closeModal('productOverlay');
       loadProducts();
-    } else { 
-      console.error('[VP] Error:', data);
-      showToast(data.message || 'Lỗi server', 'error'); 
-    }
-  } catch(e) { 
-    console.error('[VP] Exception:', e);
-    showToast('Lỗi: ' + e.message, 'error'); 
-  }
+    } else { showToast(data.message || 'Lỗi server', 'error'); }
+  } catch(e) { showToast('Lỗi: ' + e.message, 'error'); }
 }
 
 async function deleteProduct(id, name) {
@@ -1485,7 +1550,7 @@ function renderPosts(list) {
       <td>${p.publishedAt?formatDate(p.publishedAt):'–'}</td>
       <td><div style="display:flex;gap:.4rem">
         <button class="icon-btn" onclick='editPost(${JSON.stringify(p).replace(/'/g,"&#39;")})'><i class="fa-solid fa-pen"></i></button>
-        <button class="icon-btn" onclick="deletePost('${p._id}','${p.title.replace(/'/g,'')}')"><i class="fa-solid fa-trash"></i></button>
+        <button class="icon-btn" onclick="deletePost('${p._id}')"><i class="fa-solid fa-trash"></i></button>
       </div></td>
     </tr>`).join('');
 }
@@ -1563,8 +1628,9 @@ async function savePost() {
   } catch(e) { showToast('Lỗi kết nối', 'error'); }
 }
 
-async function deletePost(id, title) {
-  if (!confirm(`Xóa bài "${title}"?`)) return;
+async function deletePost(id) {
+  const post = allPosts.find(x => x._id === id);
+  if (!confirm(`Xóa bài "${post?.title || 'này'}"?`)) return;
   const res = await authFetch(`${API}/api/posts/${id}`, { method:'DELETE', headers:{} });
   const data = await res.json();
   if (data.success) { showToast('Đã xóa bài viết', 'success'); loadPosts(); }
@@ -1628,7 +1694,7 @@ function editBanner(id) {
   document.getElementById('bOrder').value    = b.order ?? 0;
   selectedFiles['banner'] = null;
   const prev = document.getElementById('bImgPreview');
-  prev.src = 'http://localhost:5000' + b.image;
+  prev.src = API + b.image;
   prev.style.display = 'block';
   document.getElementById('bImgText').textContent = 'Ảnh hiện tại (chọn ảnh mới để thay)';
   document.querySelector('#bannerOverlay .modal-title').textContent = 'Sửa Banner';
@@ -2037,12 +2103,13 @@ function renderRedemptions(list) {
       <td><b>${(rd.pointsUsed||0).toLocaleString('vi-VN')}</b> điểm</td>
       <td><span class="badge ${rd.status==='fulfilled'?'badge-green':rd.status==='cancelled'?'badge-red':'badge-blue'}">${STATUS_LABEL[rd.status]||rd.status}</span></td>
       <td>${formatDate(rd.createdAt)}</td>
-      <td>
+      <td style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
         <select onchange="updateRedemptionStatus('${rd._id}',this.value)" style="font-size:.75rem;padding:.25rem .5rem;border:1px solid #ddd;border-radius:.3rem">
           <option value="pending"   ${rd.status==='pending'   ?'selected':''}>Chờ</option>
           <option value="fulfilled" ${rd.status==='fulfilled' ?'selected':''}>Xong</option>
           <option value="cancelled" ${rd.status==='cancelled' ?'selected':''}>Hủy</option>
         </select>
+        <button onclick="deleteRedemption('${rd._id}')" title="Xóa" style="padding:.25rem .5rem;border:1px solid #fca5a5;border-radius:.3rem;background:#fff5f5;color:#dc2626;cursor:pointer;font-size:.75rem;font-weight:700">🗑</button>
       </td>
     </tr>`).join('');
 }
@@ -2050,6 +2117,13 @@ async function updateRedemptionStatus(id, status) {
   const res  = await authFetch(`${API}/api/redemptions/${id}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ status }) });
   const data = await res.json();
   if (data.success) showToast('Đã cập nhật trạng thái', 'success');
+  else showToast(data.message, 'error');
+}
+async function deleteRedemption(id) {
+  if (!confirm('Xóa bản ghi đổi thưởng này?')) return;
+  const res  = await authFetch(`${API}/api/redemptions/${id}`, { method:'DELETE', headers:{} });
+  const data = await res.json();
+  if (data.success) { showToast('Đã xóa', 'success'); loadRedemptions(); }
   else showToast(data.message, 'error');
 }
 
@@ -2087,6 +2161,7 @@ async function updateContact(id, status) {
 }
 
 // ── FILE PREVIEW ──
+// ── SINGLE IMAGE (post/banner) ──
 function previewImg(input, previewId, textId) {
   const file = input.files[0];
   if (!file) return;
@@ -2113,6 +2188,62 @@ function dropImg(e, inputId, previewId) {
     previewImg(input, previewId, inputId.replace('Input','Text'));
   }
 }
+
+// ── MULTI IMAGE (product) ──
+let productImgFiles = [];   // File objects mới upload
+let productImgKeep  = [];   // URL ảnh cũ giữ lại
+
+function addProductImgs(input) {
+  const files = Array.from(input.files);
+  const total = productImgFiles.length + productImgKeep.length + files.length;
+  if (total > 10) { showToast('Tối đa 10 ảnh', 'error'); return; }
+  const tooBig = files.filter(f => f.size > 20 * 1024 * 1024);
+  if (tooBig.length) { showToast(`Ảnh quá lớn (tối đa 20MB): ${tooBig.map(f=>f.name).join(', ')}`, 'error'); return; }
+  files.forEach(f => { if (f.type.startsWith('image/')) productImgFiles.push(f); });
+  input.value = '';
+  renderImgGrid();
+}
+
+function dropImgMulti(e) {
+  e.preventDefault();
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+  const total = productImgFiles.length + productImgKeep.length + files.length;
+  if (total > 10) { showToast('Tối đa 10 ảnh', 'error'); return; }
+  files.forEach(f => productImgFiles.push(f));
+  renderImgGrid();
+}
+
+function renderImgGrid() {
+  const grid = document.getElementById('pImgGrid');
+  const text = document.getElementById('pImgText');
+  const total = productImgKeep.length + productImgFiles.length;
+  text.innerHTML = total > 0
+    ? total + ' ảnh đã chọn · <span style="color:#cc1f1f;cursor:pointer" onclick="clearAllImgs()">Xóa tất cả</span>'
+    : 'Bấm để chọn ảnh hoặc kéo thả<br/><span style="font-size:.72rem;color:#bbb">Khuyến nghị: 800×800px · JPG/PNG/WEBP</span>';
+  
+  let html = '';
+  productImgKeep.forEach((url, i) => {
+    html += `<div style="position:relative;width:72px;height:72px">
+      <img src="${API + url}" style="width:72px;height:72px;object-fit:cover;border-radius:.5rem;border:2px solid #e5e7eb"/>
+      <button onclick="removeKeepImg(${i})" style="position:absolute;top:-6px;right:-6px;background:#cc1f1f;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      ${i===0?'<div style="position:absolute;bottom:2px;left:2px;background:#22c55e;color:#fff;font-size:9px;padding:1px 4px;border-radius:3px">Chính</div>':''}
+    </div>`;
+  });
+  productImgFiles.forEach((f, i) => {
+    const url = URL.createObjectURL(f);
+    const isMain = productImgKeep.length === 0 && i === 0;
+    html += `<div style="position:relative;width:72px;height:72px">
+      <img src="${url}" style="width:72px;height:72px;object-fit:cover;border-radius:.5rem;border:2px solid #e5e7eb"/>
+      <button onclick="removeNewImg(${i})" style="position:absolute;top:-6px;right:-6px;background:#cc1f1f;color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      ${isMain?'<div style="position:absolute;bottom:2px;left:2px;background:#22c55e;color:#fff;font-size:9px;padding:1px 4px;border-radius:3px">Chính</div>':''}
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function removeKeepImg(i) { productImgKeep.splice(i, 1); renderImgGrid(); }
+function removeNewImg(i)  { productImgFiles.splice(i, 1); renderImgGrid(); }
+function clearAllImgs()   { productImgFiles = []; productImgKeep = []; renderImgGrid(); }
 
 // ── MODAL ──
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }

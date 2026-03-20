@@ -134,7 +134,7 @@
           setTimeout(function () {
             injectStyles();
             createPopup();
-          }, 3000);
+          }, 10000);
         }
       });
     } else {
@@ -142,7 +142,7 @@
       setTimeout(function () {
         injectStyles();
         createPopup();
-      }, 3000);
+      }, 10000);
     }
   }
 

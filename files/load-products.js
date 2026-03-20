@@ -185,10 +185,14 @@
         
         card.innerHTML = `
           ${badgeHtml}
-          <div class="product-img">${
-            (product.image || (product.images && product.images[0]))
-              ? `<img src="${((s=>(s.startsWith('http')?s:API+s))(product.image||product.images[0]))}" alt="" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:contain;padding:.5rem">`
-              : (product.icon || '<i class="fa-solid fa-box" style="color:#9ca3af;font-size:2rem"></i>')
+          <div class="product-img" style="position:relative;display:flex;align-items:center;justify-content:center">${
+            (()=>{
+              const icon = product.icon || '<i class="fa-solid fa-box" style="color:#9ca3af;font-size:2rem"></i>';
+              const src = product.image || (product.images && product.images[0]);
+              if (!src) return icon;
+              const url = src.startsWith('http') ? src : API + src;
+              return `${icon}<img src="${url}" alt="" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:.5rem;background:transparent">`;
+            })()
           }</div>
           <div class="product-body">
             <div class="product-brand">${product.brandName||product.brand}</div>

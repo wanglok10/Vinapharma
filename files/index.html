@@ -632,7 +632,7 @@ async function loadFeaturedProducts() {
       grid.innerHTML = data.data.map(p => `
         <a class="product-card" href="san-pham-chi-tiet.html?id=${p._id}" data-brand="${p.brand}" style="text-decoration:none;color:inherit;display:block">
           ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
-          <div class="product-img">${p.icon || '<i class="fa-solid fa-pills" style="color:#cc1f1f"></i>'}</div>
+          <div class="product-img">${(()=>{const s=p.image||(p.images&&p.images[0]);return s?`<img src="${s.startsWith('http')?s:API+s}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;padding:.5rem">`:p.icon||'<i class="fa-solid fa-pills" style="color:#cc1f1f"></i>';})()}</div>
           <div class="product-body">
             <div class="product-brand">${p.brandName || p.brand}</div>
             <div class="product-name">${p.name}</div>

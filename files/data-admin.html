@@ -1406,7 +1406,7 @@ function renderProducts(list) {
   tbody.innerHTML = list.map(p => `
     <tr>
       <td><div style="display:flex;align-items:center;gap:.7rem">
-        <div class="product-thumb">${(p.image||(p.images&&p.images[0]))?('<img src="'+API+(p.image||(p.images&&p.images[0]))+'" style="width:100%;height:100%;object-fit:contain;border-radius:.3rem">'):(p.icon||'💊')}</div>
+        <div class="product-thumb">${(p.image||(p.images&&p.images[0]))?(()=>{var s=p.image||(p.images&&p.images[0]);return '<img src="'+(s.startsWith('http')?s:API+s)+'" style="width:100%;height:100%;object-fit:contain;border-radius:.3rem">';})():(p.icon||'💊')}</div>
         <div><div style="font-weight:700;font-size:.83rem">${p.name}</div><div style="font-size:.72rem;color:#888">${p.weight||''}</div></div>
       </div></td>
       <td><span class="badge badge-blue">${allBrands.find(b=>b._id===p.brand)?.name || p.brandName || p.brand}</span></td>
@@ -2018,7 +2018,7 @@ function renderRewards(list) {
   if (!list.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state">Chưa có phần thưởng</td></tr>'; return; }
   tbody.innerHTML = list.map(r => `
     <tr>
-      <td>${r.image ? `<img src="${API+r.image}" style="width:40px;height:40px;border-radius:.4rem;object-fit:cover">` : '<div class="product-thumb"><i class=\\"fa-solid fa-medal ic-amber\\"></i></div>'}</td>
+      <td>${r.image ? `<img src="${r.image.startsWith('http')?r.image:API+r.image}" style="width:40px;height:40px;border-radius:.4rem;object-fit:cover">` : '<div class="product-thumb"><i class=\\"fa-solid fa-medal ic-amber\\"></i></div>'}</td>
       <td><div style="font-weight:700;font-size:.83rem">${r.name}</div><div style="font-size:.72rem;color:#888">${r.description||''}</div></td>
       <td><b>${r.pointsRequired.toLocaleString('vi-VN')}</b> điểm</td>
       <td><span class="badge ${r.type==='btob'?'badge-blue':'badge-green'}">${r.type==='btob'?'<i class=\\"fa-solid fa-building ic-blue\\"></i> Quý đối tác':'<i class=\\"fa-solid fa-user ic-gray\\"></i> Tất cả'}</span></td>

@@ -609,10 +609,16 @@ function renderProduct(p) {
   }
   
   // price
-  // short bullets: first 2 sentences from description
+  // short bullets: intro sentences only, skip ingredient/usage lines
   var descFull = (p.description||'');
-  var descSentences = descFull.split(/[.!?]+\s+/).map(function(l){return l.trim();}).filter(function(l){return l.length>0;});
-  var descLines = descSentences.slice(0,2).map(function(s){return s.length>130?s.slice(0,130)+'...':s;});
+  var skipKeys = ['Thành phần','Cách dùng','Hướng dẫn','Bảo quản','Lưu ý','Cảnh báo','Không dùng'];
+  var descSentences = descFull.split(/[.!?]+/).map(function(l){return l.trim();}).filter(function(l){return l.length>5;});
+  var descLines = [];
+  for(var i=0;i<descSentences.length&&descLines.length<3;i++){
+    var s=descSentences[i];
+    var skip=skipKeys.some(function(k){return s.indexOf(k)===0;});
+    if(!skip) descLines.push(s.length>140?s.slice(0,140)+'...':s);
+  }
   var bulletsEl = document.getElementById('pdBullets');
   bulletsEl.innerHTML = descLines.map(function(l){return '<li>'+l+'</li>';}).join('');
 

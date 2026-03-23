@@ -199,9 +199,38 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .pd-price-old{font-size:1rem;color:#ccc;text-decoration:line-through}
 .pd-discount{font-size:.72rem;font-weight:800;background:#ffebee;color:var(--red);padding:.2rem .55rem;border-radius:2rem}
 .pd-desc{font-size:.9rem;color:#555;line-height:1.8;margin-bottom:1.4rem}
-.pd-actions{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.2rem}
-.pd-btn-buy{width:100%;padding:.95rem 1.5rem;background:var(--red);color:#fff;border:none;border-radius:.75rem;font-size:.97rem;font-weight:700;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:.55rem;box-shadow:0 4px 14px rgba(204,31,31,.28)}
-.pd-btn-buy:hover{background:#b01a1a;transform:translateY(-1px);box-shadow:0 7px 20px rgba(204,31,31,.36)}
+.pd-bullets{list-style:none;margin-bottom:1.2rem}
+.pd-bullets li{display:flex;align-items:flex-start;gap:.55rem;font-size:.87rem;color:#555;line-height:1.65;margin-bottom:.42rem}
+.pd-bullets li::before{content:"★";color:#f59e0b;font-size:.75rem;margin-top:.22rem;flex-shrink:0}
+.pd-price-note{font-size:.72rem;color:#999;line-height:1.55;margin-top:.3rem;margin-bottom:1rem}
+.pd-variant-label{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#999;margin-bottom:.5rem}
+.pd-variant-btns{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.2rem}
+.pd-variant-btn{padding:.42rem 1.1rem;border:1.5px solid #e0e0e0;border-radius:.45rem;background:#fff;font-size:.83rem;font-weight:600;color:#333;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s}
+.pd-variant-btn.active{background:#f59e0b;border-color:#f59e0b;color:#fff}
+.pd-points{display:flex;align-items:center;gap:.45rem;font-size:.82rem;color:#555;margin-bottom:1.2rem;padding:.55rem .75rem;background:#fffbf0;border-radius:.5rem;border:1px solid #fde68a}
+.pd-points i{color:#f59e0b}
+.pd-points a{color:var(--red);font-weight:700;text-decoration:none}
+.pd-points a:hover{text-decoration:underline}
+.pd-qty-row{display:flex;align-items:center;gap:.7rem;margin-bottom:1rem}
+.pd-qty{display:flex;align-items:center;border:1.5px solid #e0e0e0;border-radius:.45rem;overflow:hidden;flex-shrink:0}
+.pd-qty button{width:36px;height:40px;border:none;background:transparent;font-size:1.1rem;cursor:pointer;color:#555;transition:background .15s}
+.pd-qty button:hover{background:#f5f5f5}
+.pd-qty input{width:44px;border:none;text-align:center;font-family:inherit;font-size:.9rem;font-weight:600;color:#111;outline:none;-moz-appearance:textfield}
+.pd-qty input::-webkit-outer-spin-button,.pd-qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.pd-btn-buy{flex:1;padding:.95rem 1.2rem;background:var(--red);color:#fff;border:none;border-radius:.45rem;font-size:.88rem;font-weight:800;cursor:pointer;transition:background .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:.5rem;text-transform:uppercase;letter-spacing:.05em}
+.pd-btn-buy:hover{background:#b01a1a}
+.pd-panel-heading{font-size:1.35rem;font-weight:900;color:#111;margin-bottom:.75rem;line-height:1.3}
+.pd-panel-desc{font-size:.88rem;color:#555;line-height:1.8;margin-bottom:1.2rem}
+.pd-feature-cards{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:.8rem}
+.pd-feature-card{background:#f9f9f9;border-radius:.65rem;padding:.9rem 1rem;border:1px solid #f0f0f0}
+.pd-feature-card-title{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.35rem}
+.pd-feature-card-text{font-size:.81rem;color:#666;line-height:1.65}
+.pd-ingr-section{margin-bottom:1.1rem}
+.pd-ingr-title{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.45rem}
+.pd-ingr-text{font-size:.87rem;color:#555;line-height:1.75}
+.pd-warnings{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.pd-warnings li{display:flex;align-items:flex-start;gap:.6rem;font-size:.87rem;color:#555;line-height:1.65}
+.pd-warn-icon{width:20px;height:20px;border-radius:50%;border:1.5px solid #9ca3af;color:#6b7280;font-size:.65rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem;font-weight:800;font-style:normal}
 .pd-btn-contact{width:100%;padding:.9rem 1.5rem;background:#fff;color:var(--red);border:1.5px solid var(--red);border-radius:.75rem;font-size:.93rem;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;transition:background .18s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:.5rem}
 .pd-btn-contact:hover{background:#fff0f2}
 .pd-trust{display:flex;flex-wrap:wrap;gap:.45rem;padding:1rem 0;border-top:1px solid #f0f0f0;margin-bottom:1.2rem}
@@ -410,33 +439,34 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 
 <div id="pdContent" style="display:none">
   <div class="pd-wrap">
-    <div class="pd-breadcrumb">
-      <a href="index.html">Trang chủ</a><span>/</span>
-      <a href="san-pham.html">Sản phẩm</a><span>/</span>
-      <a href="#" id="pdBcCat"></a><span>/</span>
-      <span id="pdBcName"></span>
+    <div class="pd-breadcrumb" style="text-transform:uppercase;font-weight:700;font-size:.72rem;letter-spacing:.08em">
+      <a href="#" id="pdBcCat" style="color:var(--red)"></a>
+      <span style="margin:0 .45rem;color:#bbb">→</span>
+      <span id="pdBcName" style="color:#555"></span>
     </div>
     <div class="pd-hero">
       <div class="pd-img-col">
         <div class="pd-img-box" id="pdImgBox"></div>
       </div>
       <div class="pd-info">
-        <div class="pd-badge-row" id="pdBadge"></div>
-        <div class="pd-brand" id="pdBrand"></div>
         <h1 class="pd-name" id="pdName"></h1>
-        <div class="pd-weight" id="pdWeight"></div>
-        <div class="pd-price-wrap" id="pdPriceWrap"></div>
-        <div class="pd-desc" id="pdDesc"></div>
-        <div class="pd-actions">
-          <button class="pd-btn-buy" id="pdBtnBuy" style="display:none"><i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ hàng</button>
-          <a href="lien-he.html" class="pd-btn-contact"><i class="fa-solid fa-comments"></i> Liên hệ tư vấn</a>
+        <div id="pdPriceWrap"></div>
+        <p class="pd-price-note">*Đối với bất kỳ đợt giảm giá chung nào được công bố, trừ khi có quy định khác, giá niêm yết là giá thấp nhất trong 30 ngày qua.</p>
+        <ul class="pd-bullets" id="pdBullets"></ul>
+        <div class="pd-variant-label">BAO BÌ</div>
+        <div class="pd-variant-btns" id="pdVariantBtns"></div>
+        <div class="pd-points">
+          <i class="fa-solid fa-trophy"></i>
+          <span>Nhận ngay <strong id="pdPointsVal"></strong> điểm thưởng khi mua hàng này. <a href="doi-diem.html">Tìm hiểu thêm</a></span>
         </div>
-        <div class="pd-trust">
-          <span class="pd-trust-item"><i class="fa-solid fa-shield-halved"></i> Hàng chính hãng 100%</span>
-          <span class="pd-trust-item"><i class="fa-solid fa-truck"></i> Giao hàng toàn quốc</span>
-          <span class="pd-trust-item"><i class="fa-solid fa-headset"></i> Tư vấn miễn phí</span>
+        <div class="pd-qty-row">
+          <div class="pd-qty">
+            <button type="button" onclick="changeQty(-1)">−</button>
+            <input type="number" id="pdQtyInput" value="1" min="1" max="99">
+            <button type="button" onclick="changeQty(1)">+</button>
+          </div>
+          <button class="pd-btn-buy" id="pdBtnBuy"><i class="fa-solid fa-cart-shopping"></i> THÊM VÀO GIỎ HÀNG</button>
         </div>
-        <div class="pd-meta-tags" id="pdMetaTags"></div>
       </div>
     </div>
   </div>
@@ -446,26 +476,24 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
   <div class="pd-details-section">
     <div class="pd-details-inner">
       <div class="pd-details-tabs">
-        <button class="pd-tab active" data-tab="uses">Công dụng</button>
-        <button class="pd-tab" data-tab="dosage">Liều lượng</button>
+        <button class="pd-tab active" data-tab="uses">Mô tả và hoạt động</button>
+        <button class="pd-tab" data-tab="dosage">Sử dụng</button>
         <button class="pd-tab" data-tab="ingredients">Thành phần</button>
-        <button class="pd-tab" data-tab="packaging">Quy cách</button>
+        <button class="pd-tab" data-tab="packaging">Cảnh báo và thông tin bổ sung</button>
       </div>
       <div class="pd-tab-panel active" id="pdPanelUses">
-        <div class="pd-tab-panel-title">Công dụng</div>
-        <div class="pd-tab-content" id="pdTabUses"></div>
+        <div class="pd-panel-heading" id="pdPanelUsesHeading"></div>
+        <div class="pd-panel-desc" id="pdPanelUsesDesc"></div>
+        <div class="pd-feature-cards" id="pdFeatureCards"></div>
       </div>
       <div class="pd-tab-panel" id="pdPanelDosage">
-        <div class="pd-tab-panel-title">Liều lượng</div>
         <div class="pd-tab-content" id="pdTabDosage"></div>
       </div>
       <div class="pd-tab-panel" id="pdPanelIngredients">
-        <div class="pd-tab-panel-title">Thành phần</div>
-        <div class="pd-tab-content" id="pdTabIngredients"></div>
+        <div id="pdTabIngredients"></div>
       </div>
       <div class="pd-tab-panel" id="pdPanelPackaging">
-        <div class="pd-tab-panel-title">Quy cách đóng gói</div>
-        <div class="pd-tab-content" id="pdTabPackaging"></div>
+        <ul class="pd-warnings" id="pdTabPackaging"></ul>
       </div>
     </div>
   </div>
@@ -474,7 +502,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 <div id="pdRelated" style="display:none">
   <div class="pd-related-section">
     <div class="pd-related-head">
-      <div class="pd-related-title">Sản phẩm liên quan</div>
+      <div class="pd-related-title">Đề xuất dành cho bạn</div>
     </div>
     <div class="pd-related-grid" id="pdRelatedGrid"></div>
   </div>
@@ -550,41 +578,11 @@ function getId() {
 function renderProduct(p) {
   // breadcrumb
   var bcCat = document.getElementById('pdBcCat');
-  bcCat.textContent = p.category;
+  bcCat.textContent = (p.brandName || p.brand || p.category).toUpperCase();
   bcCat.href = 'san-pham.html?category=' + encodeURIComponent(p.category);
-  document.getElementById('pdBcName').textContent = p.name.slice(0,40) + (p.name.length>40?'...':'');
+  document.getElementById('pdBcName').textContent = p.name.toUpperCase();
   document.title = p.name + ' | Vinapharma';
   document.getElementById('pdName').textContent = p.name;
-  document.getElementById('pdBrand').textContent = p.brandName || p.brand;
-  var weightEl = document.getElementById('pdWeight');
-  if (p.weight) {
-    weightEl.innerHTML = p.weight
-      + ' &nbsp;<span style="display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:2rem;'
-      + (p.inStock !== false
-          ? 'color:#15803d;background:#f0fdf4;border:1px solid #bbf7d0">● Còn hàng'
-          : 'color:#b91c1c;background:#fef2f2;border:1px solid #fecaca">● Hết hàng')
-      + '</span>';
-  } else {
-    weightEl.innerHTML = '<span style="display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:2rem;'
-      + (p.inStock !== false
-          ? 'color:#15803d;background:#f0fdf4;border:1px solid #bbf7d0">● Còn hàng'
-          : 'color:#b91c1c;background:#fef2f2;border:1px solid #fecaca">● Hết hàng')
-      + '</span>';
-  }
-  
-  // badge
-  if (p.badge) {
-    var badgeMap = {'Ban chay':'bestseller','Moi':'new','Hot':'hot','Sale':'sale'};
-    var badgeMapFull = {
-      'B\u1ea1n ch\u1ea1y':'bestseller',
-      'M\u1edbi':'new',
-      'Hot':'hot',
-      'Sale':'sale',
-      'B\u00e1n ch\u1ea1y':'bestseller'
-    };
-    var cls = badgeMapFull[p.badge] || 'sale';
-    document.getElementById('pdBadge').innerHTML = '<span class="pd-badge pd-badge-' + cls + '">' + p.badge + '</span>';
-  }
   
   // image carousel
   var imgBox = document.getElementById('pdImgBox');
@@ -623,26 +621,71 @@ function renderProduct(p) {
     buildCarousel();
   }
   
-  document.getElementById('pdPriceWrap').innerHTML = '';
-  
-  // description
-  document.getElementById('pdDesc').innerHTML = (p.description||'').replace(/\n/g,'<br>');
+  // price
+  var priceHtml = '<div style="display:flex;align-items:center;gap:.8rem;padding:.9rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:.5rem">';
+  priceHtml += '<span style="font-size:2rem;font-weight:900;color:var(--red)">' + p.price.toLocaleString('vi-VN') + ' ₫</span>';
+  if (p.originalPrice && p.originalPrice > p.price) {
+    var disc = Math.round((1 - p.price/p.originalPrice)*100);
+    priceHtml += '<span style="font-size:.95rem;color:#ccc;text-decoration:line-through">' + p.originalPrice.toLocaleString('vi-VN') + ' ₫</span>';
+    priceHtml += '<span style="font-size:.72rem;font-weight:800;background:#ffebee;color:var(--red);padding:.2rem .55rem;border-radius:2rem">-' + disc + '%</span>';
+  }
+  priceHtml += '</div>';
+  document.getElementById('pdPriceWrap').innerHTML = priceHtml;
 
-  // details accordion-sidebar (Công dụng, Liều lượng, Thành phần, Quy cách)
-  var tabData = {
-    uses: p.uses || '',
-    dosage: p.dosage || '',
-    ingredients: p.ingredients || '',
-    packaging: p.packaging || ''
-  };
+  // star bullets from description lines
+  var descLines = (p.description||'').split('\n').map(function(l){return l.trim();}).filter(function(l){return l.length>0;});
+  var bulletsEl = document.getElementById('pdBullets');
+  bulletsEl.innerHTML = descLines.slice(0,5).map(function(l){return '<li>' + l + '</li>';}).join('');
+
+  // variant (packaging/weight as button)
+  var variantBtns = document.getElementById('pdVariantBtns');
+  var variantLabel = p.weight || p.packaging || 'Tiêu chuẩn';
+  variantBtns.innerHTML = '<button class="pd-variant-btn active">' + variantLabel + '</button>';
+
+  // points
+  var pts = (p.price / 100000).toFixed(1);
+  document.getElementById('pdPointsVal').textContent = pts;
+
+  // details tabs
   var tabs = document.querySelectorAll('.pd-tab');
-  var tabKeys = ['uses','dosage','ingredients','packaging'];
   var panelIds = ['pdPanelUses','pdPanelDosage','pdPanelIngredients','pdPanelPackaging'];
 
-  document.getElementById('pdTabUses').textContent = tabData.uses || 'Chưa có thông tin';
-  document.getElementById('pdTabDosage').textContent = tabData.dosage || 'Chưa có thông tin';
-  document.getElementById('pdTabIngredients').textContent = tabData.ingredients || 'Chưa có thông tin';
-  document.getElementById('pdTabPackaging').textContent = tabData.packaging || 'Chưa có thông tin';
+  // Mô tả và hoạt động panel
+  var usesText = p.uses || '';
+  var usesLines = usesText.split('\n').map(function(l){return l.trim();}).filter(function(l){return l;});
+  var usesHeading = usesLines.length > 0 ? usesLines[0] : p.name;
+  var usesBody = usesLines.length > 1 ? usesLines.slice(1).join(' ') : (p.description || '');
+  document.getElementById('pdPanelUsesHeading').textContent = usesHeading;
+  document.getElementById('pdPanelUsesDesc').textContent = usesBody;
+  // feature cards from description bullet lines
+  var cards = descLines.slice(0,2);
+  var fcEl = document.getElementById('pdFeatureCards');
+  fcEl.innerHTML = cards.map(function(c){
+    var words = c.split(' ');
+    var title = words.slice(0,3).join(' ').toUpperCase().replace(/[.,]/g,'');
+    return '<div class="pd-feature-card"><div class="pd-feature-card-title">' + title + '</div><div class="pd-feature-card-text">' + c + '</div></div>';
+  }).join('');
+
+  // Sử dụng panel
+  document.getElementById('pdTabDosage').innerHTML = (p.dosage||'Chưa có thông tin').replace(/\n/g,'<br>');
+
+  // Thành phần panel
+  var ingrHtml = '';
+  if (p.ingredients) {
+    ingrHtml += '<div class="pd-ingr-section"><div class="pd-ingr-title">Đội hình đầy đủ</div><div class="pd-ingr-text">' + p.ingredients + '</div></div>';
+  } else {
+    ingrHtml = '<span style="color:#aaa;font-size:.87rem">Chưa có thông tin thành phần.</span>';
+  }
+  document.getElementById('pdTabIngredients').innerHTML = ingrHtml;
+
+  // Cảnh báo panel
+  var warnLines = (p.packaging||'').split('\n').map(function(l){return l.trim();}).filter(function(l){return l;});
+  if (warnLines.length === 0) {
+    warnLines = ['Không được vượt quá liều lượng khuyến cáo hàng ngày.','Thực phẩm chức năng không thể thay thế cho một chế độ ăn uống đa dạng.','Chế độ ăn uống đa dạng và cân bằng rất cần thiết để duy trì sức khỏe.'];
+  }
+  document.getElementById('pdTabPackaging').innerHTML = warnLines.map(function(w){
+    return '<li><i class="pd-warn-icon">ⓘ</i><span>' + w + '</span></li>';
+  }).join('');
 
   function activateTab(idx) {
     tabs.forEach(function(b, j) {
@@ -660,12 +703,6 @@ function renderProduct(p) {
 
   document.getElementById('pdDetails').style.display = '';
 
-  // meta tags
-  var tags = '';
-  tags += '<span class="pd-meta-tag">' + p.category + '</span>';
-  tags += '<span class="pd-meta-tag">' + (p.inStock ? 'Còn hàng' : 'Hết hàng') + '</span>';
-  document.getElementById('pdMetaTags').innerHTML = tags;
-  
   // show
   document.getElementById('pdLoading').style.display = 'none';
   document.getElementById('pdContent').style.display = 'block';
@@ -674,11 +711,18 @@ function renderProduct(p) {
   document.getElementById('pdBtnBuy').addEventListener('click', function(){
     var badge = document.querySelector('.cart-badge');
     if (badge) badge.textContent = parseInt(badge.textContent||0)+1;
-    this.innerHTML = '<i class=\"fa-solid fa-check\"></i> Đã thêm';
+    this.innerHTML = '<i class=\"fa-solid fa-check\"></i> ĐÃ THÊM';
     this.style.background = '#22a06b';
     var self = this;
-    setTimeout(function(){ self.innerHTML = '<i class=\"fa-solid fa-cart-shopping\"></i> Thêm vào giỏ hàng'; self.style.background=''; }, 1500);
+    setTimeout(function(){ self.innerHTML = '<i class=\"fa-solid fa-cart-shopping\"></i> THÊM VÀO GIỎ HÀNG'; self.style.background=''; }, 1500);
   });
+}
+
+function changeQty(delta) {
+  var inp = document.getElementById('pdQtyInput');
+  if (!inp) return;
+  var v = parseInt(inp.value||1) + delta;
+  inp.value = Math.max(1, Math.min(99, v));
 }
 
 function renderCards(products, gridId, sectionId) {

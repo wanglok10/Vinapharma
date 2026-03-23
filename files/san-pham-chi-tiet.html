@@ -239,27 +239,32 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .pd-meta-tags{display:flex;flex-wrap:wrap;gap:.4rem}
 .pd-meta-tag{font-size:.7rem;background:#f5f5f5;color:#888;padding:.25rem .65rem;border-radius:2rem;border:1px solid #ebebeb}
 /* Details accordion-sidebar section */
-.pd-details-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0 4%;margin-top:0}
-.pd-details-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;min-height:280px}
-.pd-details-tabs{display:flex;flex-direction:column;border-right:1px solid var(--border);padding:1.5rem 0}
-.pd-tab{background:none;border:none;border-left:3px solid transparent;padding:.95rem 1.4rem;font-size:.78rem;font-weight:700;color:#999;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:color .18s,border-color .18s,background .18s;font-family:inherit;letter-spacing:.07em;text-transform:uppercase;border-bottom:1px solid #f0f0f0;line-height:1.3}
+.pd-details-section{border-top:1px solid var(--border);padding:0 4%;margin-top:0}
+.pd-details-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:240px 1fr;gap:0}
+.pd-details-tabs{display:flex;flex-direction:column;border-right:1px solid var(--border);padding:.6rem 0;position:sticky;top:90px;align-self:start}
+.pd-tab{background:none;border:none;border-left:3px solid transparent;padding:.85rem 1.3rem;font-size:.76rem;font-weight:700;color:#999;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:color .18s,border-color .18s,background .18s;font-family:inherit;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid #f0f0f0;line-height:1.3}
 .pd-tab:last-child{border-bottom:none}
-.pd-tab::after{content:'›';font-size:1.1rem;color:#ccc;transition:color .18s,transform .18s}
+.pd-tab::after{content:'›';font-size:1.1rem;color:#ccc;transition:color .18s}
 .pd-tab.active{color:var(--red);border-left-color:var(--red);background:#fff9f9}
-.pd-tab.active::after{color:var(--red);transform:translateX(3px)}
+.pd-tab.active::after{color:var(--red)}
 .pd-tab:hover:not(.active){color:#444;background:#fafafa}
-.pd-tab:hover:not(.active)::after{color:#999}
-.pd-tab-panel{padding:2rem 2.5rem;display:none}
-.pd-tab-panel.active{display:block}
-.pd-tab-panel-title{font-size:1rem;font-weight:800;color:#111;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em}
+.pd-acc-area{flex:1;min-width:0}
+.pd-acc-item{border-bottom:1px solid var(--border)}
+.pd-acc-item:first-child{border-top:1px solid var(--border)}
+.pd-acc-hdr{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 2rem;background:#f5f5f5;cursor:pointer;font-size:.74rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#444;transition:background .15s;user-select:none;border:none;width:100%;font-family:inherit}
+.pd-acc-hdr:hover{background:#ebebeb}
+.pd-acc-chevron{transition:transform .25s;font-size:.72rem;color:#888;flex-shrink:0}
+.pd-acc-item.open .pd-acc-chevron{transform:rotate(180deg)}
+.pd-acc-body{display:none;padding:2rem 2.5rem}
+.pd-acc-item.open .pd-acc-body{display:block}
 .pd-tab-content{line-height:1.9;font-size:.9rem;color:#555;white-space:pre-line}
 @media(max-width:768px){
   .pd-details-inner{grid-template-columns:1fr}
-  .pd-details-tabs{border-right:none;border-bottom:1px solid var(--border);padding:.5rem 0;flex-direction:row;flex-wrap:wrap;overflow-x:auto}
-  .pd-tab{border-left:none;border-bottom:2.5px solid transparent;padding:.6rem 1rem;font-size:.72rem;letter-spacing:.05em;flex-shrink:0;white-space:nowrap}
+  .pd-details-tabs{border-right:none;border-bottom:1px solid var(--border);padding:.3rem 0;flex-direction:row;overflow-x:auto;position:static}
+  .pd-tab{border-left:none;border-bottom:2.5px solid transparent;padding:.55rem .9rem;font-size:.72rem;flex-shrink:0;white-space:nowrap}
   .pd-tab.active{border-left:none;border-bottom-color:var(--red);background:transparent}
   .pd-tab::after{display:none}
-  .pd-tab-panel{padding:1.5rem 0}
+  .pd-acc-body{padding:1.2rem 1rem}
 }
 /* Related sections */
 .pd-related-section{max-width:1180px;margin:0 auto;padding:2.5rem 4% 4rem}
@@ -462,25 +467,51 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 <div id="pdDetails" style="display:none">
   <div class="pd-details-section">
     <div class="pd-details-inner">
-      <div class="pd-details-tabs">
-        <button class="pd-tab active" data-tab="uses">Mô tả và hoạt động</button>
-        <button class="pd-tab" data-tab="dosage">Sử dụng</button>
-        <button class="pd-tab" data-tab="ingredients">Thành phần</button>
-        <button class="pd-tab" data-tab="packaging">Cảnh báo và thông tin bổ sung</button>
+      <div class="pd-details-tabs" id="pdSidebar">
+        <button class="pd-tab active" data-acc="pdAccUses">Mô tả và hoạt động</button>
+        <button class="pd-tab" data-acc="pdAccDosage">Sử dụng</button>
+        <button class="pd-tab" data-acc="pdAccIngredients">Thành phần</button>
+        <button class="pd-tab" data-acc="pdAccPackaging">Cảnh báo và thông tin bổ sung</button>
       </div>
-      <div class="pd-tab-panel active" id="pdPanelUses">
-        <div class="pd-panel-heading" id="pdPanelUsesHeading"></div>
-        <div class="pd-panel-desc" id="pdPanelUsesDesc"></div>
-        <div class="pd-feature-cards" id="pdFeatureCards"></div>
-      </div>
-      <div class="pd-tab-panel" id="pdPanelDosage">
-        <div class="pd-tab-content" id="pdTabDosage"></div>
-      </div>
-      <div class="pd-tab-panel" id="pdPanelIngredients">
-        <div id="pdTabIngredients"></div>
-      </div>
-      <div class="pd-tab-panel" id="pdPanelPackaging">
-        <ul class="pd-warnings" id="pdTabPackaging"></ul>
+      <div class="pd-acc-area">
+        <div class="pd-acc-item open" id="pdAccUses">
+          <button class="pd-acc-hdr" onclick="toggleAcc('pdAccUses')">
+            <span>Mô tả và hoạt động</span>
+            <i class="fa-solid fa-chevron-down pd-acc-chevron"></i>
+          </button>
+          <div class="pd-acc-body">
+            <div class="pd-panel-heading" id="pdPanelUsesHeading"></div>
+            <div class="pd-panel-desc" id="pdPanelUsesDesc"></div>
+            <div class="pd-feature-cards" id="pdFeatureCards"></div>
+          </div>
+        </div>
+        <div class="pd-acc-item" id="pdAccDosage">
+          <button class="pd-acc-hdr" onclick="toggleAcc('pdAccDosage')">
+            <span>Sử dụng</span>
+            <i class="fa-solid fa-chevron-down pd-acc-chevron"></i>
+          </button>
+          <div class="pd-acc-body">
+            <div class="pd-tab-content" id="pdTabDosage"></div>
+          </div>
+        </div>
+        <div class="pd-acc-item" id="pdAccIngredients">
+          <button class="pd-acc-hdr" onclick="toggleAcc('pdAccIngredients')">
+            <span>Thành phần</span>
+            <i class="fa-solid fa-chevron-down pd-acc-chevron"></i>
+          </button>
+          <div class="pd-acc-body">
+            <div id="pdTabIngredients"></div>
+          </div>
+        </div>
+        <div class="pd-acc-item" id="pdAccPackaging">
+          <button class="pd-acc-hdr" onclick="toggleAcc('pdAccPackaging')">
+            <span>Cảnh báo và thông tin bổ sung</span>
+            <i class="fa-solid fa-chevron-down pd-acc-chevron"></i>
+          </button>
+          <div class="pd-acc-body">
+            <ul class="pd-warnings" id="pdTabPackaging"></ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -627,10 +658,7 @@ function renderProduct(p) {
   var variantLabel = p.weight || p.packaging || 'Tiêu chuẩn';
   variantBtns.innerHTML = '<button class="pd-variant-btn active">'+variantLabel+'</button>';
 
-  // details tabs
-  var tabs = document.querySelectorAll('.pd-tab');
-  var panelIds = ['pdPanelUses','pdPanelDosage','pdPanelIngredients','pdPanelPackaging'];
-
+  // details accordion
   // Mô tả và hoạt động panel
   var usesText = p.uses || '';
   var usesLines = usesText.split('\n').map(function(l){return l.trim();}).filter(function(l){return l;});
@@ -665,20 +693,32 @@ function renderProduct(p) {
     return '<li><i class="pd-warn-icon">ⓘ</i><span>' + w + '</span></li>';
   }).join('');
 
-  function activateTab(idx) {
-    tabs.forEach(function(b, j) {
-      b.classList.toggle('active', j === idx);
-      var panel = document.getElementById(panelIds[j]);
-      panel.classList.toggle('active', j === idx);
+  // Accordion + scroll-spy
+  var sidebarBtns = document.querySelectorAll('#pdSidebar .pd-tab');
+  var accIds = ['pdAccUses','pdAccDosage','pdAccIngredients','pdAccPackaging'];
+  window.toggleAcc = function(id) {
+    var item = document.getElementById(id);
+    if(item) item.classList.toggle('open');
+  };
+  sidebarBtns.forEach(function(btn, i) {
+    btn.addEventListener('click', function() {
+      var target = document.getElementById(accIds[i]);
+      if(!target) return;
+      if(!target.classList.contains('open')) target.classList.add('open');
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+      sidebarBtns.forEach(function(b,j){ b.classList.toggle('active',i===j); });
     });
-  }
-
-  activateTab(0);
-
-  tabs.forEach(function(btn, i) {
-    btn.addEventListener('click', function() { activateTab(i); });
   });
-
+  window.addEventListener('scroll', function() {
+    accIds.forEach(function(id,i) {
+      var el = document.getElementById(id);
+      if(!el) return;
+      var r = el.getBoundingClientRect();
+      if(r.top <= 160 && r.bottom > 0) {
+        sidebarBtns.forEach(function(b,j){ b.classList.toggle('active',i===j); });
+      }
+    });
+  });
   document.getElementById('pdDetails').style.display = '';
 
   // show

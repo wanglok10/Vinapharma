@@ -938,7 +938,7 @@ async function insertContentImage(input, editorId) {
     const data = await res.json();
     if (!data.success) return showToast(data.message || 'Upload thất bại', 'error');
     const img = document.createElement('img');
-    img.src = API + data.url;
+    img.src = data.url.startsWith('http') ? data.url : API + data.url;
     img.style.cssText = 'max-width:100%;height:auto;border-radius:.4rem;margin:.5rem 0;display:block';
     editor.appendChild(img);
     editor.appendChild(document.createElement('br'));

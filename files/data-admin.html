@@ -1806,9 +1806,15 @@ async function insertAboutImage(input) {
   fd.append('image', file);
   showToast('Đang upload...', 'info');
   try {
-    const res = await authFetch(API + '/api/settings/upload-image', { method:'POST', body:fd });
+    const token = AuthClient.getToken();
+    const res = await fetch(API + '/api/settings/upload-image', {
+      method: 'POST',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+      credentials: 'include',
+      body: fd
+    });
     const data = await res.json();
-    if (!data.success) return showToast('Upload thất bại', 'error');
+    if (!data.success) return showToast(data.message || 'Upload thất bại', 'error');
     const editor = document.getElementById('aboutEditorContent');
     const img = document.createElement('img');
     img.src = data.url.startsWith('http') ? data.url : API + data.url;
@@ -1836,18 +1842,25 @@ async function insertAboutImage(input) {
 async function uploadAboutImage(input, idx) {
   const file = input.files[0];
   if (!file) return;
+  input.value = '';
   const fd = new FormData();
   fd.append('image', file);
   showToast('Đang upload ảnh...', 'info');
   try {
-    const res = await authFetch(API + '/api/settings/upload-image', { method:'POST', body:fd });
+    const token = AuthClient.getToken();
+    const res = await fetch(API + '/api/settings/upload-image', {
+      method: 'POST',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+      credentials: 'include',
+      body: fd
+    });
     const data = await res.json();
-    if (!data.success) return showToast('Upload thất bại', 'error');
+    if (!data.success) return showToast(data.message || 'Upload thất bại', 'error');
     aboutData[idx].image = data.url;
     const wrap = document.getElementById('aboutImgWrap_' + idx);
     if (wrap) wrap.innerHTML = `<img src="${data.url}" style="width:100%;height:100%;object-fit:cover">`;
     showToast('Upload ảnh thành công', 'success');
-  } catch(e) { showToast('Lỗi upload', 'error'); }
+  } catch(e) { showToast('Lỗi: ' + e.message, 'error'); }
 }
 
 async function saveAbout() {

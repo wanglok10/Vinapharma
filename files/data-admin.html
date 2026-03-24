@@ -194,6 +194,7 @@ i.fa-solid,i.fa-regular{line-height:1}
     <button class="nav-item" onclick="showTab('brands',this)"><span class="ico"><i class="fa-solid fa-tag ic-gray"></i></span>Thương hiệu</button>
     <button class="nav-item" onclick="showTab('posts',this)"><span class="ico"><i class="fa-solid fa-newspaper ic-gray"></i></span>Tin tức</button>
     <button class="nav-item" onclick="showTab('banners',this)"><span class="ico"><i class="fa-solid fa-image ic-gray"></i></span>Banner</button>
+    <button class="nav-item" onclick="showTab('about',this)"><span class="ico"><i class="fa-solid fa-building ic-gray"></i></span>Giới thiệu</button>
     <button class="nav-item" onclick="showTab('promotions',this)"><span class="ico"><i class="fa-solid fa-gift ic-brand"></i></span>Khuyến mãi</button>
     <button class="nav-item" onclick="showTab('promo-banners',this)"><span class="ico"><i class="fa-solid fa-bullhorn ic-brand"></i></span>Băng rôn</button>
     <div class="nav-section">Hệ thống</div>
@@ -388,6 +389,17 @@ i.fa-solid,i.fa-regular{line-height:1}
           <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGrid">
             <div class="empty-state">Đang tải...</div>
           </div>
+        </div>
+      </div>
+
+      <!-- ── GIỚI THIỆU ── -->
+      <div id="tab-about" class="tab-pane">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fa-solid fa-building ic-gray"></i> Quản lý trang Giới thiệu</div>
+            <div class="section-actions"><button class="btn btn-red" onclick="saveAbout()"><i class="fa-solid fa-floppy-disk"></i> Lưu tất cả</button></div>
+          </div>
+          <div style="padding:1rem 1.2rem" id="aboutSections"></div>
         </div>
       </div>
 
@@ -976,12 +988,13 @@ function showTab(name, btn) {
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   if (btn) btn.classList.add('active');
-  const titles = { dashboard:'Dashboard', products:'Sản phẩm', brands:'Thương hiệu', posts:'Tin tức', banners:'Banner', promotions:'Khuyến mãi', 'promo-banners':'Băng rôn', users:'Người dùng', contacts:'Liên hệ' };
+  const titles = { dashboard:'Dashboard', products:'Sản phẩm', brands:'Thương hiệu', posts:'Tin tức', banners:'Banner', about:'Giới thiệu', promotions:'Khuyến mãi', 'promo-banners':'Băng rôn', users:'Người dùng', contacts:'Liên hệ' };
   document.getElementById('topbarTitle').textContent = titles[name] || name;
   if (name === 'products') loadProducts();
   if (name === 'brands') loadBrands();
   if (name === 'posts') loadPosts();
   if (name === 'banners') loadBanners();
+  if (name === 'about') loadAbout();
   if (name === 'promotions') loadPromos();
   if (name === 'promo-banners') loadPBs();
   if (name === 'users') loadUsers();
@@ -1636,6 +1649,105 @@ async function deletePost(id) {
   const res = await authFetch(`${API}/api/posts/${id}`, { method:'DELETE', headers:{} });
   const data = await res.json();
   if (data.success) { showToast('Đã xóa bài viết', 'success'); loadPosts(); }
+}
+
+// ── BANNERS ──
+// ── GIỚI THIỆU ──
+const DEFAULT_ABOUT = [
+  { href:'ve-vinapharma.html', label:'Câu chuyện của chúng tôi', title:'Về VinaPharma', desc:'VinaPharma phân phối thực phẩm chức năng và dược mỹ phẩm từ các thương hiệu uy tín, kết nối giải pháp chăm sóc sức khỏe thiết thực với hệ thống nhà thuốc Việt Nam.', image:'' },
+  { href:'dong-hanh-cung-suc-khoe-viet.html', label:'Sứ mệnh', title:'Đồng hành cùng sức khỏe Việt', desc:'Trong một thị trường ngày càng coi trọng chất lượng, tính an toàn và giá trị sử dụng thực chất, VinaPharma tập trung kết nối những giải pháp chăm sóc sức khỏe đáng tin cậy với hệ thống nhà thuốc trên toàn quốc.', image:'' },
+  { href:'cac-tru-cot-hoat-dong.html', label:'Chiến lược', title:'Các trụ cột hoạt động', desc:'VinaPharma phát triển trên nền tảng các trụ cột hoạt động rõ ràng, tập trung vào những nhóm giải pháp có giá trị thiết thực đối với thị trường chăm sóc sức khỏe.', image:'' },
+  { href:'ban-lanh-dao.html', label:'Lãnh đạo', title:'Ban lãnh đạo', desc:'VinaPharma được dẫn dắt bởi đội ngũ lãnh đạo theo đuổi định hướng phát triển chuyên nghiệp, minh bạch và bền vững.', image:'' },
+  { href:'con-nguoi-vinapharma.html', label:'Văn hóa', title:'Con người VinaPharma', desc:'Đội ngũ VinaPharma làm việc với tinh thần chuyên nghiệp, chính trực và tận tâm – những con người kiến tạo giá trị bền vững.', image:'' },
+  { href:'hanh-trinh-phat-trien.html', label:'Lịch sử', title:'Hành trình phát triển', desc:'Từ nền tảng được xây dựng từ năm 2018, VinaPharma từng bước phát triển theo định hướng chuyên nghiệp, chọn lọc và bền vững.', image:'' },
+  { href:'vinapharma-qua-nhung-con-so.html', label:'Số liệu', title:'VinaPharma qua những con số', desc:'Những con số là cách VinaPharma khái quát hành trình phát triển, năng lực hiện diện và phạm vi hợp tác trên thị trường.', image:'' },
+  { href:'nhung-cau-chuyen-tao-tac-dong.html', label:'Tác động', title:'Những câu chuyện tạo tác động', desc:'Tại VinaPharma, tác động không chỉ được tạo nên từ sản phẩm hay độ phủ thị trường, mà còn được thể hiện qua những câu chuyện đồng hành cùng đối tác, nhà thuốc và cộng đồng.', image:'' }
+];
+let aboutData = [];
+
+async function loadAbout() {
+  const wrap = document.getElementById('aboutSections');
+  wrap.innerHTML = '<div class="empty-state">Đang tải...</div>';
+  try {
+    const res = await authFetch(API + '/api/settings/about-sections', { headers:{} });
+    const data = await res.json();
+    aboutData = (data.success && Array.isArray(data.data) && data.data.length) ? data.data : JSON.parse(JSON.stringify(DEFAULT_ABOUT));
+    renderAbout();
+  } catch(e) {
+    aboutData = JSON.parse(JSON.stringify(DEFAULT_ABOUT));
+    renderAbout();
+  }
+}
+
+function renderAbout() {
+  const wrap = document.getElementById('aboutSections');
+  wrap.innerHTML = aboutData.map((s, i) => `
+    <div style="background:#fff;border:1px solid #e8e8e8;border-radius:.7rem;padding:1.2rem;margin-bottom:1rem">
+      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem">
+        <span style="background:#cc1f1f;color:#fff;font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:2rem">${i+1}</span>
+        <strong style="font-size:.88rem">${s.title}</strong>
+      </div>
+      <div style="display:grid;grid-template-columns:180px 1fr;gap:1.2rem;align-items:start">
+        <div>
+          <div style="font-size:.72rem;color:#888;margin-bottom:.3rem;font-weight:600">ẢNH THUMBNAIL</div>
+          <div style="height:110px;background:#f5f5f5;border-radius:.5rem;overflow:hidden;margin-bottom:.4rem;display:flex;align-items:center;justify-content:center" id="aboutImgWrap_${i}">
+            ${s.image ? `<img src="${s.image}" style="width:100%;height:100%;object-fit:cover">` : '<i class="fa-solid fa-image" style="font-size:2rem;color:#ccc"></i>'}
+          </div>
+          <label class="btn btn-sm btn-outline" style="cursor:pointer;display:flex;align-items:center;gap:.3rem;justify-content:center">
+            <i class="fa-solid fa-upload"></i> Chọn ảnh
+            <input type="file" accept="image/*" style="display:none" onchange="uploadAboutImage(this,${i})">
+          </label>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          <div>
+            <div style="font-size:.72rem;color:#888;margin-bottom:.25rem;font-weight:600">NHÃN NHỎ</div>
+            <input value="${s.label}" oninput="aboutData[${i}].label=this.value" style="width:100%;padding:.42rem .7rem;border:1px solid #e8e8e8;border-radius:.4rem;font-family:inherit;font-size:.83rem">
+          </div>
+          <div>
+            <div style="font-size:.72rem;color:#888;margin-bottom:.25rem;font-weight:600">TIÊU ĐỀ</div>
+            <input value="${s.title}" oninput="aboutData[${i}].title=this.value" style="width:100%;padding:.42rem .7rem;border:1px solid #e8e8e8;border-radius:.4rem;font-family:inherit;font-size:.83rem">
+          </div>
+          <div>
+            <div style="font-size:.72rem;color:#888;margin-bottom:.25rem;font-weight:600">MÔ TẢ</div>
+            <textarea rows="3" oninput="aboutData[${i}].desc=this.value" style="width:100%;padding:.42rem .7rem;border:1px solid #e8e8e8;border-radius:.4rem;font-family:inherit;font-size:.83rem;resize:vertical">${s.desc}</textarea>
+          </div>
+          <div>
+            <div style="font-size:.72rem;color:#888;margin-bottom:.25rem;font-weight:600">LINK TRANG CON</div>
+            <input value="${s.href}" oninput="aboutData[${i}].href=this.value" style="width:100%;padding:.42rem .7rem;border:1px solid #e8e8e8;border-radius:.4rem;font-family:inherit;font-size:.83rem">
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function uploadAboutImage(input, idx) {
+  const file = input.files[0];
+  if (!file) return;
+  const fd = new FormData();
+  fd.append('image', file);
+  showToast('Đang upload ảnh...', 'info');
+  try {
+    const res = await authFetch(API + '/api/settings/upload-image', { method:'POST', body:fd });
+    const data = await res.json();
+    if (!data.success) return showToast('Upload thất bại', 'error');
+    aboutData[idx].image = data.url;
+    const wrap = document.getElementById('aboutImgWrap_' + idx);
+    if (wrap) wrap.innerHTML = `<img src="${data.url}" style="width:100%;height:100%;object-fit:cover">`;
+    showToast('Upload ảnh thành công', 'success');
+  } catch(e) { showToast('Lỗi upload', 'error'); }
+}
+
+async function saveAbout() {
+  try {
+    const res = await authFetch(API + '/api/settings/about-sections', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ value: aboutData })
+    });
+    const data = await res.json();
+    if (data.success) showToast('Đã lưu trang Giới thiệu', 'success');
+    else showToast(data.message || 'Lỗi lưu', 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
 }
 
 // ── BANNERS ──

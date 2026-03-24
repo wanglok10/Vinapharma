@@ -812,6 +812,38 @@ i.fa-solid,i.fa-regular{line-height:1}
   </div>
 </div>
 
+<!-- ── ABOUT CONTENT EDITOR MODAL ── -->
+<div class="overlay" id="aboutEditorOverlay">
+  <div class="modal" style="max-width:780px;width:95%">
+    <div class="modal-header">
+      <div class="modal-title" id="aboutEditorTitle">Chỉnh sửa nội dung</div>
+      <button class="modal-close" onclick="document.getElementById('aboutEditorOverlay').classList.remove('show')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="rich-toolbar">
+        <button class="rich-btn" onclick="fmt('bold')"><b>B</b></button>
+        <button class="rich-btn" onclick="fmt('italic')"><i>I</i></button>
+        <button class="rich-btn" onclick="fmt('underline')"><u>U</u></button>
+        <button class="rich-btn" onclick="fmtBlock('h2')">H2</button>
+        <button class="rich-btn" onclick="fmtBlock('h3')">H3</button>
+        <button class="rich-btn" onclick="fmt('insertUnorderedList')">• List</button>
+        <button class="rich-btn" onclick="fmt('insertOrderedList')">1. List</button>
+      </div>
+      <div class="rich-content" id="aboutEditorContent" contenteditable="true" style="min-height:320px"></div>
+      <div style="margin-top:.5rem">
+        <label class="btn btn-outline" style="font-size:.82rem;padding:.35rem .9rem;cursor:pointer;display:inline-flex;align-items:center;gap:.3rem">
+          <i class="fa-solid fa-image ic-gray"></i> Thêm ảnh vào nội dung
+          <input type="file" accept="image/*" style="display:none" onchange="insertAboutImage(this)">
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="document.getElementById('aboutEditorOverlay').classList.remove('show')">Hủy</button>
+      <button class="btn btn-red" onclick="saveAboutContent()"><i class="fa-solid fa-floppy-disk"></i> Lưu nội dung</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── USER MODAL ── -->
 <div class="overlay" id="userOverlay">
   <div class="modal">
@@ -1683,9 +1715,14 @@ function renderAbout() {
   const wrap = document.getElementById('aboutSections');
   wrap.innerHTML = aboutData.map((s, i) => `
     <div style="background:#fff;border:1px solid #e8e8e8;border-radius:.7rem;padding:1.2rem;margin-bottom:1rem">
-      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem">
-        <span style="background:#cc1f1f;color:#fff;font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:2rem">${i+1}</span>
-        <strong style="font-size:.88rem">${s.title}</strong>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.9rem">
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <span style="background:#cc1f1f;color:#fff;font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:2rem">${i+1}</span>
+          <strong style="font-size:.88rem">${s.title}</strong>
+        </div>
+        <button class="btn btn-sm btn-outline" onclick="openAboutEditor(${i})" style="color:#7c3aed;border-color:#7c3aed;display:flex;align-items:center;gap:.3rem">
+          <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa nội dung
+        </button>
       </div>
       <div style="display:grid;grid-template-columns:180px 1fr;gap:1.2rem;align-items:start">
         <div>
@@ -1708,7 +1745,7 @@ function renderAbout() {
             <input value="${s.title}" oninput="aboutData[${i}].title=this.value" style="width:100%;padding:.42rem .7rem;border:1px solid #e8e8e8;border-radius:.4rem;font-family:inherit;font-size:.83rem">
           </div>
           <div>
-            <div style="font-size:.72rem;color:#888;margin-bottom:.25rem;font-weight:600">MÔ TẢ</div>
+            <div style="font-size:.72rem;color:#888;margin-bottom:.25rem;font-weight:600">MÔ TẢ NGẮN (hiện trên card)</div>
             <textarea rows="3" oninput="aboutData[${i}].desc=this.value" style="width:100%;padding:.42rem .7rem;border:1px solid #e8e8e8;border-radius:.4rem;font-family:inherit;font-size:.83rem;resize:vertical">${s.desc}</textarea>
           </div>
           <div>
@@ -1718,6 +1755,56 @@ function renderAbout() {
         </div>
       </div>
     </div>`).join('');
+}
+
+let editingAboutIdx = null;
+async function openAboutEditor(idx) {
+  editingAboutIdx = idx;
+  const s = aboutData[idx];
+  document.getElementById('aboutEditorTitle').textContent = 'Nội dung: ' + s.title;
+  const editor = document.getElementById('aboutEditorContent');
+  editor.innerHTML = '<div style="text-align:center;padding:2rem;color:#bbb">Đang tải...</div>';
+  document.getElementById('aboutEditorOverlay').classList.add('show');
+  try {
+    const res = await authFetch(API + '/api/settings/about-content-' + idx, { headers:{} });
+    const data = await res.json();
+    editor.innerHTML = (data.success && data.data) ? data.data : '';
+  } catch(e) { editor.innerHTML = ''; }
+}
+
+async function saveAboutContent() {
+  const editor = document.getElementById('aboutEditorContent');
+  try {
+    const res = await authFetch(API + '/api/settings/about-content-' + editingAboutIdx, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ value: editor.innerHTML })
+    });
+    const data = await res.json();
+    if (data.success) { showToast('Đã lưu nội dung', 'success'); document.getElementById('aboutEditorOverlay').classList.remove('show'); }
+    else showToast(data.message || 'Lỗi lưu', 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function insertAboutImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  input.value = '';
+  const fd = new FormData();
+  fd.append('image', file);
+  showToast('Đang upload...', 'info');
+  try {
+    const res = await authFetch(API + '/api/settings/upload-image', { method:'POST', body:fd });
+    const data = await res.json();
+    if (!data.success) return showToast('Upload thất bại', 'error');
+    const editor = document.getElementById('aboutEditorContent');
+    const img = document.createElement('img');
+    img.src = data.url.startsWith('http') ? data.url : API + data.url;
+    img.style.cssText = 'max-width:100%;height:auto;border-radius:.4rem;margin:.5rem 0;display:block';
+    editor.appendChild(img);
+    editor.appendChild(document.createElement('br'));
+    showToast('Đã chèn ảnh', 'success');
+  } catch(e) { showToast('Lỗi upload', 'error'); }
 }
 
 async function uploadAboutImage(input, idx) {

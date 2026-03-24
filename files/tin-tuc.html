@@ -176,13 +176,25 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .footer-contact-item a:hover{color:var(--red)}
 
 /* ── NEWS PAGE ── */
-.news-hero{background:linear-gradient(135deg,#cc1f1f 0%,#8a1010 100%);padding:2.5rem 4% 2rem;position:relative;overflow:hidden}
-.news-hero::before{content:'';position:absolute;top:-40%;right:-5%;width:450px;height:450px;background:rgba(255,255,255,.04);border-radius:50%}
-.news-hero-inner{position:relative;max-width:680px}
-.news-hero-label{display:inline-block;background:rgba(255,255,255,.15);color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .75rem;border-radius:2rem;margin-bottom:.7rem}
-.news-hero-title{font-size:1.9rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:.55rem}
-.news-hero-sub{font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.6}
+.news-hero{background:#fff;border-bottom:1px solid var(--border)}
+.news-hero-inner{display:grid;grid-template-columns:55% 1fr;max-width:1280px;margin:0 auto;min-height:400px;align-items:stretch}
+.news-hero-img{overflow:hidden;background:var(--light)}
+.news-hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.news-hero-img-placeholder{width:100%;min-height:400px;display:flex;align-items:center;justify-content:center;font-size:5rem;background:#f5f5f5}
+.news-hero-text{padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:center}
+.news-hero-label{font-size:.65rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.6rem}
+.news-hero-title{font-size:clamp(1.6rem,2.5vw,2.3rem);font-weight:900;color:#111;line-height:1.2;margin-bottom:.75rem}
+.news-hero-sub{font-size:.9rem;color:#666;line-height:1.65}
 .news-body{padding:2rem 4%;max-width:1280px;margin:0 auto}
+.jcard{text-decoration:none;color:var(--dark);display:flex;flex-direction:column}
+.jcard-img{overflow:hidden;background:var(--light);aspect-ratio:16/9;margin-bottom:.85rem}
+.jcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.jcard:hover .jcard-img img{transform:scale(1.04)}
+.jcard-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--light)}
+.jcard-cat{font-size:.63rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem}
+.jcard-title{font-size:.95rem;font-weight:800;line-height:1.4;margin-bottom:.45rem;color:#111}
+.jcard-excerpt{font-size:.82rem;color:#666;line-height:1.6;margin-bottom:.55rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.jcard-more{font-size:.75rem;color:#aaa}
 .featured-section{margin-bottom:2.5rem}
 .featured-label,.grid-label{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem}
 .featured-heading,.grid-heading{font-size:1.1rem;font-weight:800;margin-bottom:1.2rem;color:var(--dark)}
@@ -238,7 +250,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .filter-chip.active,.filter-chip:hover{background:var(--red);color:#fff;border-color:var(--red)}
 .empty-news{text-align:center;padding:4rem 1rem;color:#bbb}
 .empty-news .empty-icon{font-size:3rem;margin-bottom:.75rem}
-@media(max-width:900px){.featured-grid{grid-template-columns:1fr}.featured-card{grid-template-columns:1fr}.featured-card-img{aspect-ratio:16/9}.article-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.news-hero-inner{grid-template-columns:1fr}.news-hero-img{display:none}.news-hero-text{padding:2rem 0}.featured-grid{grid-template-columns:1fr}.featured-card{grid-template-columns:1fr}.featured-card-img{aspect-ratio:16/9}.article-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.article-grid{grid-template-columns:1fr}}
 
 
@@ -374,9 +386,14 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 
 <div class="news-hero">
   <div class="news-hero-inner">
-    <div class="news-hero-label">Tin tức</div>
-    <div class="news-hero-title">Tin tức &amp; Bài viết chuyên sâu</div>
-    <div class="news-hero-sub">Cập nhật kiến thức dinh dưỡng, sức khỏe và lối sống lành mạnh từ các chuyên gia.</div>
+    <div class="news-hero-img" id="newsHeroImg">
+      <div class="news-hero-img-placeholder"><i class="fa-solid fa-newspaper" style="color:#d1d5db"></i></div>
+    </div>
+    <div class="news-hero-text">
+      <div class="news-hero-label">Tin tức &amp; Bài viết</div>
+      <div class="news-hero-title">Kiến thức dinh dưỡng &amp; sức khỏe</div>
+      <div class="news-hero-sub">Cập nhật kiến thức dinh dưỡng, sức khỏe và lối sống lành mạnh từ các chuyên gia.</div>
+    </div>
   </div>
 </div>
 
@@ -504,10 +521,14 @@ function tagsHtml(tags, cls){
 function renderHero(posts){
   var sec = document.getElementById('heroSection');
   var box = document.getElementById('heroCard');
-  // hero = first post (lowest order)
   var p = posts[0];
   if(!p){ sec.style.display='none'; return; }
   sec.style.display = 'block';
+  var heroImg = document.getElementById('newsHeroImg');
+  if(heroImg && p.thumbnail){
+    var hsrc = p.thumbnail.startsWith('http')?p.thumbnail:API+p.thumbnail;
+    heroImg.innerHTML = '<img src="'+hsrc+'" alt="'+p.title+'">';
+  }
   var img = p.thumbnail
     ? '<img src="'+(p.thumbnail.startsWith('http')?p.thumbnail:API+p.thumbnail)+'" alt="'+p.title+'"/>'
     : '<div class="hero-card-img-placeholder" style="background:'+cc(0)+';display:flex;align-items:center;justify-content:center;font-size:5rem;min-height:340px">'+( p.icon||'<i class="fa-solid fa-newspaper" style="color:#6b7280"></i>')+'</div>';
@@ -537,16 +558,13 @@ function renderMedium(posts){
     var bg = 'background:'+cc(i+1);
     var img = p.thumbnail
       ? '<img src="'+(p.thumbnail.startsWith('http')?p.thumbnail:API+p.thumbnail)+'" alt="'+p.title+'"/>'
-      : '<div class="medium-card-img-placeholder" style="'+bg+'">'+( p.icon||'<i class="fa-solid fa-newspaper" style="color:#6b7280"></i>')+'</div>';
-    return '<a class="medium-card" href="tin-tuc-chi-tiet.html?id='+p._id+'">'  
-      +'<div class="medium-card-img">'+img+'</div>'
-      +'<div class="medium-card-body">'
-      +'<div class="medium-card-cat">'+p.category+'</div>'
-      +'<div class="medium-card-title">'+p.title+'</div>'
-      +'<div class="medium-card-excerpt">'+p.excerpt+'</div>'
-      +'<div class="medium-card-tags">'+tagsHtml(p.tags,'tag-chip')+'</div>'
-      +'<div class="medium-card-meta"><span>\uD83D\uDCC5 '+fd(p.publishedAt||p.createdAt)+'</span></div>'
-      +'</div>'
+      : '<div class="jcard-img-placeholder" style="'+bg+'">'+( p.icon||'<i class="fa-solid fa-newspaper" style="color:#6b7280"></i>')+'</div>';
+    return '<a class="jcard" href="tin-tuc-chi-tiet.html?id='+p._id+'">'  
+      +'<div class="jcard-img">'+img+'</div>'
+      +'<div class="jcard-cat">'+p.category+'</div>'
+      +'<div class="jcard-title">'+p.title+'</div>'
+      +'<div class="jcard-excerpt">'+p.excerpt+'</div>'
+      +'<span class="jcard-more">'+fd(p.publishedAt||p.createdAt)+' &nbsp;&middot;&nbsp; '+(p.readTime||5)+' ph\u00fat \u0111\u1ecdc</span>'
       +'</a>';
   }).join('');
 }
@@ -562,16 +580,13 @@ function renderGrid(posts, append){
   var cards = regular.map(function(p,i){
     var img = p.thumbnail
       ? '<img src="'+(p.thumbnail.startsWith('http')?p.thumbnail:API+p.thumbnail)+'" alt="'+p.title+'"/>'
-      : '<div class="article-card-img-placeholder" style="background:'+cc(i)+'">'+( p.icon||'<i class="fa-solid fa-newspaper" style="color:#6b7280"></i>')+'</div>';
-    return '<a class="article-card article-card-small" href="tin-tuc-chi-tiet.html?id=' + p._id + '">'
-      +'<div class="article-card-img">'+img+'</div>'
-      +'<div class="article-card-body">'
-      +'<div class="article-card-cat">'+p.category+'</div>'
-      +'<div class="article-card-title">'+p.title+'</div>'
-      +'<div class="article-card-excerpt">'+p.excerpt+'</div>'
-      +'<div class="article-card-tags">'+tagsHtml(p.tags)+'</div>'
-      +'<div class="article-card-meta"><span><i class="fa-solid fa-calendar" style="color:#6b7280"></i> '+fd(p.publishedAt||p.createdAt)+'</span><span><i class="fa-regular fa-clock" style="color:#6b7280"></i> '+(p.readTime||5)+' phút</span><span><i class="fa-regular fa-eye" style="color:#6b7280"></i> '+(p.views||0)+'</span></div>'
-      +'</div>'
+      : '<div class="jcard-img-placeholder" style="background:'+cc(i)+'">'+( p.icon||'<i class="fa-solid fa-newspaper" style="color:#6b7280"></i>')+'</div>';
+    return '<a class="jcard" href="tin-tuc-chi-tiet.html?id=' + p._id + '">'
+      +'<div class="jcard-img">'+img+'</div>'
+      +'<div class="jcard-cat">'+p.category+'</div>'
+      +'<div class="jcard-title">'+p.title+'</div>'
+      +'<div class="jcard-excerpt">'+p.excerpt+'</div>'
+      +'<span class="jcard-more">'+fd(p.publishedAt||p.createdAt)+' &nbsp;&middot;&nbsp; '+(p.readTime||5)+' ph\u00fat \u0111\u1ecdc</span>'
       +'</a>';
   }).join('');
   if(append) grid.insertAdjacentHTML('beforeend', cards);

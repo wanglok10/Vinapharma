@@ -609,9 +609,9 @@ async function loadHeroBanners() {
           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/>
         <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.1) 60%,transparent 100%)"></div>
         <div class="slide-text" style="position:relative;z-index:2;padding:0 8%;max-width:60%">
-          <h1 class="slide-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(1.1rem,3vw,2.6rem)">${b.title}</h1>
+          <h1 class="slide-title" style="white-space:nowrap;font-size:clamp(1rem,3vw,2.6rem);line-height:1.1">${b.title}</h1>
           ${b.subtitle ? `<p class="slide-desc">${b.subtitle}</p>` : ''}
-          ${b.buttonText ? `<a href="${b.buttonLink || 'san-pham.html'}" class="slide-btn">${b.buttonText}</a>` : ''}
+          ${(b.buttonText||'').trim() ? `<a href="${b.buttonLink || 'san-pham.html'}" class="slide-btn">${b.buttonText}</a>` : ''}
         </div>
       </div>`).join('');
 
@@ -619,7 +619,21 @@ async function loadHeroBanners() {
       dotsEl.innerHTML = banners.map((_,i) =>
         `<span class="hero-dot ${i===0?'active':''}" onclick="goSlide(${i})"></span>`).join('');
     }
+    requestAnimationFrame(fitSlideTitles);
   } catch(e) { console.log('Dùng banner tĩnh'); }
+}
+function fitSlideTitles() {
+  document.querySelectorAll('.hero-slide .slide-title').forEach(function(el) {
+    el.style.whiteSpace = 'nowrap';
+    var parent = el.parentElement;
+    var maxW = parent ? parent.offsetWidth : 0;
+    if (!maxW) return;
+    var size = parseFloat(window.getComputedStyle(el).fontSize);
+    while (el.scrollWidth > maxW && size > 10) {
+      size -= 0.5;
+      el.style.fontSize = size + 'px';
+    }
+  });
 }
 
 async function loadFeaturedProducts() {

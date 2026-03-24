@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -627,12 +627,15 @@ document.addEventListener('click', e => {
     document.getElementById('jjLayout').innerHTML=o;
   }
 
+  // Render ngay với DEFAULT để tránh màn hình trắng khi API ngủ
+  render(DEFAULT);
+  // Sau đó fetch API và cập nhật nếu có dữ liệu
   fetch(API + '/api/settings/about-sections')
     .then(function(r){ return r.json(); })
     .then(function(d){
-      render((d.success && Array.isArray(d.data) && d.data.length) ? d.data : DEFAULT);
+      if(d.success && Array.isArray(d.data) && d.data.length) render(d.data);
     })
-    .catch(function(){ render(DEFAULT); });
+    .catch(function(){});
 })();
 </script>
 </body>

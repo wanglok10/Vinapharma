@@ -2146,7 +2146,7 @@ function editBanner(id) {
 async function saveBanner() {
   if (!editingBannerId && !selectedFiles['banner']) return showToast('Vui lòng chọn ảnh', 'error');
   const formData = new FormData();
-  formData.append('title', document.getElementById('bTitle').value || 'Banner');
+  formData.append('title', document.getElementById('bTitle').value);
   formData.append('subtitle', document.getElementById('bSubtitle').value);
   formData.append('buttonText', document.getElementById('bBtn').value);
   formData.append('buttonLink', document.getElementById('bLink').value);

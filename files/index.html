@@ -460,17 +460,16 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 
 <script>
 // Hero slider
-let heroIdx=0;
+let heroIdx=0, heroTotal=3;
 const slides=document.getElementById('heroSlides');
-const dots=document.querySelectorAll('.hero-dot');
 function goSlide(n){
-  heroIdx=(n+3)%3;
+  heroIdx=((n%heroTotal)+heroTotal)%heroTotal;
   slides.style.transform=`translateX(${-heroIdx*100}%)`;
-  dots.forEach((d,i)=>d.classList.toggle('active',i===heroIdx));
+  document.querySelectorAll('.hero-dot').forEach((d,i)=>d.classList.toggle('active',i===heroIdx));
 }
 document.getElementById('heroPrev').addEventListener('click',()=>goSlide(heroIdx-1));
 document.getElementById('heroNext').addEventListener('click',()=>goSlide(heroIdx+1));
-dots.forEach(d=>d.addEventListener('click',()=>goSlide(+d.dataset.idx)));
+document.querySelectorAll('.hero-dot').forEach(d=>d.addEventListener('click',()=>goSlide(+d.dataset.idx)));
 let auto=setInterval(()=>goSlide(heroIdx+1),4500);
 document.querySelector('.hero').addEventListener('mouseenter',()=>clearInterval(auto));
 document.querySelector('.hero').addEventListener('mouseleave',()=>{auto=setInterval(()=>goSlide(heroIdx+1),4500)});
@@ -615,9 +614,22 @@ async function loadHeroBanners() {
         </div>
       </div>`).join('');
 
-    if (dotsEl) {
-      dotsEl.innerHTML = banners.map((_,i) =>
-        `<span class="hero-dot ${i===0?'active':''}" onclick="goSlide(${i})"></span>`).join('');
+    heroTotal = banners.length;
+    heroIdx = 0;
+    clearInterval(auto);
+    if (banners.length > 1) {
+      if (dotsEl) {
+        dotsEl.innerHTML = banners.map((_,i) =>
+          `<span class="hero-dot ${i===0?'active':''}" onclick="goSlide(${i})"></span>`).join('');
+        dotsEl.style.display = '';
+      }
+      document.getElementById('heroPrev').style.display = '';
+      document.getElementById('heroNext').style.display = '';
+      auto = setInterval(()=>goSlide(heroIdx+1), 4500);
+    } else {
+      if (dotsEl) dotsEl.style.display = 'none';
+      document.getElementById('heroPrev').style.display = 'none';
+      document.getElementById('heroNext').style.display = 'none';
     }
     requestAnimationFrame(fitSlideTitles);
   } catch(e) { console.log('Dùng banner tĩnh'); }

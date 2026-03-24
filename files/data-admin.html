@@ -154,6 +154,7 @@ textarea{resize:vertical;min-height:80px}
 .rich-content a{color:var(--red);text-decoration:underline}
 .rich-content hr{border:none;border-top:2px solid #eee;margin:.8rem 0}
 .rich-content img{max-width:100%;border-radius:.4rem;margin:.5rem 0;display:block}
+.rich-select{font-size:.75rem;padding:.27rem .3rem;border:1px solid #e0e0e0;border-radius:.25rem;background:#fff;cursor:pointer;font-family:inherit;color:#333;height:28px}
 
 /* ── FILTER ── */
 .filter-bar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
@@ -643,6 +644,14 @@ i.fa-solid,i.fa-regular{line-height:1}
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="fmt('justifyCenter')" title="Căn giữa"><i class="fa-solid fa-align-center" style="font-size:.7rem"></i></button>
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="fmt('justifyRight')" title="Căn phải"><i class="fa-solid fa-align-right" style="font-size:.7rem"></i></button>
         <span class="rich-sep"></span>
+        <select class="rich-select" title="Cỡ chữ" onmousedown="savePostEditorRange()" onchange="applyFontSize(this.value,'postContent');this.value=''">
+          <option value="" disabled selected>Cỡ</option>
+          <option value="11px">11</option><option value="12px">12</option><option value="13px">13</option>
+          <option value="14px">14</option><option value="16px">16</option><option value="18px">18</option>
+          <option value="20px">20</option><option value="24px">24</option><option value="28px">28</option>
+          <option value="32px">32</option><option value="36px">36</option><option value="48px">48</option>
+        </select>
+        <span class="rich-sep"></span>
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="insertPostLink()" title="Chèn liên kết"><i class="fa-solid fa-link" style="font-size:.7rem"></i></button>
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="fmt('insertHorizontalRule')" title="Đường kẻ ngang">—</button>
         <label class="rich-btn" title="Màu chữ" style="cursor:pointer;display:inline-flex;align-items:center;gap:.2rem;font-weight:700" onmousedown="savePostEditorRange()">
@@ -863,6 +872,14 @@ i.fa-solid,i.fa-regular{line-height:1}
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="fmt('justifyLeft')" title="Căn trái"><i class="fa-solid fa-align-left" style="font-size:.7rem"></i></button>
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="fmt('justifyCenter')" title="Căn giữa"><i class="fa-solid fa-align-center" style="font-size:.7rem"></i></button>
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="fmt('justifyRight')" title="Căn phải"><i class="fa-solid fa-align-right" style="font-size:.7rem"></i></button>
+        <span class="rich-sep"></span>
+        <select class="rich-select" title="Cỡ chữ" onmousedown="saveAboutEditorRange()" onchange="applyFontSize(this.value,'aboutEditorContent');this.value=''">
+          <option value="" disabled selected>Cỡ</option>
+          <option value="11px">11</option><option value="12px">12</option><option value="13px">13</option>
+          <option value="14px">14</option><option value="16px">16</option><option value="18px">18</option>
+          <option value="20px">20</option><option value="24px">24</option><option value="28px">28</option>
+          <option value="32px">32</option><option value="36px">36</option><option value="48px">48</option>
+        </select>
         <span class="rich-sep"></span>
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="insertAboutLink()" title="Chèn liên kết"><i class="fa-solid fa-link" style="font-size:.7rem"></i></button>
         <button class="rich-btn" onmousedown="event.preventDefault()" onclick="fmt('insertHorizontalRule')" title="Đường kẻ ngang">—</button>
@@ -1844,6 +1861,27 @@ async function saveAboutContent() {
     if (data.success) { showToast('Đã lưu nội dung', 'success'); document.getElementById('aboutEditorOverlay').classList.remove('show'); }
     else showToast(data.message || 'Lỗi lưu', 'error');
   } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+// ── Font size (shared by both editors) ──
+function applyFontSize(size, editorId) {
+  const editor = document.getElementById(editorId);
+  const savedRange = editorId === 'postContent' ? postEditorRange : aboutEditorRange;
+  if (savedRange) {
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+    if (editorId === 'postContent') postEditorRange = null;
+    else aboutEditorRange = null;
+  }
+  document.execCommand('fontSize', false, '7');
+  editor.querySelectorAll('font[size="7"]').forEach(function(el) {
+    const span = document.createElement('span');
+    span.style.fontSize = size;
+    while (el.firstChild) span.appendChild(el.firstChild);
+    el.parentNode.replaceChild(span, el);
+  });
+  editor.focus();
 }
 
 // ── Post editor range (for image insert at cursor) ──

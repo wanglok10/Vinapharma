@@ -204,7 +204,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}}
 
 .hero{position:relative;overflow:hidden;height:500px;background:var(--red)}
-.hero-slides{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.hero-slides{display:flex;height:100%;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
 .hero-slide{min-width:100%;height:100%;display:flex;align-items:center;padding:0 8%;position:relative;overflow:hidden;flex-shrink:0}
 .slide-1{background:linear-gradient(120deg,#cc1f1f 0%,#9a1414 100%)}
 .slide-2{background:linear-gradient(120deg,#b01010 0%,#7a0a0a 100%)}
@@ -219,12 +219,20 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .slide-btn:hover{background:#fff5f5;transform:translateY(-2px)}
 .slide-visual{position:absolute;right:6%;top:50%;transform:translateY(-50%);z-index:3;font-size:9rem;filter:drop-shadow(0 16px 32px rgba(0,0,0,.15));animation:floatY 3s ease-in-out infinite}
 @keyframes floatY{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 10px))}}
-.hero-prev,.hero-next{position:absolute;top:50%;z-index:5;transform:translateY(-50%);background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.3);color:#fff;width:42px;height:42px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.hero-prev,.hero-next{position:absolute;top:50%;z-index:5;transform:translateY(-50%);background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.3);color:#fff;width:42px;height:42px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .35s ease,background .2s}
 .hero-prev:hover,.hero-next:hover{background:rgba(255,255,255,.4)}
 .hero-prev{left:1.2rem}.hero-next{right:1.2rem}
-.hero-dots{position:absolute;bottom:1.1rem;left:50%;transform:translateX(-50%);display:flex;gap:.45rem;z-index:5}
+.hero-dots{position:absolute;bottom:1.1rem;left:50%;transform:translateX(-50%);display:flex;gap:.45rem;z-index:5;transition:opacity .35s ease}
 .hero-dot{width:26px;height:4px;border-radius:2px;background:rgba(255,255,255,.35);cursor:pointer;transition:background .3s,width .3s}
 .hero-dot.active{background:#fff;width:40px}
+.hero-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:4;background:linear-gradient(120deg,rgba(204,31,31,.96) 0%,rgba(138,16,16,.92) 100%);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease,visibility .35s ease}
+.hero-loading-inner{display:flex;flex-direction:column;align-items:center;gap:.8rem;color:#fff;text-align:center}
+.hero-loading-spinner{width:42px;height:42px;border-radius:50%;border:3px solid rgba(255,255,255,.24);border-top-color:#fff;animation:heroSpin .8s linear infinite}
+.hero-loading-text{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.88)}
+.hero.is-hydrating .hero-loading{opacity:1;visibility:visible}
+.hero.is-switching .hero-slides,.hero.is-switching .hero-prev,.hero.is-switching .hero-next,.hero.is-switching .hero-dots{opacity:0}
+.hero.is-ready .hero-slides,.hero.is-ready .hero-prev,.hero.is-ready .hero-next,.hero.is-ready .hero-dots{opacity:1}
+@keyframes heroSpin{to{transform:rotate(360deg)}}
 .promo-banner{background:linear-gradient(120deg,#cc1f1f,#8a1010);border-radius:1rem;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:2.2rem 3.5rem;margin:0 4% 3rem;position:relative}
 .promo-banner::before{content:'';position:absolute;right:0;top:0;bottom:0;width:40%;background:rgba(255,255,255,.05);clip-path:polygon(20% 0,100% 0,100% 100%,0 100%)}
 .promo-tag{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.4rem}
@@ -375,7 +383,13 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 </header>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero is-hydrating" id="homeHero">
+  <div class="hero-loading" aria-hidden="true">
+    <div class="hero-loading-inner">
+      <div class="hero-loading-spinner"></div>
+      <div class="hero-loading-text">Đang tải nội dung nổi bật</div>
+    </div>
+  </div>
   <div class="hero-slides" id="heroSlides">
     <div class="hero-slide slide-1">
       <div class="slide-text">
@@ -461,7 +475,17 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 <script>
 // Hero slider
 let heroIdx=0, heroTotal=3;
+const heroSection=document.getElementById('homeHero');
 const slides=document.getElementById('heroSlides');
+function setHeroState(state){
+  if(!heroSection) return;
+  heroSection.classList.remove('is-hydrating','is-switching','is-ready');
+  heroSection.classList.add(state);
+}
+function revealHero(){
+  if(!heroSection) return;
+  requestAnimationFrame(()=>setHeroState('is-ready'));
+}
 function goSlide(n){
   heroIdx=((n%heroTotal)+heroTotal)%heroTotal;
   slides.style.transform=`translateX(${-heroIdx*100}%)`;
@@ -591,16 +615,17 @@ async function loadHeroBanners() {
   try {
     const res = await fetch(API + '/api/banners?position=hero');
     const data = await res.json();
-    if (!data.success || !data.data.length) return;
+    if (!data.success || !data.data.length) { revealHero(); return; }
     const banners = data.data;
     const slidesEl = document.getElementById('heroSlides');
     const dotsEl = document.querySelector('.hero-dots');
-    if (!slidesEl) return;
+    if (!slidesEl) { revealHero(); return; }
 
     // Ẩn phần trắng hình chéo khi dùng ảnh
     const style = document.createElement('style');
     style.textContent = '.hero-slide::after{display:none!important} .slide-visual{display:none!important} .hero-slide{padding:0!important}';
     document.head.appendChild(style);
+    setHeroState('is-switching');
 
     slidesEl.innerHTML = banners.map((b, i) => `
       <div class="hero-slide" style="position:relative;overflow:hidden;min-width:100%">
@@ -631,8 +656,14 @@ async function loadHeroBanners() {
       document.getElementById('heroPrev').style.display = 'none';
       document.getElementById('heroNext').style.display = 'none';
     }
-    requestAnimationFrame(fitSlideTitles);
+    requestAnimationFrame(() => {
+      fitSlideTitles();
+      revealHero();
+    });
   } catch(e) { console.log('Dùng banner tĩnh'); }
+  finally {
+    if (!heroSection?.classList.contains('is-ready')) revealHero();
+  }
 }
 function fitSlideTitles() {
   document.querySelectorAll('.hero-slide .slide-title').forEach(function(el) {

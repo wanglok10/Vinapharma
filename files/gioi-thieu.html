@@ -222,8 +222,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .jj-challenge-eyebrow{font-size:.65rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.8rem}
 .jj-challenge-heading{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem}
 .jj-challenge-body{font-size:.92rem;color:rgba(255,255,255,.8);line-height:1.75;margin-bottom:1.5rem;max-width:500px}
-.jj-challenge-link{display:inline-flex;align-items:center;gap:.4rem;color:#fff;font-size:.85rem;font-weight:700;text-decoration:none;border-bottom:2px solid rgba(255,255,255,.5);padding-bottom:.15rem;transition:border-color .2s}
-.jj-challenge-link:hover{border-color:#fff}
+.jj-challenge-link{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.18);color:#fff;padding:.65rem 1.5rem;border-radius:.3rem;font-size:.85rem;font-weight:700;text-decoration:none;border:2px solid rgba(255,255,255,.55);transition:background .2s,border-color .2s}
+.jj-challenge-link:hover{background:rgba(255,255,255,.28);border-color:#fff}
 .jj-feature{display:grid;grid-template-columns:55% 45%;min-height:380px;border-bottom:1px solid var(--border)}
 .jj-feature.reverse{grid-template-columns:45% 55%}
 .jj-feature-img{overflow:hidden;position:relative;background:var(--light)}
@@ -235,8 +235,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .jj-feature-eyebrow{font-size:.63rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.7rem}
 .jj-feature-heading{font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:900;color:#111;line-height:1.2;margin-bottom:.8rem}
 .jj-feature-body-text{font-size:.9rem;color:#555;line-height:1.75;margin-bottom:1.4rem}
-.jj-feature-link{display:inline-flex;align-items:center;gap:.45rem;color:var(--red);font-size:.84rem;font-weight:700;text-decoration:none}
-.jj-feature-link:hover{text-decoration:underline}
+.jj-feature-link{display:inline-flex;align-items:center;gap:.5rem;background:var(--red);color:#fff;padding:.6rem 1.4rem;border-radius:.3rem;font-size:.82rem;font-weight:700;text-decoration:none;transition:background .2s}
+.jj-feature-link:hover{background:#a81818}
 .jj-leaders{padding:3.5rem 7%;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:40% 1fr;gap:4rem;align-items:start;border-bottom:1px solid var(--border)}
 .jj-leaders-img{overflow:hidden;aspect-ratio:3/4;background:var(--light)}
 .jj-leaders-img img{width:100%;height:100%;object-fit:cover;display:block}
@@ -266,8 +266,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .jj-history-eyebrow{font-size:.63rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.7rem}
 .jj-history-heading{font-size:clamp(1.4rem,2.5vw,2rem);font-weight:900;color:#111;line-height:1.2;margin-bottom:.8rem}
 .jj-history-body-text{font-size:.9rem;color:#555;line-height:1.75;margin-bottom:1.4rem}
-.jj-history-link{display:inline-flex;align-items:center;gap:.45rem;color:var(--red);font-size:.84rem;font-weight:700;text-decoration:none}
-.jj-history-link:hover{text-decoration:underline}
+.jj-history-link{display:inline-flex;align-items:center;gap:.5rem;background:var(--red);color:#fff;padding:.6rem 1.4rem;border-radius:.3rem;font-size:.82rem;font-weight:700;text-decoration:none;transition:background .2s}
+.jj-history-link:hover{background:#a81818}
 .jj-glance-wrap{background:#fff;border-bottom:1px solid var(--border);padding:3rem 7%}
 .jj-glance{max-width:1280px;margin:0 auto}
 .jj-glance-heading{font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:900;color:#111;margin-bottom:2rem}
@@ -286,7 +286,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .jj-story-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
 .jj-story-cat{font-size:.62rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem}
 .jj-story-title{font-size:.95rem;font-weight:800;line-height:1.35;color:#111}
-.jj-story-more{font-size:.78rem;font-weight:700;color:var(--red);margin-top:.4rem}
+.jj-story-more{display:inline-flex;align-items:center;gap:.4rem;background:var(--red);color:#fff;padding:.5rem 1.1rem;border-radius:.3rem;font-size:.78rem;font-weight:700;text-decoration:none;margin-top:.6rem;transition:background .2s}
+.jj-story-more:hover{background:#a81818}
 @media(max-width:900px){.jj-intro,.jj-leaders{grid-template-columns:1fr;gap:2rem}.jj-feature,.jj-feature.reverse{grid-template-columns:1fr}.jj-feature.reverse .jj-feature-body{order:0}.jj-feature-body{padding:2.5rem 1.5rem}.jj-intro-img{display:none}.jj-people{grid-template-columns:1fr}.jj-history{grid-template-columns:1fr}.jj-glance-grid{grid-template-columns:1fr 1fr}.jj-stories-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.jj-glance-grid{grid-template-columns:1fr 1fr}.jj-stories-grid{grid-template-columns:1fr}.jj-challenge-text{padding:3rem 5%}.jj-history-body{padding:2rem 1.5rem}}
 </style>
@@ -618,7 +619,7 @@ document.addEventListener('click', e => {
             +'<div class="jj-story-img">'+sImg(item,'fa-solid fa-star')+'</div>'
             +'<div class="jj-story-cat">'+item.label+'</div>'
             +'<div class="jj-story-title">'+item.title+'</div>'
-            +'<span class="jj-story-more">Đọc thêm →</span>'
+            +'<span class="jj-story-more">Tìm hiểu thêm <i class="fa-solid fa-arrow-right"></i></span>'
             +'</a>';
         }).join('')
         +'</div></div></div>';

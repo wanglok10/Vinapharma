@@ -238,6 +238,7 @@ document.addEventListener('click',function(e){
 <div class="article-wrap">
   <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
 
+<div id="aboutBody">
   <h2>Thực phẩm chức năng và sản phẩm bổ sung hỗ trợ sức khỏe</h2>
   <p>Đây là một trong những trụ cột hoạt động quan trọng của VinaPharma, phản ánh định hướng đồng hành cùng nhu cầu chăm sóc sức khỏe chủ động ngày càng cao của người Việt. Chúng tôi tập trung phát triển những nhóm sản phẩm có giá trị sử dụng thiết thực, phù hợp với xu hướng phòng ngừa, hỗ trợ và nâng cao chất lượng sống trong đời sống hiện đại.</p>
   <p>Danh mục được lựa chọn theo hướng chọn lọc, ưu tiên những thương hiệu uy tín trong và ngoài nước, có nền tảng chất lượng rõ ràng, nguồn gốc minh bạch và tiêu chuẩn sản xuất nghiêm ngặt. VinaPharma đặc biệt chú trọng đến tính phù hợp của sản phẩm với nhu cầu thị trường Việt Nam, thay vì mở rộng danh mục theo hướng dàn trải.</p>
@@ -268,6 +269,7 @@ document.addEventListener('click',function(e){
   <h2>Định hướng mở rộng trong tương lai</h2>
   <p>Trong giai đoạn tiếp theo, VinaPharma tiếp tục mở rộng các trụ cột hoạt động theo hướng có chọn lọc và phù hợp với xu thế phát triển của thị trường chăm sóc sức khỏe. Chúng tôi tập trung nâng cao chất lượng danh mục sản phẩm, mở rộng chiều sâu hợp tác với nhà thuốc và tăng cường năng lực phân phối trên nền tảng bền vững.</p>
   <p>Định hướng này cho phép VinaPharma không chỉ gia tăng quy mô hiện diện, mà còn tiếp tục củng cố vai trò là đối tác phân phối đáng tin cậy trong lĩnh vực chăm sóc sức khỏe tại Việt Nam.</p>
+</div>
 </div>
 
 <footer>
@@ -351,5 +353,19 @@ document.addEventListener('click',function(e){
 <script src="chat-widget.js"></script>
 <script src="search-widget.js"></script>
 <script src="footer-brands.js"></script>
+<script>
+(function(){
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+    ?'http://localhost:5000':'https://vinapharma-pwv2.onrender.com';
+  fetch(API+'/api/settings/about-content-2')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success&&d.data){
+        document.getElementById('aboutBody').innerHTML=d.data;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

@@ -236,6 +236,7 @@ document.addEventListener('click',function(e){
 <div class="article-wrap">
   <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
 
+<div id="aboutBody">
   <h2>Con người là nền tảng phát triển</h2>
   <p>Tại VinaPharma, chúng tôi xem con người là nền tảng cốt lõi trong mọi hoạt động phát triển. Trong lĩnh vực chăm sóc sức khỏe, nơi niềm tin đóng vai trò đặc biệt quan trọng, chất lượng của một doanh nghiệp không chỉ được thể hiện qua sản phẩm hay hệ thống phân phối, mà còn được thể hiện qua đội ngũ đứng phía sau từng quyết định, từng mối quan hệ hợp tác và từng giá trị mang ra thị trường.</p>
   <p>Đội ngũ VinaPharma được xây dựng trên tinh thần làm việc nghiêm túc, tận tâm và có trách nhiệm. Chúng tôi đề cao sự chủ động, tính chuyên nghiệp và khả năng phối hợp chặt chẽ giữa các bộ phận để bảo đảm mọi hoạt động của công ty đều vận hành trên cùng một chuẩn mực.</p>
@@ -260,6 +261,7 @@ document.addEventListener('click',function(e){
   <p>Tại VinaPharma, mỗi thành viên trong đội ngũ đều là một phần của hành trình mang những giải pháp chăm sóc sức khỏe chất lượng đến gần hơn với người Việt. Dù ở vị trí nào, mỗi cá nhân cũng đang góp phần tạo nên niềm tin cho đối tác, sự ổn định cho hệ thống phân phối và giá trị tích cực hơn cho thị trường.</p>
   <p>Chúng tôi tin rằng tác động của doanh nghiệp không được tạo nên bởi một vài thông điệp đẹp, mà được hình thành từ chất lượng làm việc mỗi ngày của cả một tập thể. Khi đội ngũ cùng chia sẻ một hệ giá trị chung, cùng làm việc với tinh thần trách nhiệm và cùng hướng về lợi ích dài hạn, doanh nghiệp mới có thể phát triển vững vàng và có ích thực sự cho cộng đồng.</p>
   <p>Con người VinaPharma vì vậy không chỉ là nguồn lực vận hành, mà là cốt lõi tạo nên uy tín, bản sắc và tương lai phát triển của doanh nghiệp.</p>
+</div>
 </div>
 
 <footer>
@@ -343,5 +345,19 @@ document.addEventListener('click',function(e){
 <script src="chat-widget.js"></script>
 <script src="search-widget.js"></script>
 <script src="footer-brands.js"></script>
+<script>
+(function(){
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+    ?'http://localhost:5000':'https://vinapharma-pwv2.onrender.com';
+  fetch(API+'/api/settings/about-content-4')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success&&d.data){
+        document.getElementById('aboutBody').innerHTML=d.data;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

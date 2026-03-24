@@ -239,6 +239,7 @@ document.addEventListener('click',function(e){
 <div class="article-wrap">
   <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
 
+<div id="aboutBody">
   <h2>Chief Executive Officer</h2>
   <p>Ông Nguyễn Tấn Đạt – Giám đốc điều hành (CEO).</p>
   <p>Trong vai trò Chief Executive Officer, Ông Nguyễn Tấn Đạt giữ trọng trách dẫn dắt định hướng phát triển của VinaPharma trên nền tảng chuyên nghiệp, minh bạch và bền vững. Dưới sự điều hành của ông, công ty kiên định theo đuổi chiến lược xây dựng năng lực phân phối có chiều sâu, phát triển hệ thống đối tác đáng tin cậy và lựa chọn những giá trị chăm sóc sức khỏe phù hợp với nhu cầu thị trường Việt Nam.</p>
@@ -264,6 +265,7 @@ document.addEventListener('click',function(e){
   <h2>Định hướng trong giai đoạn tiếp theo</h2>
   <p>Trong giai đoạn tiếp theo, Ban lãnh đạo VinaPharma tiếp tục tập trung vào việc củng cố chất lượng danh mục, mở rộng chiều sâu hợp tác với hệ thống nhà thuốc và nâng cao năng lực phân phối trên nền tảng bền vững. Đây là định hướng giúp công ty giữ vững bản sắc của một doanh nghiệp phát triển bằng sự chọn lọc, trách nhiệm và giá trị dài hạn.</p>
   <p>Cùng với đó, VinaPharma sẽ tiếp tục hoàn thiện hơn nữa nền tảng vận hành, gia tăng hiệu quả phối hợp với đối tác và mở rộng tác động tích cực đến thị trường chăm sóc sức khỏe tại Việt Nam. Mục tiêu của chúng tôi không chỉ là tăng trưởng quy mô, mà là xây dựng một hành trình phát triển đủ vững để được tin cậy lâu dài.</p>
+</div>
 </div>
 
 <footer>
@@ -347,5 +349,19 @@ document.addEventListener('click',function(e){
 <script src="chat-widget.js"></script>
 <script src="search-widget.js"></script>
 <script src="footer-brands.js"></script>
+<script>
+(function(){
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+    ?'http://localhost:5000':'https://vinapharma-pwv2.onrender.com';
+  fetch(API+'/api/settings/about-content-3')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success&&d.data){
+        document.getElementById('aboutBody').innerHTML=d.data;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

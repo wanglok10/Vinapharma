@@ -236,6 +236,7 @@ document.addEventListener('click',function(e){
 <div class="article-wrap">
   <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
 
+<div id="aboutBody">
   <h2>Bối cảnh thị trường</h2>
   <p>Nhu cầu chăm sóc sức khỏe tại Việt Nam đang dịch chuyển theo hướng chủ động, toàn diện và ngày càng chú trọng đến chất lượng. Người tiêu dùng không chỉ quan tâm đến hiệu quả sản phẩm, mà còn đặt ra yêu cầu cao hơn về nguồn gốc, độ an toàn, tiêu chuẩn sản xuất và giá trị sử dụng lâu dài.</p>
   <p>Song song với đó, hệ thống nhà thuốc ngày nay không còn đơn thuần là điểm bán. Đây là nơi người tiêu dùng tìm kiếm sự tư vấn đáng tin cậy, những giải pháp phù hợp và sự an tâm trong từng lựa chọn chăm sóc sức khỏe. Điều này đòi hỏi doanh nghiệp phân phối phải có năng lực chọn lọc sản phẩm tốt hơn, phối hợp thị trường chặt chẽ hơn và đồng hành với đối tác một cách chuyên nghiệp hơn.</p>
@@ -259,6 +260,7 @@ document.addEventListener('click',function(e){
   <h2>Định hướng phát triển</h2>
   <p>Trong chặng đường phía trước, VinaPharma tiếp tục theo đuổi định hướng phát triển dựa trên ba nền tảng: chất lượng chọn lọc, hệ thống phân phối đáng tin cậy và quan hệ hợp tác bền vững. Đây là cơ sở để công ty mở rộng quy mô một cách chắc chắn, đồng thời giữ vững giá trị cốt lõi trong mọi hoạt động.</p>
   <p>Chúng tôi sẽ tiếp tục mở rộng độ phủ thị trường theo hướng hiệu quả, tăng cường chiều sâu hợp tác với nhà thuốc và lựa chọn thêm những thương hiệu có tiêu chuẩn phù hợp với nhu cầu chăm sóc sức khỏe ngày càng cao tại Việt Nam. Với VinaPharma, phát triển không chỉ là tăng trưởng về số lượng, mà là gia tăng tác động tích cực đối với đối tác, người tiêu dùng và cộng đồng.</p>
+</div>
 </div>
 
 <footer>
@@ -342,5 +344,19 @@ document.addEventListener('click',function(e){
 <script src="chat-widget.js"></script>
 <script src="search-widget.js"></script>
 <script src="footer-brands.js"></script>
+<script>
+(function(){
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+    ?'http://localhost:5000':'https://vinapharma-pwv2.onrender.com';
+  fetch(API+'/api/settings/about-content-1')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success&&d.data){
+        document.getElementById('aboutBody').innerHTML=d.data;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

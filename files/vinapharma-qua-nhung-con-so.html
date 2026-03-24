@@ -240,6 +240,7 @@ document.addEventListener('click',function(e){
 <div class="article-wrap">
   <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
 
+<div id="aboutBody">
   <h2>Những chỉ số nổi bật</h2>
   <div class="stats-grid">
     <div class="stat-card">
@@ -291,6 +292,7 @@ document.addEventListener('click',function(e){
   <h2>Tiếp tục mở rộng với nền tảng bền vững</h2>
   <p>Trong giai đoạn tiếp theo, VinaPharma tiếp tục mở rộng trên nền tảng những giá trị đã được xây dựng và phản ánh qua các chỉ số hiện tại. Công ty sẽ phát triển theo hướng nâng cao chất lượng hiện diện, mở rộng chiều sâu hợp tác và củng cố năng lực phân phối trong lĩnh vực chăm sóc sức khỏe.</p>
   <p>Những con số trong tương lai của VinaPharma sẽ không chỉ lớn hơn về quy mô, mà còn cần mang nhiều ý nghĩa hơn về chất lượng, trách nhiệm và tác động tích cực đối với đối tác, nhà thuốc và cộng đồng.</p>
+</div>
 </div>
 
 <footer>
@@ -374,5 +376,19 @@ document.addEventListener('click',function(e){
 <script src="chat-widget.js"></script>
 <script src="search-widget.js"></script>
 <script src="footer-brands.js"></script>
+<script>
+(function(){
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+    ?'http://localhost:5000':'https://vinapharma-pwv2.onrender.com';
+  fetch(API+'/api/settings/about-content-6')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success&&d.data){
+        document.getElementById('aboutBody').innerHTML=d.data;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

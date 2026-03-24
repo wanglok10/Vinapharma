@@ -242,6 +242,7 @@ document.addEventListener('click',function(e){
 <div class="article-wrap">
   <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
 
+<div id="aboutBody">
   <h2>Đồng hành cùng hệ thống nhà thuốc</h2>
   <p>Một trong những tác động rõ nét nhất của VinaPharma được thể hiện qua hành trình đồng hành cùng hệ thống nhà thuốc trên toàn quốc. Chúng tôi tin rằng nhà thuốc không chỉ là điểm phân phối, mà còn là nơi hình thành niềm tin của người tiêu dùng trong từng lựa chọn chăm sóc sức khỏe.</p>
   <p>Thông qua sự phối hợp với các nhà thuốc lâu đời, các đối tác uy tín và đội ngũ dược sĩ tận tâm, VinaPharma góp phần đưa những giải pháp chăm sóc sức khỏe chất lượng đến gần hơn với thị trường theo cách đúng đắn, ổn định và phù hợp với nhu cầu thực tế.</p>
@@ -288,6 +289,7 @@ document.addEventListener('click',function(e){
       <div class="story-desc">Những nỗ lực góp phần nâng cao nhận thức và giá trị sống khỏe trong cộng đồng.</div>
     </div>
   </div>
+</div>
 </div>
 
 <footer>
@@ -371,5 +373,19 @@ document.addEventListener('click',function(e){
 <script src="chat-widget.js"></script>
 <script src="search-widget.js"></script>
 <script src="footer-brands.js"></script>
+<script>
+(function(){
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+    ?'http://localhost:5000':'https://vinapharma-pwv2.onrender.com';
+  fetch(API+'/api/settings/about-content-7')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success&&d.data){
+        document.getElementById('aboutBody').innerHTML=d.data;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

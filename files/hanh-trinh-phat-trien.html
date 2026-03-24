@@ -242,6 +242,7 @@ document.addEventListener('click',function(e){
 <div class="article-wrap">
   <a class="back-link" href="gioi-thieu.html"><i class="fa-solid fa-arrow-left"></i> Quay lại Our Company</a>
 
+<div id="aboutBody">
   <h2>Khởi đầu với định hướng rõ ràng</h2>
   <p>VinaPharma được thành lập vào năm 2018 với mục tiêu xây dựng một doanh nghiệp hoạt động trong lĩnh vực phân phối sản phẩm chăm sóc sức khỏe theo định hướng chuyên nghiệp, minh bạch và bền vững. Ngay từ giai đoạn đầu, công ty đã lựa chọn con đường phát triển dựa trên chất lượng danh mục, uy tín hợp tác và khả năng đồng hành lâu dài cùng thị trường.</p>
   <p>Thay vì mở rộng theo hướng dàn trải, VinaPharma tập trung đặt nền móng cho một hệ thống phát triển có chiều sâu. Điều đó được thể hiện qua việc lựa chọn những nhóm sản phẩm phù hợp với nhu cầu thực tế, xây dựng quan hệ hợp tác có chọn lọc và hình thành phong cách vận hành nhất quán ngay từ những bước đi đầu tiên.</p>
@@ -305,6 +306,7 @@ document.addEventListener('click',function(e){
   <h2>Hướng đến chặng đường tiếp theo</h2>
   <p>Bước sang giai đoạn tiếp theo, VinaPharma tiếp tục phát triển trên nền tảng những giá trị đã được xây dựng trong suốt hành trình vừa qua: chất lượng, uy tín, sự chọn lọc và tinh thần đồng hành dài hạn. Công ty sẽ tiếp tục mở rộng theo hướng phù hợp với nhu cầu thị trường, đồng thời giữ vững sự nhất quán trong định vị thương hiệu và chuẩn mực vận hành.</p>
   <p>Hành trình phía trước của VinaPharma không chỉ là câu chuyện của tăng trưởng, mà là hành trình tiếp tục mở rộng tác động tích cực đối với đối tác, hệ thống nhà thuốc và cộng đồng. Với định hướng đó, mỗi bước phát triển tiếp theo sẽ tiếp tục được xây dựng trên nền tảng bền vững, có trách nhiệm và đáng tin cậy.</p>
+</div>
 </div>
 
 <footer>
@@ -388,5 +390,19 @@ document.addEventListener('click',function(e){
 <script src="chat-widget.js"></script>
 <script src="search-widget.js"></script>
 <script src="footer-brands.js"></script>
+<script>
+(function(){
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')
+    ?'http://localhost:5000':'https://vinapharma-pwv2.onrender.com';
+  fetch(API+'/api/settings/about-content-5')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success&&d.data){
+        document.getElementById('aboutBody').innerHTML=d.data;
+      }
+    })
+    .catch(function(){});
+})();
+</script>
 </body>
 </html>

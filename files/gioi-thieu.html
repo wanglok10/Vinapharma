@@ -275,11 +275,15 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .jj-stat{padding:1.5rem;border:1.5px solid var(--border);border-radius:.5rem}
 .jj-stat-num{font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--red);line-height:1}
 .jj-stat-label{font-size:.85rem;color:#555;line-height:1.5;margin-top:.5rem}
-.jj-stories-wrap{padding:3.5rem 7%;background:#fff}
+.jj-stories-wrap{padding:3.5rem 7% 0;background:#fff}
 .jj-stories{max-width:1280px;margin:0 auto}
 .jj-stories-heading{font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:900;color:#111;margin-bottom:2rem}
 .jj-stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
 .jj-story-card{text-decoration:none;color:var(--dark);display:flex;flex-direction:column;align-items:flex-start}
+.jj-story-row{display:grid;grid-template-columns:50% 1fr;min-height:320px;background:#f7f7f7;border-bottom:1px solid var(--border);text-decoration:none;color:var(--dark);transition:background .2s}
+.jj-story-row:hover{background:#f0f0f0}
+.jj-story-row-rev{direction:rtl}
+.jj-story-row-rev>*{direction:ltr}
 .jj-story-img{aspect-ratio:16/9;overflow:hidden;margin-bottom:.9rem;background:var(--light)}
 .jj-story-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
 .jj-story-card:hover .jj-story-img img{transform:scale(1.04)}
@@ -288,7 +292,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .jj-story-title{font-size:.95rem;font-weight:800;line-height:1.35;color:#111}
 .jj-story-more{display:inline-flex;align-items:center;gap:.4rem;background:var(--red);color:#fff;padding:.5rem 1.1rem;border-radius:2rem;font-size:.78rem;font-weight:700;text-decoration:none;margin-top:.6rem;transition:background .2s}
 .jj-story-more:hover{background:#a81818}
-@media(max-width:900px){.jj-intro,.jj-leaders{grid-template-columns:1fr;gap:2rem}.jj-feature,.jj-feature.reverse{grid-template-columns:1fr}.jj-feature.reverse .jj-feature-body{order:0}.jj-feature-body{padding:2.5rem 1.5rem}.jj-intro-img{display:none}.jj-people{grid-template-columns:1fr}.jj-history{grid-template-columns:1fr}.jj-glance-grid{grid-template-columns:1fr 1fr}.jj-stories-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.jj-intro,.jj-leaders{grid-template-columns:1fr;gap:2rem}.jj-feature,.jj-feature.reverse{grid-template-columns:1fr}.jj-feature.reverse .jj-feature-body{order:0}.jj-feature-body{padding:2.5rem 1.5rem}.jj-intro-img{display:none}.jj-people{grid-template-columns:1fr}.jj-history,.jj-story-row{grid-template-columns:1fr}.jj-glance-grid{grid-template-columns:1fr 1fr}.jj-stories-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.jj-glance-grid{grid-template-columns:1fr 1fr}.jj-stories-grid{grid-template-columns:1fr}.jj-challenge-text{padding:3rem 5%}.jj-history-body{padding:2rem 1.5rem}}
 </style>
 <link rel="stylesheet" href="mobile.css"/>
@@ -637,21 +641,26 @@ document.addEventListener('click', e => {
     })
     .catch(function(){});
 
-  // Load bài viết thực tế vào phần "Những câu chuyện"
+  // Load bài viết thực tế vào phần "Những câu chuyện" (layout kiểu jj-history)
   function renderStories(posts) {
-    var grid = document.querySelector('.jj-stories-grid');
-    if (!grid || !posts.length) return;
-    grid.innerHTML = posts.map(function(p) {
+    var wrap = document.querySelector('.jj-stories-wrap');
+    if (!wrap || !posts.length) return;
+    var heading = wrap.querySelector('.jj-stories-heading');
+    var headingHtml = heading ? heading.outerHTML : '';
+    wrap.innerHTML = headingHtml + posts.map(function(p, i) {
       var img = p.thumbnail || (p.images && p.images[0]) || '';
       var imgHtml = img
         ? '<img src="'+(img.startsWith('http')?img:API+img)+'" alt="'+p.title+'" loading="lazy">'
-        : '<div class="jj-story-img-ph"><i class="fa-solid fa-newspaper" style="color:#ddd"></i></div>';
-      return '<a class="jj-story-card" href="tin-tuc-chi-tiet.html?id='+p._id+'">'
-        +'<div class="jj-story-img">'+imgHtml+'</div>'
-        +'<div class="jj-story-cat">'+(p.category||'TIN TỨC')+'</div>'
-        +'<div class="jj-story-title">'+p.title+'</div>'
-        +'<span class="jj-story-more">Tìm hiểu thêm <i class="fa-solid fa-arrow-right"></i></span>'
-        +'</a>';
+        : '<div class="jj-history-img-ph"><i class="fa-solid fa-newspaper" style="color:#ddd"></i></div>';
+      var rev = i % 2 === 1 ? ' jj-story-row-rev' : '';
+      return '<a class="jj-story-row'+rev+'" href="tin-tuc-chi-tiet.html?id='+p._id+'">'
+        +'<div class="jj-history-img">'+imgHtml+'</div>'
+        +'<div class="jj-history-body">'
+        +'<div class="jj-history-eyebrow">'+(p.category||'TIN TỨC')+'</div>'
+        +'<div class="jj-history-heading">'+p.title+'</div>'
+        +(p.excerpt||p.desc ? '<p class="jj-history-body-text">'+(p.excerpt||p.desc)+'</p>' : '')
+        +'<span class="jj-history-link">Tìm hiểu thêm <i class="fa-solid fa-arrow-right"></i></span>'
+        +'</div></a>';
     }).join('');
   }
   fetch(API + '/api/posts?limit=3&status=published')

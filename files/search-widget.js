@@ -4,7 +4,9 @@
  * Nhúng vào bất kỳ trang nào có .search-bar > input
  */
 (function () {
-  const API = 'http://localhost:5000';
+  const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:5000'
+    : 'https://vinapharma-pwv2.onrender.com';
 
   function init() {
     const bar = document.querySelector('.search-bar');

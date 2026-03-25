@@ -706,6 +706,16 @@ const blueIcon = L.divIcon({
   iconSize: [28,28], iconAnchor: [14,14], popupAnchor: [0,-18], className: ''
 });
 
+// ─── Hoàng Sa & Trường Sa markers ─────────────────────────────────────────────
+const vnIslandIcon = L.divIcon({
+  html: '<div style="background:#da251d;color:#fff;font-size:10px;font-weight:700;padding:3px 6px;border-radius:4px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.35);border:1.5px solid #fff;font-family:\'Be Vietnam Pro\',sans-serif">🇻🇳</div>',
+  iconSize: [32,26], iconAnchor: [16,13], popupAnchor: [0,-16], className: ''
+});
+L.marker([16.5, 112.0], {icon: vnIslandIcon}).addTo(map)
+  .bindPopup('<div style="font-family:\'Be Vietnam Pro\',sans-serif;font-size:.82rem"><b style="color:#da251d">Quần đảo Hoàng Sa</b><br>Thuộc chủ quyền Việt Nam</div>');
+L.marker([10.0, 114.17], {icon: vnIslandIcon}).addTo(map)
+  .bindPopup('<div style="font-family:\'Be Vietnam Pro\',sans-serif;font-size:.82rem"><b style="color:#da251d">Quần đảo Trường Sa</b><br>Thuộc chủ quyền Việt Nam</div>');
+
 // ─── State ────────────────────────────────────────────────────────────────────
 let markers = [];
 let activeProvince = 'all';

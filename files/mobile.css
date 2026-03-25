@@ -294,8 +294,9 @@
   .footer-contact-item .fci-icon { font-size: .8rem !important; }
 
   /* Footer spacing: khoảng cách với nội dung */
-  footer { margin-top: 0 !important; border-top: none !important; padding-top: 0 !important; }
-  .footer-col:first-child { padding: 1.2rem 5% 1.2rem !important; }
+  footer { margin-top: 0 !important; border-top: none !important; padding-top: 0 !important; background: #111 !important; }
+  .footer-top { background: #111 !important; }
+  .footer-col:first-child { padding: 1.4rem 5% 1.2rem !important; }
 
   /* Ẩn footer-contact-bar trên mobile (SĐT/email đã có ở cột đầu) */
   .footer-contact-bar { display: none !important; }

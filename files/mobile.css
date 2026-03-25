@@ -290,4 +290,13 @@
 
   .footer-contact-bar { padding: .8rem 4% !important; }
   .footer-contact-inner { flex-direction: column !important; gap: .5rem !important; align-items: flex-start !important; }
+  .footer-contact-item { font-size: .72rem !important; }
+  .footer-contact-item .fci-icon { font-size: .8rem !important; }
+
+  /* Footer spacing: tránh che logo */
+  footer { margin-top: 2rem !important; }
+  .footer-col:first-child { padding-bottom: 1rem !important; }
+  .footer-logo img { height: 20px !important; margin-bottom: .6rem !important; }
+  .footer-desc { font-size: .72rem !important; margin-bottom: .6rem !important; }
+  .social-links { gap: .4rem !important; }
 }

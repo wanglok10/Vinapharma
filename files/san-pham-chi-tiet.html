@@ -89,8 +89,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .product-name{font-size:.88rem;font-weight:700;line-height:1.3;margin-bottom:.35rem}
 .product-weight{font-size:.7rem;color:var(--gray);margin-bottom:.55rem}
 .product-footer{display:flex;justify-content:space-between;align-items:center}
-.product-price{font-size:.97rem;font-weight:800;color:var(--red)}
-.product-price-old{font-size:.71rem;color:#aaa;text-decoration:line-through;display:block}
+.product-price{display:none}
+.product-price-old{display:none}
 .add-btn{background:var(--red);color:#fff;border:none;width:30px;height:30px;border-radius:50%;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
 .add-btn:hover{background:var(--red-hover);transform:scale(1.1)}
 .blog-section{padding:2.5rem 4%;background:var(--light)}
@@ -195,15 +195,15 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .pd-brand{font-size:.7rem;font-weight:700;color:#bbb;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
 .pd-name{font-size:1.8rem;font-weight:900;line-height:1.25;color:#111;margin-bottom:.5rem}
 .pd-weight{font-size:.82rem;color:#aaa;margin-bottom:.9rem}
-.pd-price-wrap{display:flex;align-items:center;gap:1rem;padding:1.1rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:1.3rem}
-.pd-price{font-size:2.1rem;font-weight:900;color:var(--red)}
-.pd-price-old{font-size:1rem;color:#ccc;text-decoration:line-through}
+.pd-price-wrap{display:none}
+.pd-price{display:none}
+.pd-price-old{display:none}
 .pd-discount{font-size:.72rem;font-weight:800;background:#ffebee;color:var(--red);padding:.2rem .55rem;border-radius:2rem}
 .pd-desc{font-size:.9rem;color:#555;line-height:1.8;margin-bottom:1.4rem}
 .pd-bullets{list-style:none;margin-bottom:1.2rem}
 .pd-bullets li{display:flex;align-items:flex-start;gap:.55rem;font-size:.87rem;color:#555;line-height:1.65;margin-bottom:.42rem}
 .pd-bullets li::before{content:"★";color:#f59e0b;font-size:.75rem;margin-top:.22rem;flex-shrink:0}
-.pd-price-note{font-size:.72rem;color:#999;line-height:1.55;margin-top:.3rem;margin-bottom:1rem}
+.pd-price-note{display:none}
 .pd-variant-label{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#999;margin-bottom:.5rem}
 .pd-variant-btns{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.2rem}
 .pd-variant-btn{padding:.42rem 1.1rem;border:1.5px solid #e0e0e0;border-radius:.45rem;background:#fff;font-size:.83rem;font-weight:600;color:#333;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s}
@@ -288,7 +288,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 }
 @media(max-width:768px){
   .pd-name{font-size:1.45rem}
-  .pd-price{font-size:1.75rem}
+  .pd-price{display:none}
   .pd-related-grid,.pd-others-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:480px){

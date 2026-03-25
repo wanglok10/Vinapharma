@@ -441,7 +441,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
           </div>
         </div>
       </li>
-      <li><a href="tin-tuc.html" class="active">Tin tức</a></li>
+      <li><a href="tin-tuc.html">Tin tức</a></li>
       <li class="nav-highlight"><a href="khuyen-mai.html">Khuyến mãi <span class="nav-badge">HOT</span></a></li>
       <li><a href="lien-he.html">Liên hệ</a></li>
     </ul>
@@ -583,7 +583,6 @@ async function doSearch(query) {
           + '<div class="sr-product-brand">' + escHtml(p.brandName || p.brand || '') + '</div>'
           + '<div class="sr-product-name">' + escHtml(p.name) + '</div>'
           + (p.weight ? '<div class="sr-product-weight">' + escHtml(p.weight) + '</div>' : '')
-          + (p.price ? '<div class="sr-product-price">' + fmtPrice(p.price) + '</div>' : '')
           + '</div></a>';
       }).join('');
     }

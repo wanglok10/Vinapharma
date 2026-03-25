@@ -4,7 +4,8 @@ const tinTuc = fs.readFileSync('tin-tuc.html', 'utf8');
 const tt_lines = tinTuc.split('\n');
 
 // Get header (lines 322-413, 0-indexed: 321-412)
-const header = tt_lines.slice(321, 413).join('\n');
+// Remove active class from nav items (tin-tuc.html has active on Tin tức)
+const header = tt_lines.slice(321, 413).join('\n').replace(/ class="active"/g, '');
 // Get footer (lines 456-502, 0-indexed: 455-501)
 const footer = tt_lines.slice(455, 502).join('\n');
 // Get style block
@@ -155,7 +156,6 @@ async function doSearch(query) {
           + '<div class="sr-product-brand">' + escHtml(p.brandName || p.brand || '') + '</div>'
           + '<div class="sr-product-name">' + escHtml(p.name) + '</div>'
           + (p.weight ? '<div class="sr-product-weight">' + escHtml(p.weight) + '</div>' : '')
-          + (p.price ? '<div class="sr-product-price">' + fmtPrice(p.price) + '</div>' : '')
           + '</div></a>';
       }).join('');
     }

@@ -14,3 +14,7 @@ vinapharma-backend/.env
 # OS
 .DS_Store
 Thumbs.db
+
+# Large catalog files (too big for Cloudflare Pages)
+files/*.pdf
+files/*.txt

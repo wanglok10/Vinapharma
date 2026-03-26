@@ -1088,21 +1088,11 @@ async function insertContentImage(input, editorId) {
   input.value = '';
   const editor = document.getElementById(editorId);
   try {
-    const token = AuthClient.getToken();
-    showToast('Đang xử lý ảnh...', 'info');
-    const compressed = await compressImage(file, 1600, 0.82);
-    const fd = new FormData();
-    fd.append('image', compressed, file.name.replace(/\.[^.]+$/, '.jpg'));
-    const res = await fetch(`${API}/api/posts/upload-image`, {
-      method: 'POST',
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
-      credentials: 'include',
-      body: fd
-    });
-    const data = await res.json();
-    if (!data.success) return showToast(data.message || 'Upload thất bại', 'error');
+    showUploadProgress('Đang nén ảnh...', 0);
+    const url = await uploadOnePostImage(file, pct => showUploadProgress('Đang upload ảnh...', pct));
+    hideUploadProgress();
     const img = document.createElement('img');
-    img.src = data.url.startsWith('http') ? data.url : API + data.url;
+    img.src = url;
     img.style.cssText = 'max-width:100%;height:auto;border-radius:.4rem;margin:.5rem 0;display:block';
     const br = document.createElement('br');
     const savedRange = editorId === 'postContent' ? postEditorRange : null;
@@ -1122,23 +1112,16 @@ async function insertContentImage(input, editorId) {
     }
     editor.focus();
     showToast('Đã chèn ảnh', 'success');
-  } catch(e) { showToast('Lỗi upload ảnh', 'error'); }
+  } catch(e) { hideUploadProgress(); showToast('Lỗi upload ảnh', 'error'); }
 }
 
 // ── Upload 1 ảnh qua endpoint posts (dùng cho grid bài viết) ──
-async function uploadOnePostImage(file) {
+async function uploadOnePostImage(file, onProgress) {
   const compressed = await compressImage(file, 1600, 0.82);
   const fd = new FormData();
   fd.append('image', compressed, file.name.replace(/\.[^.]+$/, '.jpg'));
   const token = AuthClient.getToken();
-  const res = await fetch(`${API}/api/posts/upload-image`, {
-    method: 'POST',
-    headers: token ? { 'Authorization': 'Bearer ' + token } : {},
-    credentials: 'include',
-    body: fd
-  });
-  const data = await res.json();
-  if (!data.success) throw new Error(data.message || 'Upload thất bại');
+  const data = await xhrUpload(`${API}/api/posts/upload-image`, fd, token, onProgress || function(){});
   return data.url.startsWith('http') ? data.url : API + data.url;
 }
 
@@ -1146,10 +1129,13 @@ async function insertContentImageGrid(input, editorId, cols) {
   const files = Array.from(input.files);
   if (!files.length) return;
   input.value = '';
-  showToast(`Đang upload ${files.length} ảnh...`, 'info');
   try {
     const urls = [];
-    for (const f of files) urls.push(await uploadOnePostImage(f));
+    for (let i = 0; i < files.length; i++) {
+      showUploadProgress(`Ảnh ${i+1}/${files.length}`, 0);
+      urls.push(await uploadOnePostImage(files[i], pct => showUploadProgress(`Ảnh ${i+1}/${files.length}`, pct)));
+    }
+    hideUploadProgress();
     const editor = document.getElementById(editorId);
     const grid = document.createElement('div');
     grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},1fr);gap:.7rem;margin:1.2rem 0`;
@@ -1163,40 +1149,27 @@ async function insertContentImageGrid(input, editorId, cols) {
     editor.appendChild(document.createElement('br'));
     editor.focus();
     showToast(`Đã chèn grid ${cols} cột (${urls.length} ảnh)`, 'success');
-  } catch(e) { showToast('Lỗi upload: ' + e.message, 'error'); }
+  } catch(e) { hideUploadProgress(); showToast('Lỗi upload: ' + e.message, 'error'); }
 }
 
 async function insertContentImageAuto(input, editorId) {
   const files = Array.from(input.files);
   if (!files.length) return;
   input.value = '';
-  showToast(`Đang upload ${files.length} ảnh...`, 'info');
   try {
     const urls = [];
-    for (const f of files) urls.push(await uploadOnePostImage(f));
-    const n = urls.length;
-    const cols = n === 1 ? 1 : n === 2 ? 2 : n <= 4 ? 2 : n <= 6 ? 3 : 4;
-    const editor = document.getElementById(editorId);
-    if (n === 1) {
-      const img = document.createElement('img');
-      img.src = urls[0];
-      img.style.cssText = 'width:100%;border-radius:.7rem;margin:1.2rem 0;display:block';
-      editor.appendChild(img);
-    } else {
-      const grid = document.createElement('div');
-      grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},1fr);gap:.7rem;margin:1.2rem 0`;
-      urls.forEach(url => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.style.cssText = 'width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem;display:block';
-        grid.appendChild(img);
-      });
-      editor.appendChild(grid);
+    for (let i = 0; i < files.length; i++) {
+      showUploadProgress(`Ảnh ${i+1}/${files.length}`, 0);
+      urls.push(await uploadOnePostImage(files[i], pct => showUploadProgress(`Ảnh ${i+1}/${files.length}`, pct)));
     }
+    hideUploadProgress();
+    const editor = document.getElementById(editorId);
+    const wrap = makeImgAutoGrid(urls);
+    editor.appendChild(wrap);
     editor.appendChild(document.createElement('br'));
     editor.focus();
-    showToast(`Đã chèn ${n} ảnh (${cols} cột)`, 'success');
-  } catch(e) { showToast('Lỗi upload: ' + e.message, 'error'); }
+    showToast(`Đã chèn ${urls.length} ảnh`, 'success');
+  } catch(e) { hideUploadProgress(); showToast('Lỗi upload: ' + e.message, 'error'); }
 }
 
 const formatPrice = p => new Intl.NumberFormat('vi-VN').format(p) + ' ₫';
@@ -2114,23 +2087,13 @@ async function insertAboutImage(input) {
   const file = input.files[0];
   if (!file) return;
   input.value = '';
-  showToast('Đang xử lý ảnh...', 'info');
-  const compressed = await compressImage(file, 1600, 0.82);
-  const fd = new FormData();
-  fd.append('image', compressed, file.name.replace(/\.[^.]+$/, '.jpg'));
   try {
-    const token = AuthClient.getToken();
-    const res = await fetch(API + '/api/settings/upload-image', {
-      method: 'POST',
-      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
-      credentials: 'include',
-      body: fd
-    });
-    const data = await res.json();
-    if (!data.success) return showToast(data.message || 'Upload thất bại', 'error');
+    showUploadProgress('Đang nén ảnh...', 0);
+    const url = await uploadOneImage(file, pct => showUploadProgress('Đang upload ảnh...', pct));
+    hideUploadProgress();
     const editor = document.getElementById('aboutEditorContent');
     const img = document.createElement('img');
-    img.src = data.url.startsWith('http') ? data.url : API + data.url;
+    img.src = url;
     img.style.cssText = 'max-width:100%;height:auto;border-radius:.4rem;margin:.5rem 0;display:block';
     const br = document.createElement('br');
     if (aboutEditorRange) {
@@ -2149,7 +2112,41 @@ async function insertAboutImage(input) {
     }
     editor.focus();
     showToast('Đã chèn ảnh', 'success');
-  } catch(e) { showToast('Lỗi upload', 'error'); }
+  } catch(e) { hideUploadProgress(); showToast('Lỗi upload', 'error'); }
+}
+
+// ── Upload progress bar helpers ──
+function showUploadProgress(label, pct) {
+  const wrap = document.getElementById('uploadProgressWrap');
+  document.getElementById('uploadProgressLabel').textContent = label;
+  document.getElementById('uploadProgressPct').textContent = pct + '%';
+  document.getElementById('uploadProgressFill').style.width = pct + '%';
+  wrap.style.display = 'block';
+}
+function hideUploadProgress() {
+  document.getElementById('uploadProgressWrap').style.display = 'none';
+}
+
+// ── XHR upload với progress callback ──
+function xhrUpload(url, fd, token, onProgress) {
+  return new Promise(function(resolve, reject) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    if (token) xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+    xhr.withCredentials = true;
+    xhr.upload.onprogress = function(e) {
+      if (e.lengthComputable) onProgress(Math.round(e.loaded / e.total * 100));
+    };
+    xhr.onload = function() {
+      try {
+        const d = JSON.parse(xhr.responseText);
+        if (d.success) resolve(d);
+        else reject(new Error(d.message || 'Upload thất bại'));
+      } catch(e) { reject(new Error('Lỗi server')); }
+    };
+    xhr.onerror = function() { reject(new Error('Lỗi kết nối')); };
+    xhr.send(fd);
+  });
 }
 
 // ── Nén ảnh client-side trước khi upload (Canvas API) ──
@@ -2175,21 +2172,53 @@ function compressImage(file, maxW, quality) {
   });
 }
 
-// ── Upload helper dùng chung ──
-async function uploadOneImage(file) {
+// ── Upload helper dùng chung (about editor) ──
+async function uploadOneImage(file, onProgress) {
   const compressed = await compressImage(file, 1600, 0.82);
   const fd = new FormData();
   fd.append('image', compressed, file.name.replace(/\.[^.]+$/, '.jpg'));
   const token = AuthClient.getToken();
-  const res = await fetch(API + '/api/settings/upload-image', {
-    method: 'POST',
-    headers: token ? { 'Authorization': 'Bearer ' + token } : {},
-    credentials: 'include',
-    body: fd
-  });
-  const data = await res.json();
-  if (!data.success) throw new Error(data.message || 'Upload thất bại');
+  const data = await xhrUpload(API + '/api/settings/upload-image', fd, token, onProgress || function(){});
   return data.url.startsWith('http') ? data.url : API + data.url;
+}
+
+// ── Helper: xây layout auto-grid theo hàng lẻ/chẵn ──
+// Chẵn → chia đều, Lẻ → hàng cuối dùng cột riêng để lấp đầy chiều rộng
+function makeImgAutoGrid(urls) {
+  function calcRows(n) {
+    if (n <= 3) return [n];
+    if (n === 4) return [2, 2];
+    if (n === 9) return [3, 3, 3];
+    const tc = n <= 6 ? 3 : 4;
+    const rows = []; let r = n;
+    while (r > tc) { rows.push(tc); r -= tc; }
+    if (r > 0) rows.push(r);
+    return rows;
+  }
+  const rows = calcRows(urls.length);
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'margin:1.2rem 0';
+  let idx = 0;
+  rows.forEach(function(cols, ri) {
+    const mb = ri < rows.length - 1 ? '.7rem' : '0';
+    if (cols === 1) {
+      const img = document.createElement('img');
+      img.src = urls[idx++];
+      img.style.cssText = `width:100%;border-radius:.5rem;display:block;margin-bottom:${mb}`;
+      wrap.appendChild(img);
+    } else {
+      const row = document.createElement('div');
+      row.style.cssText = `display:grid;grid-template-columns:repeat(${cols},1fr);gap:.7rem;margin-bottom:${mb}`;
+      for (let c = 0; c < cols; c++) {
+        const img = document.createElement('img');
+        img.src = urls[idx++];
+        img.style.cssText = 'width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem;display:block';
+        row.appendChild(img);
+      }
+      wrap.appendChild(row);
+    }
+  });
+  return wrap;
 }
 
 // ── Grid ảnh cố định (2, 3, 4 cột) ──
@@ -2197,10 +2226,13 @@ async function insertAboutImageGrid(input, cols) {
   const files = Array.from(input.files);
   if (!files.length) return;
   input.value = '';
-  showToast(`Đang upload ${files.length} ảnh...`, 'info');
   try {
     const urls = [];
-    for (const f of files) urls.push(await uploadOneImage(f));
+    for (let i = 0; i < files.length; i++) {
+      showUploadProgress(`Ảnh ${i+1}/${files.length}`, 0);
+      urls.push(await uploadOneImage(files[i], pct => showUploadProgress(`Ảnh ${i+1}/${files.length}`, pct)));
+    }
+    hideUploadProgress();
     const editor = document.getElementById('aboutEditorContent');
     const grid = document.createElement('div');
     grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},1fr);gap:.7rem;margin:1.2rem 0`;
@@ -2227,42 +2259,41 @@ async function insertAboutImageGrid(input, cols) {
     }
     editor.focus();
     showToast(`Đã chèn grid ${cols} cột (${urls.length} ảnh)`, 'success');
-  } catch(e) { showToast('Lỗi upload: ' + e.message, 'error'); }
+  } catch(e) { hideUploadProgress(); showToast('Lỗi upload: ' + e.message, 'error'); }
 }
 
-// ── Multi ảnh tự xếp theo số lượng ──
-// 1→full width, 2→2 cột, 3→3 cột, 4→2×2, 5-6→3 cột, 7+→4 cột
+// ── Multi ảnh tự xếp: chẵn chia đều, lẻ hàng cuối lấp đầy chiều rộng ──
 async function insertAboutImageAuto(input) {
   const files = Array.from(input.files);
   if (!files.length) return;
   input.value = '';
-  showToast(`Đang upload ${files.length} ảnh...`, 'info');
   try {
     const urls = [];
-    for (const f of files) urls.push(await uploadOneImage(f));
-    const n = urls.length;
-    const cols = n === 1 ? 1 : n === 2 ? 2 : n <= 4 ? 2 : n <= 6 ? 3 : 4;
-    const editor = document.getElementById('aboutEditorContent');
-    if (n === 1) {
-      const img = document.createElement('img');
-      img.src = urls[0];
-      img.style.cssText = 'width:100%;border-radius:.7rem;margin:1.2rem 0;display:block';
-      editor.appendChild(img);
-    } else {
-      const grid = document.createElement('div');
-      grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},1fr);gap:.7rem;margin:1.2rem 0`;
-      urls.forEach(url => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.style.cssText = 'width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem;display:block';
-        grid.appendChild(img);
-      });
-      editor.appendChild(grid);
+    for (let i = 0; i < files.length; i++) {
+      showUploadProgress(`Ảnh ${i+1}/${files.length}`, 0);
+      urls.push(await uploadOneImage(files[i], pct => showUploadProgress(`Ảnh ${i+1}/${files.length}`, pct)));
     }
-    editor.appendChild(document.createElement('br'));
+    hideUploadProgress();
+    const editor = document.getElementById('aboutEditorContent');
+    const wrap = makeImgAutoGrid(urls);
+    if (aboutEditorRange) {
+      const br = document.createElement('br');
+      aboutEditorRange.deleteContents();
+      aboutEditorRange.insertNode(br);
+      aboutEditorRange.insertNode(wrap);
+      aboutEditorRange.setStartAfter(br);
+      aboutEditorRange.collapse(true);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(aboutEditorRange);
+      aboutEditorRange = null;
+    } else {
+      editor.appendChild(wrap);
+      editor.appendChild(document.createElement('br'));
+    }
     editor.focus();
-    showToast(`Đã chèn ${n} ảnh (${cols} cột)`, 'success');
-  } catch(e) { showToast('Lỗi upload: ' + e.message, 'error'); }
+    showToast(`Đã chèn ${urls.length} ảnh`, 'success');
+  } catch(e) { hideUploadProgress(); showToast('Lỗi upload: ' + e.message, 'error'); }
 }
 
 async function uploadAboutImage(input, idx) {
@@ -3192,6 +3223,17 @@ async function deletePB(id, title) {
       <button class="btn btn-outline" onclick="closeModal('pbOverlay')">Hủy</button>
       <button class="btn btn-red" onclick="savePB()">Lưu băng rôn</button>
     </div>
+  </div>
+</div>
+
+<!-- ── UPLOAD PROGRESS BAR ── -->
+<div id="uploadProgressWrap" style="display:none;position:fixed;bottom:1.4rem;right:1.4rem;z-index:9999;background:#fff;border:1px solid #e8e8e8;border-radius:.6rem;padding:.8rem 1.1rem;box-shadow:0 6px 24px rgba(0,0,0,.14);min-width:220px;max-width:280px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.45rem">
+    <span id="uploadProgressLabel" style="font-size:.78rem;font-weight:700;color:#111"></span>
+    <span id="uploadProgressPct" style="font-size:.78rem;font-weight:800;color:#cc1f1f">0%</span>
+  </div>
+  <div style="background:#f0f0f0;border-radius:2rem;height:7px;overflow:hidden">
+    <div id="uploadProgressFill" style="background:#cc1f1f;height:100%;width:0%;border-radius:2rem;transition:width .15s ease"></div>
   </div>
 </div>
 

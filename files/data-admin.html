@@ -2962,6 +2962,11 @@ async function saveReward() {
   if (!name) return showToast('Vui lòng nhập tên phần thưởng', 'error');
   const pts  = document.getElementById('rwPoints').value;
   if (!pts)  return showToast('Vui lòng nhập số điểm cần', 'error');
+
+  const saveBtn = document.querySelector('#rewardOverlay .btn-red');
+  const origHtml = saveBtn ? saveBtn.innerHTML : '';
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...'; }
+
   const fd = new FormData();
   fd.append('name',           name);
   fd.append('description',    document.getElementById('rwDesc').value);
@@ -2972,7 +2977,10 @@ async function saveReward() {
   fd.append('active',         document.getElementById('rwActive').value);
   fd.append('image',          document.getElementById('rwImgUrl').value);
   const imgFile = document.getElementById('rwImgInput').files[0];
-  if (imgFile) fd.append('image', imgFile);
+  if (imgFile) {
+    const compressed = await compressImage(imgFile, 1200, 0.85);
+    fd.append('image', compressed, imgFile.name);
+  }
   try {
     const url    = id ? `${API}/api/rewards/${id}` : `${API}/api/rewards`;
     const method = id ? 'PUT' : 'POST';
@@ -2981,6 +2989,7 @@ async function saveReward() {
     if (data.success) { showToast('Đã lưu phần thưởng', 'success'); closeModal('rewardOverlay'); loadRewards(); }
     else showToast(data.message, 'error');
   } catch(e) { showToast('Lỗi kết nối', 'error'); }
+  finally { if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = origHtml; } }
 }
 async function deleteReward(id, name) {
   if (!confirm(`Xóa phần thưởng "${name}"?`)) return;

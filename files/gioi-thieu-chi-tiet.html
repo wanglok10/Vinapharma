@@ -75,7 +75,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .footer-cert{display:flex;gap:.55rem}
 .cert-badge{background:rgba(255,255,255,.07);color:#777;font-size:.66rem;font-weight:600;padding:.22rem .6rem;border-radius:.3rem;border:1px solid rgba(255,255,255,.08)}
 @media(max-width:1024px){.footer-top{grid-template-columns:1fr 1fr 1fr;gap:1.8rem}}
-@media(max-width:768px){.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}}
+@media(max-width:768px){.header-hotline{display:none}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}}
 @media(max-width:500px){.footer-top{grid-template-columns:1fr}}
 .header-nav{display:flex;align-items:center;padding:0 4%;background:#fff;overflow-x:auto}
 .nav-list{display:flex;list-style:none;gap:0}
@@ -120,7 +120,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
       <button onclick="goSearch()"><i class="fa-solid fa-magnifying-glass" style="color:#fff"></i></button>
     </div>
     <div class="header-actions">
-      <div class="header-hotline" style="display:flex;flex-direction:column"><div style="font-size:.62rem;color:#666;text-transform:uppercase;letter-spacing:.06em">Hotline</div><div style="font-size:.88rem;font-weight:700;color:var(--red)">090 168 33 80</div></div>
+      <div class="header-hotline"><div class="label">Hotline</div><div class="number">090 168 33 80</div></div>
       <button class="icon-btn"><span class="ico"><i class="fa-solid fa-user" style="color:#6b7280"></i></span><span>Tài khoản</span></button>
     </div>
   </div>

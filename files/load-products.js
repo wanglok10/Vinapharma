@@ -45,7 +45,7 @@
     // Danh sách tất cả category available (từ enum Model Product)
     const allCategories = [
       'Tăng đề kháng', 'Xương khớp', 'Tim mạch', 'Làm đẹp',
-      'Giảm cân', 'Tăng cơ', 'Trí não', 'Giấc ngủ', 'Detox',
+      'Sinh lý', 'Trí não', 'Giấc ngủ', 'Detox',
       'Vitamin', 'Khoáng chất', 'Omega', 'Probiotics', 'Khác'
     ];
     return allCategories;

@@ -408,7 +408,7 @@ i.fa-solid,i.fa-regular{line-height:1}
         <div class="section">
           <div class="section-header">
             <div class="section-title"><i class="fa-solid fa-building ic-gray"></i> Quản lý trang Giới thiệu</div>
-            <div class="section-actions"><button class="btn btn-red" onclick="saveAbout()"><i class="fa-solid fa-floppy-disk"></i> Lưu tất cả</button></div>
+            <div class="section-actions" style="display:flex;gap:.5rem"><button class="btn btn-outline" onclick="addAboutSection()" style="color:#059669;border-color:#059669;display:flex;align-items:center;gap:.3rem"><i class="fa-solid fa-plus"></i> Thêm bài giới thiệu</button><button class="btn btn-red" onclick="saveAbout()"><i class="fa-solid fa-floppy-disk"></i> Lưu tất cả</button></div>
           </div>
           <div style="padding:1rem 1.2rem" id="aboutSections"></div>
         </div>
@@ -1819,9 +1819,14 @@ function renderAbout() {
           <span style="background:#cc1f1f;color:#fff;font-size:.7rem;font-weight:800;padding:.18rem .55rem;border-radius:2rem">${i+1}</span>
           <strong style="font-size:.88rem">${s.title}</strong>
         </div>
-        <button class="btn btn-sm btn-outline" onclick="openAboutEditor(${i})" style="color:#7c3aed;border-color:#7c3aed;display:flex;align-items:center;gap:.3rem">
-          <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa nội dung
-        </button>
+        <div style="display:flex;gap:.4rem">
+          <button class="btn btn-sm btn-outline" onclick="openAboutEditor(${i})" style="color:#7c3aed;border-color:#7c3aed;display:flex;align-items:center;gap:.3rem">
+            <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa nội dung
+          </button>
+          <button class="btn btn-sm" onclick="deleteAboutSection(${i})" style="background:#fff5f5;color:#cc1f1f;border:1px solid #fecaca;display:flex;align-items:center;gap:.3rem">
+            <i class="fa-solid fa-trash-can"></i> Xóa
+          </button>
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:180px 1fr;gap:1.2rem;align-items:start">
         <div>
@@ -1859,6 +1864,26 @@ function renderAbout() {
         </div>
       </div>
     </div>`).join('');
+}
+
+function addAboutSection() {
+  var newIdx = aboutData.length;
+  aboutData.push({
+    href: 'gioi-thieu-chi-tiet.html?id=' + newIdx,
+    label: 'Giới thiệu',
+    title: 'Bài giới thiệu mới',
+    desc: '',
+    image: ''
+  });
+  renderAbout();
+  showToast('Đã thêm bài giới thiệu mới. Nhớ nhấn Lưu tất cả.', 'info');
+}
+
+function deleteAboutSection(idx) {
+  if (!confirm('Xóa bài "' + aboutData[idx].title + '"?')) return;
+  aboutData.splice(idx, 1);
+  renderAbout();
+  showToast('Đã xóa. Nhớ nhấn Lưu tất cả.', 'info');
 }
 
 let editingAboutIdx = null;

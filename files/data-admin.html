@@ -1223,17 +1223,22 @@ function doLogout() {
   AuthClient.logout();
 }
 
-// ── AUTO-CHECK AUTH KHI TẢI TRANG ──
-window.__vpAuthReady.then(function(user) {
-  if (user && user.role === 'admin') {
-    token = AuthClient.getToken();
-    currentUser = user;
-    document.getElementById('loginOverlay').style.display = 'none';
-    document.getElementById('adminName').textContent = user.name;
-    document.getElementById('adminAvatar').textContent = user.name[0].toUpperCase();
-    initData();
-  }
-});
+// ── SYNC QUICK-AUTH: đọc localStorage ngay lập tức, không chờ server ──
+(function() {
+  try {
+    var saved = localStorage.getItem('vp_access');
+    if (saved) {
+      var p = JSON.parse(saved);
+      if (p.user && p.user.role === 'admin') {
+        token = p.token;
+        currentUser = p.user;
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('adminName').textContent = p.user.name;
+        document.getElementById('adminAvatar').textContent = p.user.name[0].toUpperCase();
+      }
+    }
+  } catch(e) {}
+})();
 
 // ── TABS ──
 function showTab(name, btn) {

@@ -189,7 +189,7 @@ i.fa-solid,i.fa-regular{line-height:1}
       <label>Mật khẩu</label>
       <input type="password" id="lPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
-    <button class="btn btn-red" style="width:100%;justify-content:center" onclick="doLogin()">Đăng nhập</button>
+    <button class="btn btn-red" id="lBtn" style="width:100%;justify-content:center" onclick="doLogin()">Đăng nhập</button>
     <div id="lErr" style="color:#dc2626;font-size:.78rem;margin-top:.7rem;text-align:center"></div>
   </div>
 </div>
@@ -1202,10 +1202,19 @@ const formatDate = d => new Date(d).toLocaleDateString('vi-VN');
 
 // ── AUTH ──
 async function doLogin() {
-  const email = document.getElementById('lEmail').value;
+  const email = document.getElementById('lEmail').value.trim();
   const pass  = document.getElementById('lPass').value;
+  const btn   = document.getElementById('lBtn');
+  const err   = document.getElementById('lErr');
+  if (!email || !pass) { err.textContent = 'Vui lòng nhập email và mật khẩu'; return; }
+  btn.disabled = true;
+  btn.textContent = 'Đang kết nối...';
+  err.textContent = '';
+  // Cảnh báo nếu server đang ngủ (free tier)
+  const wakeTimer = setTimeout(() => { err.style.color='#f59e0b'; err.textContent = 'Server đang khởi động, vui lòng chờ 30-60 giây...'; }, 5000);
   try {
     const data = await AuthClient.login(email, pass);
+    clearTimeout(wakeTimer);
     if (data.success && data.user.role === 'admin') {
       token = AuthClient.getToken();
       currentUser = data.user;
@@ -1214,9 +1223,16 @@ async function doLogin() {
       document.getElementById('adminAvatar').textContent = data.user.name[0].toUpperCase();
       initData();
     } else {
-      document.getElementById('lErr').textContent = data.message || 'Không phải tài khoản admin';
+      err.style.color='#dc2626';
+      err.textContent = data.message || 'Không phải tài khoản admin';
+      btn.disabled = false; btn.textContent = 'Đăng nhập';
     }
-  } catch(e) { document.getElementById('lErr').textContent = 'Không kết nối được server'; }
+  } catch(e) {
+    clearTimeout(wakeTimer);
+    err.style.color='#dc2626';
+    err.textContent = 'Không kết nối được server. Thử lại sau.';
+    btn.disabled = false; btn.textContent = 'Đăng nhập';
+  }
 }
 
 function doLogout() {

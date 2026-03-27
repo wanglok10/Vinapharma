@@ -77,11 +77,10 @@ const AuthClient = (() => {
           options.headers['Authorization'] = 'Bearer ' + _accessToken;
           res = await fetch(url, options);
         } else {
-          // Refresh hết hạn → clear local state nhưng KHÔNG redirect
-          // (để tránh văng ra khỏi trang admin)
+          // Refresh thất bại — chỉ clear memory, KHÔNG xóa localStorage
+          // (có thể do server đang ngủ, giữ localStorage để lần sau vẫn tự login được)
           _accessToken = null;
           _user = null;
-          localStorage.removeItem('vp_access');
           return res;
         }
       }

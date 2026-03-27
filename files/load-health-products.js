@@ -10,7 +10,7 @@
   function renderProductCard(product) {
     const priceHtml = '';
     
-    const badgeHtml = product.badge ? `<span class="product-badge">${product.badge}</span>` : '';
+    const badgeHtml = product.badge ? `<span class="product-badge">${product.badge}</span>` : 'https://vinapharma-pwv2.onrender.com';
     
     const card = document.createElement('div');
     card.className = 'product-card';

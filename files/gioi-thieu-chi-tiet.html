@@ -330,7 +330,7 @@ document.querySelectorAll('.mega-sidebar-btn').forEach(function(btn){
 <script src="popup-newsletter.js"></script>
 <script>
 (function(){
-  var API = 'https://vinapharma-pwv2.onrender.com';
+  var API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')?'http://localhost:5000':'';
 
   // Parse ?id=X from URL
   var params = new URLSearchParams(location.search);

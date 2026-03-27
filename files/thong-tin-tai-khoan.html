@@ -214,7 +214,7 @@ input:disabled{background:#f9f9f9;color:#888}
 <script src="authClient.js"></script>
 <script src="rank-icons.js"></script>
 <script>
-const API = 'https://vinapharma-pwv2.onrender.com';
+const API=(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1')?'http://localhost:5000':'';
 
 
 const RANKS_NORMAL = [

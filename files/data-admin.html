@@ -1796,7 +1796,7 @@ function renderPosts(list) {
       <td><span class="badge ${p.published?'badge-green':'badge-gray'}">${p.published?'Đã đăng':'Nháp'}</span></td>
       <td>${p.publishedAt?formatDate(p.publishedAt):'–'}</td>
       <td><div style="display:flex;gap:.4rem">
-        <button class="icon-btn" onclick='editPost(${JSON.stringify(p).replace(/'/g,"&#39;")})'><i class="fa-solid fa-pen"></i></button>
+        <button class="icon-btn" onclick="editPost('${p._id}')"><i class="fa-solid fa-pen"></i></button>
         <button class="icon-btn" onclick="deletePost('${p._id}')"><i class="fa-solid fa-trash"></i></button>
       </div></td>
     </tr>`).join('');
@@ -1822,7 +1822,9 @@ function openPostModal() {
   document.getElementById('postOverlay').classList.add('show');
 }
 
-function editPost(p) {
+function editPost(idOrObj) {
+  const p = typeof idOrObj === 'string' ? allPosts.find(x => x._id === idOrObj) : idOrObj;
+  if (!p) return;
   document.getElementById('postModalTitle').textContent = 'Sửa bài viết';
   document.getElementById('postId').value = p._id;
   document.getElementById('postTitle').value = p.title;

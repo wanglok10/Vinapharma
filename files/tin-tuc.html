@@ -198,7 +198,9 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .feat-card-sub .feat-title{font-size:1rem}
 .feat-more{font-size:.78rem;font-weight:700;color:var(--red)}
 .nlist{display:flex;flex-direction:column}
-.nrow{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;padding:2rem 0;border-bottom:1px solid var(--border)}
+.nrow{display:grid;gap:2.5rem;padding:2rem 0;border-bottom:1px solid var(--border)}
+.nrow:nth-child(odd){grid-template-columns:2fr 3fr}
+.nrow:nth-child(even){grid-template-columns:3fr 2fr}
 .nrow:first-child{border-top:1px solid var(--border)}
 .ncard{text-decoration:none;color:var(--dark);display:block}
 .ncard:hover .ncard-img img{transform:scale(1.03)}

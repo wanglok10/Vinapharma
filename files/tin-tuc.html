@@ -413,7 +413,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
           </div>
         </div>
       </li>
-      <li><a href="tin-tuc.html" class="active">Tin tức</a></li>
+      <li class="has-mega"><a href="tin-tuc.html" class="active">Tin tức</a><div class="mega-wrap"><div style="max-width:1280px;margin:0 auto"><div class="mega-col-title">Danh mục</div><ul class="mega-links"><li><a href="tin-tuc.html?category=Góc sức khỏe">Góc sức khỏe</a></li><li><a href="tin-tuc.html?category=Góc làm đẹp">Góc làm đẹp</a></li><li><a href="tin-tuc.html?category=Góc dinh dưỡng">Góc dinh dưỡng</a></li><li><a href="tin-tuc.html?category=Vấn đề thường gặp">Vấn đề thường gặp</a></li><li><a href="tin-tuc.html?category=Tin Y tế">Tin Y tế</a></li><li><a href="tin-tuc.html?category=Tin Tuyển dụng">Tin Tuyển dụng</a></li><li><a href="tin-tuc.html?category=Truyền thông">Truyền thông</a></li></ul><div class="mega-cta-row" style="margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--border)"><a href="tin-tuc.html" class="mega-cta-btn">Xem tất cả bài viết →</a></div></div></div></li>
       <li class="nav-highlight"><a href="khuyen-mai.html">Khuyến mãi <span class="nav-badge">HOT</span></a></li>
       <li><a href="lien-he.html">Liên hệ</a></li>
     </ul>
@@ -425,8 +425,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 <div class="news-hero">
   <div style="max-width:1280px;margin:0 auto;padding:3rem 4%">
     <div class="news-hero-label">Tin tức &amp; Bài viết</div>
-    <div class="news-hero-title">Kiến thức dinh dưỡng &amp; sức khỏe</div>
-    <div class="news-hero-sub">Cập nhật kiến thức dinh dưỡng, sức khỏe và lối sống lành mạnh từ các chuyên gia.</div>
+    <div class="news-hero-title" id="heroTitle"></div>
+    <div class="news-hero-sub" id="heroSub">Cập nhật kiến thức dinh dưỡng, sức khỏe và lối sống lành mạnh từ các chuyên gia.</div>
   </div>
 </div>
 
@@ -545,6 +545,19 @@ document.addEventListener('click', e => {
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://vinapharma-pwv2.onrender.com';
 const _urlP = new URLSearchParams(window.location.search);
 let currentCat = _urlP.get('category') || '', currentTopic = _urlP.get('topic') || '', page = 1, perPage = 9;
+const CAT_INFO = {
+  'Góc sức khỏe':       ['Góc sức khỏe', 'Các bài viết về sức khỏe tổng quát, chăm sóc thể chất và phòng bệnh.'],
+  'Góc làm đẹp':        ['Góc làm đẹp', 'Bí quyết làm đẹp, chăm sóc da và tóc từ thiên nhiên.'],
+  'Góc dinh dưỡng':     ['Góc dinh dưỡng', 'Kiến thức dinh dưỡng, chế độ ăn uống lành mạnh và khoa học.'],
+  'Vấn đề thường gặp':  ['Vấn đề thường gặp', 'Giải đáp các vấn đề sức khỏe thường gặp trong cuộc sống.'],
+  'Tin Y tế':           ['Tin Y tế', 'Cập nhật tin tức y tế, nghiên cứu khoa học và xu hướng sức khỏe mới nhất.'],
+  'Tin Tuyển dụng':     ['Tin Tuyển dụng', 'Cơ hội việc làm và phát triển nghề nghiệp tại Vinapharma.'],
+  'Truyền thông':       ['Truyền thông', 'Tin tức về hoạt động truyền thông và sự kiện của Vinapharma.'],
+};
+if (currentCat && CAT_INFO[currentCat]) {
+  document.getElementById('heroTitle').textContent = CAT_INFO[currentCat][0];
+  document.getElementById('heroSub').textContent   = CAT_INFO[currentCat][1];
+}
 
 const COLORS = [
   'linear-gradient(135deg,#fff5f5,#ffe0e0)',

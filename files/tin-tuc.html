@@ -185,7 +185,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 .news-hero-text{padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:center}
 .news-hero-label{font-size:clamp(1.6rem,2.8vw,2.6rem);font-weight:900;letter-spacing:-.01em;text-transform:none;color:#111;margin-bottom:.5rem}
 .news-hero-title{font-size:clamp(1.6rem,2.5vw,2.3rem);font-weight:900;color:#111;line-height:1.2;margin-bottom:.75rem}
-.news-hero-sub{font-size:.9rem;color:#666;line-height:1.65}
+.news-hero-sub{font-size:.9rem;color:#666;line-height:1.65}.cat-pill{padding:.38rem 1rem;border-radius:99px;border:1.5px solid #e0e0e0;background:#fff;font-size:.8rem;font-weight:600;color:#444;text-decoration:none;transition:.15s}.cat-pill:hover{border-color:var(--red);color:var(--red)}.cat-pill.active,.cat-pill-all.active{background:var(--red);color:#fff;border-color:var(--red)}
 .news-body{padding:2.5rem 4%;max-width:1280px;margin:0 auto}
 /* Asymmetric grid */
 .feat-grid{display:grid;grid-template-columns:3fr 2fr;gap:2rem;margin-bottom:3rem}
@@ -427,6 +427,16 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
     <div class="news-hero-label">Tin tức &amp; Bài viết</div>
     <div class="news-hero-title" id="heroTitle"></div>
     <div class="news-hero-sub" id="heroSub">Cập nhật kiến thức dinh dưỡng, sức khỏe và lối sống lành mạnh từ các chuyên gia.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem">
+      <a href="tin-tuc.html" class="cat-pill cat-pill-all">Tất cả</a>
+      <a href="tin-tuc.html?category=Góc sức khỏe" class="cat-pill">Góc sức khỏe</a>
+      <a href="tin-tuc.html?category=Góc làm đẹp" class="cat-pill">Góc làm đẹp</a>
+      <a href="tin-tuc.html?category=Góc dinh dưỡng" class="cat-pill">Góc dinh dưỡng</a>
+      <a href="tin-tuc.html?category=Vấn đề thường gặp" class="cat-pill">Vấn đề thường gặp</a>
+      <a href="tin-tuc.html?category=Tin Y tế" class="cat-pill">Tin Y tế</a>
+      <a href="tin-tuc.html?category=Tin Tuyển dụng" class="cat-pill">Tin Tuyển dụng</a>
+      <a href="tin-tuc.html?category=Truyền thông" class="cat-pill">Truyền thông</a>
+    </div>
   </div>
 </div>
 
@@ -569,6 +579,16 @@ function renderChips(cat, activeTag) {
   el.innerHTML = h;
 }
 renderChips(currentCat, currentTag);
+// Active category pill
+(function(){
+  var pills = document.querySelectorAll('.cat-pill');
+  pills.forEach(function(p){
+    var href = p.getAttribute('href');
+    var catInHref = new URLSearchParams(href.split('?')[1]||'').get('category')||'';
+    if(catInHref === currentCat) p.classList.add('active');
+    if(!currentCat && p.classList.contains('cat-pill-all')) p.classList.add('active');
+  });
+})();
 if (currentCat && CAT_INFO[currentCat]) {
   document.getElementById('heroTitle').textContent = CAT_INFO[currentCat][0];
   document.getElementById('heroSub').textContent   = CAT_INFO[currentCat][1];

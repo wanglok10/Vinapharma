@@ -705,9 +705,13 @@ i.fa-solid,i.fa-regular{line-height:1}
           <select id="postCategory">
             <option>Góc sức khỏe</option><option>Góc làm đẹp</option><option>Góc dinh dưỡng</option>
             <option>Vấn đề thường gặp</option><option>Tin Y tế</option><option>Tin Tuyển dụng</option><option>Truyền thông</option>
-            <option disabled>──────────</option>
-            <option>Dinh dưỡng</option><option>Sức khỏe</option><option>Lối sống</option>
-            <option>Thể hình</option><option>Làm đẹp</option><option>Tim mạch</option><option>Khác</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Tag chủ đề</label>
+          <select id="postTopic">
+            <option value="">-- Không chọn --</option>
+            <option>Sức khỏe</option><option>Làm đẹp</option><option>Dinh dưỡng</option>
+            <option>Lối sống</option><option>Thể hình</option><option>Tim mạch</option><option>Khác</option>
           </select>
         </div>
         <div class="form-group"><label>Chủ đề (tags, cách nhau bằng dấu phẩy)</label><input id="postTags" placeholder="VD: Dinh dưỡng, Vitamin, Sức đề kháng"/></div>
@@ -1794,8 +1798,8 @@ function renderPosts(list) {
           <div style="font-size:.72rem;color:#888;margin-top:.15rem">${(p.tags||[]).map(t=>`<span style="background:#f0f0f0;padding:.05rem .35rem;border-radius:.2rem;margin-right:.2rem">${t}</span>`).join('')||p.category}</div>
         </div>
       </div></td>
-      <td><span class="badge badge-blue">${p.category}</span></td>
-      <td style="text-align:center"><b style="font-size:.9rem;color:${(p.order||999)<100?'var(--red)':'#555'}">${p.order||999}</b></td>
+      <td><span class="badge badge-blue">${p.category}</span>${p.topic?`<span class="badge badge-bac" style="margin-left:.3rem">${p.topic}</span>`:''}</td>
+      <td style="text-align:center"><input type="number" min="1" max="999" value="${p.order||999}" style="width:54px;text-align:center;border:1px solid #ddd;border-radius:.3rem;padding:.2rem .3rem;font-size:.85rem;font-weight:700;color:${(p.order||999)<100?'var(--red)':'#555'}" onchange="quickOrder('${p._id}',this.value,this)" title="Nhấn Enter để lưu" onkeydown="if(event.key==='Enter')this.blur()"/></td>
       <td><span class="badge ${p.published?'badge-green':'badge-gray'}">${p.published?'Đã đăng':'Nháp'}</span></td>
       <td>${p.publishedAt?formatDate(p.publishedAt):'–'}</td>
       <td><div style="display:flex;gap:.4rem">
@@ -1834,6 +1838,7 @@ function editPost(idOrObj) {
   document.getElementById('postExcerpt').value = p.excerpt || '';
   document.getElementById('postContent').innerHTML = p.content || '';
   document.getElementById('postCategory').value = p.category;
+  document.getElementById('postTopic').value = p.topic || '';
   document.getElementById('postTags').value = (p.tags||[]).join(', ');
   document.getElementById('postFeatured').value = p.featured ? 'true' : 'false';
   document.getElementById('postOrder').value = p.order ?? 999;
@@ -1859,6 +1864,7 @@ async function savePost() {
   const formData = new FormData();
   formData.append('title', title);
   formData.append('category', document.getElementById('postCategory').value);
+  formData.append('topic', document.getElementById('postTopic').value);
   formData.append('tags', document.getElementById('postTags').value);
   formData.append('featured', document.getElementById('postFeatured').value);
   formData.append('order', parseInt(document.getElementById('postOrder').value) >= 0 ? parseInt(document.getElementById('postOrder').value) : 999);
@@ -1877,6 +1883,31 @@ async function savePost() {
       closeModal('postOverlay');
       loadPosts();
     } else { showToast(data.message, 'error'); }
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
+}
+
+async function quickOrder(id, val, el) {
+  const order = parseInt(val);
+  if (isNaN(order) || order < 1) return;
+  try {
+    const fd = new FormData();
+    const p = allPosts.find(x => x._id === id);
+    if (!p) return;
+    fd.append('title', p.title);
+    fd.append('excerpt', p.excerpt || '');
+    fd.append('category', p.category);
+    fd.append('topic', p.topic || '');
+    fd.append('tags', (p.tags||[]).join(', '));
+    fd.append('featured', p.featured ? 'true' : 'false');
+    fd.append('published', p.published ? 'true' : 'false');
+    fd.append('order', order);
+    const res = await authFetch(`${API}/api/posts/${id}`, { method: 'PUT', headers:{}, body: fd });
+    const data = await res.json();
+    if (data.success) {
+      p.order = order;
+      el.style.color = order < 100 ? 'var(--red)' : '#555';
+      showToast('Đã lưu vị trí', 'success');
+    } else { showToast(data.message || 'Lỗi', 'error'); }
   } catch(e) { showToast('Lỗi kết nối', 'error'); }
 }
 

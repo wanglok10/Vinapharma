@@ -3,12 +3,10 @@ const mongoose = require('mongoose');
 const contactSchema = new mongoose.Schema({
   ho_ten: {
     type: String,
-    required: [true, 'Vui lòng nhập họ tên'],
     trim: true
   },
   dien_thoai: {
     type: String,
-    required: [true, 'Vui lòng nhập số điện thoại'],
     trim: true
   },
   email: {
@@ -19,7 +17,7 @@ const contactSchema = new mongoose.Schema({
   },
   chu_de: {
     type: String,
-    enum: ['Tư vấn sản phẩm', 'Đặt hàng số lượng lớn', 'Đăng ký đại lý', 'Khiếu nại / Phản hồi', 'Khác'],
+    enum: ['Tư vấn sản phẩm', 'Đặt hàng số lượng lớn', 'Đăng ký đại lý', 'Khiếu nại / Phản hồi', 'Đăng ký nhận bản tin', 'Khác'],
     default: 'Tư vấn sản phẩm'
   },
   noi_dung: {

@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const NewsletterSubscriber = require('../models/NewsletterSubscriber');
+const Contact = require('../models/Contact');
 const { protect, adminOnly } = require('../middleware/auth');
 
 // POST /api/newsletter/subscribe — public
@@ -15,6 +16,14 @@ router.post('/subscribe', async (req, res) => {
     }
 
     await NewsletterSubscriber.create({ email, source: req.body.source || 'popup' });
+
+    // Đổ vào liên hệ để admin theo dõi
+    await Contact.create({
+      email,
+      chu_de: 'Đăng ký nhận bản tin',
+      noi_dung: 'Đăng ký nhận bản tin qua popup website'
+    });
+
     res.status(201).json({ success: true, message: 'Đăng ký thành công!' });
   } catch (e) {
     res.status(400).json({ success: false, message: e.message });

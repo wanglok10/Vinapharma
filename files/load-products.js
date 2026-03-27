@@ -200,7 +200,7 @@
             <div class="product-weight">${product.weight || ''}</div>
             <div class="product-footer">
               <div>${priceHtml}</div>
-              <button class="add-btn">+</button>
+              <button class="add-btn"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
           </div>
         `;

@@ -1799,7 +1799,7 @@ function renderPosts(list) {
         </div>
       </div></td>
       <td><span class="badge badge-blue">${p.category}</span>${p.topic?`<span class="badge badge-bac" style="margin-left:.3rem">${p.topic}</span>`:''}</td>
-      <td style="text-align:center"><input type="number" min="1" max="999" value="${p.order||999}" style="width:54px;text-align:center;border:1px solid #ddd;border-radius:.3rem;padding:.2rem .3rem;font-size:.85rem;font-weight:700;color:${(p.order||999)<100?'var(--red)':'#555'}" onchange="quickOrder('${p._id}',this.value,this)" title="Nhấn Enter để lưu" onkeydown="if(event.key==='Enter')this.blur()"/></td>
+      <td style="text-align:center"><input type="number" min="0" max="999" value="${p.order??999}" style="width:54px;text-align:center;border:1px solid #ddd;border-radius:.3rem;padding:.2rem .3rem;font-size:.85rem;font-weight:700;color:${(p.order??999)<100?'var(--red)':'#555'}" onchange="quickOrder('${p._id}',this.value,this)" title="Nhấn Enter để lưu" onkeydown="if(event.key==='Enter')this.blur()"/></td>
       <td><span class="badge ${p.published?'badge-green':'badge-gray'}">${p.published?'Đã đăng':'Nháp'}</span></td>
       <td>${p.publishedAt?formatDate(p.publishedAt):'–'}</td>
       <td><div style="display:flex;gap:.4rem">
@@ -1888,7 +1888,7 @@ async function savePost() {
 
 async function quickOrder(id, val, el) {
   const order = parseInt(val);
-  if (isNaN(order) || order < 1) return;
+  if (isNaN(order) || order < 0) return;
   try {
     const fd = new FormData();
     const p = allPosts.find(x => x._id === id);

@@ -1879,9 +1879,10 @@ function renderAdminTagChips(cat, selected) {
   if (!el) return;
   el.innerHTML = tags.map(function(t){
     var isSel = (selected||[]).indexOf(t) > -1;
-    return '<span class="admin-tag-chip'+(isSel?' sel':'')+'" onclick="this.classList.toggle('sel')">'+t+'</span>';
+    return '<span class="admin-tag-chip'+(isSel?' sel':'')+'" onclick="toggleAdminTag(this)">'+t+'</span>';
   }).join('');
 }
+function toggleAdminTag(el) { el.classList.toggle('sel'); }
 function getSelectedAdminTags() {
   return Array.from(document.querySelectorAll('#postTagChips .admin-tag-chip.sel')).map(function(el){ return el.textContent; });
 }

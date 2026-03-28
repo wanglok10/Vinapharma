@@ -181,7 +181,7 @@
         
         const priceHtml = '';
         
-        const badgeHtml = product.badge ? `<span class="product-badge">${product.badge}</span>` : 'https://api.vinapharmajsc.vn';
+        const badgeHtml = product.badge ? `<span class="product-badge">${product.badge}</span>` : '';
         
         card.innerHTML = `
           ${badgeHtml}

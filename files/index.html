@@ -816,13 +816,13 @@ loadPromoBanner();
   try {
     var _API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://api.vinapharmajsc.vn';
     var isMob = window.innerWidth <= 768;
+    if (isMob) return; // Không dùng hình nền trên mobile
     var [resDt, resMob] = await Promise.all([
       fetch(_API + '/api/settings/hero_bg'),
       fetch(_API + '/api/settings/heroMobile_bg')
     ]);
     var [dataDt, dataMob] = await Promise.all([resDt.json(), resMob.json()]);
-    var bgUrl = (isMob && dataMob.success && dataMob.data) ? dataMob.data
-              : (dataDt.success && dataDt.data) ? dataDt.data : null;
+    var bgUrl = (dataDt.success && dataDt.data) ? dataDt.data : null;
     if (bgUrl) {
       var hero = document.getElementById('homeHero');
       var wrap = hero && hero.closest('.hero-wrap');

@@ -204,21 +204,29 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}}
 
-.hero{position:relative;overflow:hidden;height:500px;background:var(--red)}
+.hero{position:relative;overflow:hidden;height:480px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat}
 .hero-slides{display:flex;height:100%;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
 .hero-slide{min-width:100%;height:100%;display:flex;align-items:center;padding:0 8%;position:relative;overflow:hidden;flex-shrink:0}
-.slide-1{background:linear-gradient(120deg,#cc1f1f 0%,#9a1414 100%)}
-.slide-2{background:linear-gradient(120deg,#b01010 0%,#7a0a0a 100%)}
-.slide-3{background:linear-gradient(120deg,#d42020 0%,#aa1818 100%)}
-.hero-slide::after{content:'';position:absolute;right:0;top:0;bottom:0;width:50%;background:#fff;clip-path:polygon(14% 0,100% 0,100% 100%,0 100%);z-index:1}
-.slide-text{position:relative;z-index:2;max-width:400px}
-.slide-badge{display:inline-block;background:rgba(255,255,255,.2);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .85rem;border-radius:2rem;margin-bottom:.9rem}
-.slide-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:900;line-height:1.05;color:#fff;margin-bottom:.8rem}
-.slide-title span{color:#ffdd44}
-.slide-desc{font-size:.9rem;color:rgba(255,255,255,.85);line-height:1.7;margin-bottom:1.4rem;max-width:340px}
-.slide-btn{display:inline-block;background:#fff;color:var(--red);padding:.75rem 1.8rem;border-radius:.3rem;font-weight:800;font-size:.85rem;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;transition:background .2s,transform .2s}
-.slide-btn:hover{background:#fff5f5;transform:translateY(-2px)}
-.slide-visual{position:absolute;right:6%;top:50%;transform:translateY(-50%);z-index:3;font-size:9rem;filter:drop-shadow(0 16px 32px rgba(0,0,0,.15));animation:floatY 3s ease-in-out infinite}
+.slide-1{background:linear-gradient(135deg,#e8192c 0%,#c0392b 55%,#96281b 100%)}
+.slide-2{background:linear-gradient(135deg,#d32f2f 0%,#b71c1c 55%,#880e0e 100%)}
+.slide-3{background:linear-gradient(135deg,#e53935 0%,#c0392b 55%,#9c1f1f 100%)}
+/* Trang trí hình tròn mờ phía sau */
+.hero-deco{position:absolute;border-radius:50%;pointer-events:none;z-index:1}
+.hero-deco-1{width:340px;height:340px;top:-100px;right:28%;background:rgba(255,255,255,.07)}
+.hero-deco-2{width:200px;height:200px;bottom:-60px;right:18%;background:rgba(255,255,255,.05)}
+.hero-deco-3{width:140px;height:140px;top:60px;right:12%;background:rgba(255,255,255,.04)}
+/* Sóng trắng phía dưới hero giống Long Châu */
+.hero-wave{position:absolute;bottom:0;left:0;right:0;z-index:4;line-height:0;pointer-events:none}
+.hero-wave svg{display:block;width:100%}
+.hero-slide::after{display:none}
+.slide-text{position:relative;z-index:2;max-width:420px}
+.slide-badge{display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.22);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.3rem .9rem;border-radius:2rem;margin-bottom:.9rem;backdrop-filter:blur(4px)}
+.slide-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:900;line-height:1.08;color:#fff;margin-bottom:.8rem;text-shadow:0 2px 12px rgba(0,0,0,.18)}
+.slide-title span{color:#ffe066}
+.slide-desc{font-size:.9rem;color:rgba(255,255,255,.88);line-height:1.7;margin-bottom:1.4rem;max-width:360px}
+.slide-btn{display:inline-block;background:#fff;color:var(--red);padding:.75rem 2rem;border-radius:2rem;font-weight:800;font-size:.85rem;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;box-shadow:0 4px 18px rgba(0,0,0,.18);transition:background .2s,transform .2s,box-shadow .2s}
+.slide-btn:hover{background:#fff5f5;transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.22)}
+.slide-visual{position:absolute;right:7%;top:50%;transform:translateY(-50%);z-index:3;font-size:9rem;filter:drop-shadow(0 16px 32px rgba(0,0,0,.18));animation:floatY 3s ease-in-out infinite}
 @keyframes floatY{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 10px))}}
 .hero-prev,.hero-next{position:absolute;top:50%;z-index:5;transform:translateY(-50%);background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.3);color:#fff;width:42px;height:42px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .35s ease,background .2s}
 .hero-prev:hover,.hero-next:hover{background:rgba(255,255,255,.4)}
@@ -438,6 +446,16 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
     <div class="hero-dot active" data-idx="0"></div>
     <div class="hero-dot" data-idx="1"></div>
     <div class="hero-dot" data-idx="2"></div>
+  </div>
+  <!-- Trang trí hình tròn mờ -->
+  <div class="hero-deco hero-deco-1" aria-hidden="true"></div>
+  <div class="hero-deco hero-deco-2" aria-hidden="true"></div>
+  <div class="hero-deco hero-deco-3" aria-hidden="true"></div>
+  <!-- Sóng trắng phía dưới -->
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 54" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,28 C200,54 400,4 600,28 C800,52 1000,8 1200,28 C1320,40 1390,22 1440,28 L1440,54 L0,54 Z" fill="#ffffff"/>
+    </svg>
   </div>
 </section>
 
@@ -765,6 +783,23 @@ async function loadPromoBanner() {
 loadHeroBanners();
 loadFeaturedProducts();
 loadPromoBanner();
+
+// Tải hình nền hero từ settings
+(async function loadHeroBg() {
+  try {
+    var _API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://api.vinapharmajsc.vn';
+    var res = await fetch(_API + '/api/settings/hero_bg');
+    var data = await res.json();
+    if (data.success && data.data) {
+      var hero = document.getElementById('homeHero');
+      if (hero) {
+        hero.style.backgroundImage = 'url(' + data.data + ')';
+        hero.style.backgroundSize = 'cover';
+        hero.style.backgroundPosition = 'center';
+      }
+    }
+  } catch(e) {}
+})();
 
 // Load latest posts for homepage
 (function(){

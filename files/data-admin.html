@@ -208,6 +208,7 @@ i.fa-solid,i.fa-regular{line-height:1}
     <button class="nav-item" onclick="showTab('brands',this)"><span class="ico"><i class="fa-solid fa-tag ic-gray"></i></span>Thương hiệu</button>
     <button class="nav-item" onclick="showTab('posts',this)"><span class="ico"><i class="fa-solid fa-newspaper ic-gray"></i></span>Tin tức</button>
     <button class="nav-item" onclick="showTab('banners',this)"><span class="ico"><i class="fa-solid fa-image ic-gray"></i></span>Banner</button>
+    <button class="nav-item" onclick="showTab('backgrounds',this)"><span class="ico"><i class="fa-solid fa-panorama ic-gray"></i></span>Hình nền</button>
     <button class="nav-item" onclick="showTab('about',this)"><span class="ico"><i class="fa-solid fa-building ic-gray"></i></span>Giới thiệu</button>
     <button class="nav-item" onclick="showTab('activities',this)"><span class="ico"><i class="fa-solid fa-flag ic-gray"></i></span>Hoạt động</button>
     <button class="nav-item" onclick="showTab('promotions',this)"><span class="ico"><i class="fa-solid fa-gift ic-brand"></i></span>Khuyến mãi</button>
@@ -413,6 +414,42 @@ i.fa-solid,i.fa-regular{line-height:1}
           </div>
           <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGrid">
             <div class="empty-state">Đang tải...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── HÌNH NỀN ── -->
+      <div id="tab-backgrounds" class="tab-pane">
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title"><i class="fa-solid fa-panorama ic-gray"></i> Hình nền trang chủ</div>
+          </div>
+          <div style="padding:1.4rem 1.2rem;max-width:760px" id="bgContainer">
+
+            <!-- Hero background -->
+            <div style="margin-bottom:2rem">
+              <div style="font-weight:700;font-size:.93rem;margin-bottom:.4rem">Hình nền Hero (Banner chính)</div>
+              <div style="font-size:.78rem;color:#888;margin-bottom:.9rem">Kích thước khuyến nghị: 1920×480px. Hiển thị phía sau toàn bộ khu vực banner trang chủ.</div>
+              <div id="heroBgDropzone"
+                style="width:100%;height:220px;background:#f8f8f8;border-radius:.7rem;overflow:hidden;border:2px dashed #ddd;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;cursor:pointer;position:relative;transition:border-color .2s"
+                onclick="document.getElementById('heroBgInput').click()"
+                ondragover="event.preventDefault();this.style.borderColor='var(--red)'"
+                ondragleave="this.style.borderColor='#ddd'"
+                ondrop="dropBg('hero',event)">
+                <img id="heroBgImg" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"/>
+                <div id="heroBgText" style="display:flex;flex-direction:column;align-items:center;gap:.5rem;color:#bbb;pointer-events:none">
+                  <i class="fa-solid fa-cloud-arrow-up" style="font-size:2.2rem"></i>
+                  <span style="font-size:.8rem">Kéo thả hoặc bấm để chọn ảnh nền</span>
+                </div>
+              </div>
+              <input type="file" id="heroBgInput" accept="image/*" style="display:none" onchange="previewBg('hero',this)"/>
+              <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
+                <button class="btn btn-red" onclick="saveBg('hero')"><i class="fa-solid fa-floppy-disk"></i> Lưu hình nền</button>
+                <button class="btn btn-outline btn-sm" onclick="removeBg('hero')" style="color:#cc1f1f;border-color:#cc1f1f"><i class="fa-solid fa-trash"></i> Xóa hình nền</button>
+                <span id="heroBgStatus" style="font-size:.76rem;color:#888"></span>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1262,12 +1299,13 @@ function showTab(name, btn) {
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   if (btn) btn.classList.add('active');
-  const titles = { dashboard:'Dashboard', products:'Sản phẩm', brands:'Thương hiệu', posts:'Tin tức', banners:'Banner', about:'Giới thiệu', activities:'Hoạt động', promotions:'Khuyến mãi', 'promo-banners':'Băng rôn', users:'Người dùng', contacts:'Liên hệ' };
+  const titles = { dashboard:'Dashboard', products:'Sản phẩm', brands:'Thương hiệu', posts:'Tin tức', banners:'Banner', backgrounds:'Hình nền', about:'Giới thiệu', activities:'Hoạt động', promotions:'Khuyến mãi', 'promo-banners':'Băng rôn', users:'Người dùng', contacts:'Liên hệ' };
   document.getElementById('topbarTitle').textContent = titles[name] || name;
   if (name === 'products') loadProducts();
   if (name === 'brands') loadBrands();
   if (name === 'posts') loadPosts();
   if (name === 'banners') loadBanners();
+  if (name === 'backgrounds') loadBackgrounds();
   if (name === 'about') loadAbout();
   if (name === 'activities') loadActivities();
   if (name === 'promotions') loadPromos();
@@ -2767,6 +2805,89 @@ async function deleteBanner(id) {
   const res = await authFetch(`${API}/api/banners/${id}`, { method:'DELETE', headers:{} });
   const data = await res.json();
   if (data.success) { showToast('Đã xóa banner', 'success'); loadBanners(); }
+}
+
+// ── BACKGROUNDS ──
+async function loadBackgrounds() {
+  try {
+    const res = await fetch(API + '/api/settings/hero_bg');
+    const data = await res.json();
+    if (data.success && data.data) {
+      const img = document.getElementById('heroBgImg');
+      img.src = data.data;
+      img.style.display = 'block';
+      document.getElementById('heroBgText').style.display = 'none';
+      document.getElementById('heroBgStatus').textContent = 'Đã có hình nền';
+    } else {
+      document.getElementById('heroBgStatus').textContent = 'Chưa có hình nền';
+    }
+  } catch(e) {}
+}
+
+function previewBg(key, input) {
+  const file = input.files[0];
+  if (!file) return;
+  selectedFiles['bg_' + key] = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(key + 'BgImg');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    document.getElementById(key + 'BgText').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+  document.getElementById(key + 'BgStatus').textContent = file.name;
+}
+
+function dropBg(key, e) {
+  e.preventDefault();
+  document.getElementById(key + 'BgDropzone').style.borderColor = '#ddd';
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const dt = new DataTransfer(); dt.items.add(file);
+    const input = document.getElementById(key + 'BgInput');
+    input.files = dt.files;
+    previewBg(key, input);
+  }
+}
+
+async function saveBg(key) {
+  const file = selectedFiles['bg_' + key];
+  if (!file) return showToast('Vui lòng chọn ảnh trước', 'error');
+  const statusEl = document.getElementById(key + 'BgStatus');
+  statusEl.textContent = 'Đang tải lên...';
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('key', key + '_bg');
+  try {
+    const res = await authFetch(API + '/api/settings/upload-bg', { method: 'POST', headers: {}, body: formData });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Đã lưu hình nền thành công', 'success');
+      selectedFiles['bg_' + key] = null;
+      statusEl.textContent = 'Đã lưu';
+    } else showToast(data.message, 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); statusEl.textContent = ''; }
+}
+
+async function removeBg(key) {
+  if (!confirm('Xóa hình nền này? Trang chủ sẽ dùng màu nền mặc định.')) return;
+  try {
+    const res = await authFetch(API + '/api/settings/' + key + '_bg', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ value: null })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Đã xóa hình nền', 'success');
+      const img = document.getElementById(key + 'BgImg');
+      img.src = ''; img.style.display = 'none';
+      document.getElementById(key + 'BgText').style.display = 'flex';
+      document.getElementById(key + 'BgStatus').textContent = 'Chưa có hình nền';
+      selectedFiles['bg_' + key] = null;
+    } else showToast(data.message, 'error');
+  } catch(e) { showToast('Lỗi kết nối', 'error'); }
 }
 
 // ── USERS ──

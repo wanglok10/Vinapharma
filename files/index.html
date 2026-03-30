@@ -202,8 +202,15 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 /* RESPONSIVE */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
-@media(max-width:768px){.hero{height:480px}.hero-banner-card{width:90%}}
-@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero{height:320px}.hero-banner-card{width:92%;bottom:.5rem}}
+@media(max-width:768px){
+  /* Mobile: banner tách ra khỏi hero, không đè lên hình nền */
+  .hero{height:300px;overflow:visible;margin:0 0 0}
+  .hero-banner-card{position:relative;bottom:auto;left:auto;transform:none;width:92%;margin:0 auto 1.2rem;display:block}
+}
+@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}
+  .hero{height:220px}
+  .hero-banner-card{width:96%}
+}
 
 /* Hero height cố định — không đổi theo banner */
 .hero{position:relative;overflow:hidden;height:760px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0 0 1.2rem}

@@ -206,23 +206,23 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero{height:220px;margin:.5rem 2.5% .8rem}}
 
 .hero{position:relative;overflow:hidden;height:380px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0 4% 1.2rem;border-radius:1.2rem;box-shadow:0 4px 24px rgba(0,0,0,.12)}
-.hero-slides{display:flex;height:100%;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
-.hero-slide{min-width:100%;height:100%;display:flex;align-items:center;padding:0 5%;position:relative;overflow:hidden;flex-shrink:0}
-.slide-1{background:linear-gradient(135deg,#e8192c 0%,#c0392b 55%,#96281b 100%)}
-.slide-2{background:linear-gradient(135deg,#d32f2f 0%,#b71c1c 55%,#880e0e 100%)}
-.slide-3{background:linear-gradient(135deg,#e53935 0%,#c0392b 55%,#9c1f1f 100%)}
+/* Slides bar nằm ở dưới cùng hero */
+.hero-slides{display:flex;position:absolute;bottom:0;left:0;right:0;height:auto;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.hero-slide{min-width:100%;min-height:120px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0}
+.slide-1{background:linear-gradient(90deg,rgba(180,15,15,.88) 0%,rgba(140,10,10,.82) 100%);backdrop-filter:blur(6px)}
+.slide-2{background:linear-gradient(90deg,rgba(150,8,8,.88) 0%,rgba(110,5,5,.82) 100%);backdrop-filter:blur(6px)}
+.slide-3{background:linear-gradient(90deg,rgba(190,20,20,.88) 0%,rgba(150,12,12,.82) 100%);backdrop-filter:blur(6px)}
 /* Trang trí hình tròn mờ phía sau */
 .hero-deco{position:absolute;border-radius:50%;pointer-events:none;z-index:1}
 .hero-deco-1{width:260px;height:260px;top:-80px;right:28%;background:rgba(255,255,255,.07)}
 .hero-deco-2{width:160px;height:160px;bottom:-50px;right:18%;background:rgba(255,255,255,.05)}
 .hero-deco-3{width:110px;height:110px;top:30px;right:12%;background:rgba(255,255,255,.04)}
 /* Sóng trắng phía dưới hero giống Long Châu */
-.hero-wave{position:absolute;bottom:0;left:0;right:0;z-index:4;line-height:0;pointer-events:none}
-.hero-wave svg{display:block;width:100%}
+.hero-wave{display:none}
 .hero-slide::after{display:none}
 .slide-text{position:relative;z-index:2;max-width:420px}
 .slide-badge{display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.22);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.3rem .9rem;border-radius:2rem;margin-bottom:.9rem;backdrop-filter:blur(4px)}
-.slide-title{font-size:clamp(1.2rem,2.5vw,2rem);font-weight:900;line-height:1.1;color:#fff;margin-bottom:.6rem;text-shadow:0 2px 12px rgba(0,0,0,.18)}
+.slide-title{font-size:clamp(1rem,2vw,1.6rem);font-weight:900;line-height:1.1;color:#fff;margin-bottom:.4rem;text-shadow:0 2px 8px rgba(0,0,0,.3)}
 .slide-title span{color:#ffe066}
 .slide-desc{font-size:.82rem;color:rgba(255,255,255,.88);line-height:1.6;margin-bottom:.9rem;max-width:360px}
 .slide-btn{display:inline-block;background:#fff;color:var(--red);padding:.75rem 2rem;border-radius:2rem;font-weight:800;font-size:.85rem;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;box-shadow:0 4px 18px rgba(0,0,0,.18);transition:background .2s,transform .2s,box-shadow .2s}
@@ -675,21 +675,21 @@ async function loadHeroBanners() {
     const dotsEl = document.querySelector('.hero-dots');
     if (!slidesEl) { revealHero(); return; }
 
-    // Ẩn phần trắng hình chéo & icon tĩnh khi dùng banner API
+    // Ẩn icon tĩnh khi dùng banner API
     const style = document.createElement('style');
     style.textContent = '.hero-slide::after{display:none!important} .slide-visual{display:none!important}';
     document.head.appendChild(style);
     setHeroState('is-switching');
 
     slidesEl.innerHTML = banners.map((b, i) => `
-      <div class="hero-slide" style="position:relative;overflow:hidden;min-width:100%;background:transparent;padding:0 5%">
-        <div class="slide-text" style="position:relative;z-index:2;display:inline-flex;flex-direction:column;gap:.5rem;max-width:48%;justify-content:center">
-          <h1 class="slide-title" style="white-space:normal;font-size:clamp(1rem,2.4vw,2rem);line-height:1.15;color:${b.titleColor||'#fff'};margin:0;text-shadow:0 2px 8px rgba(0,0,0,.25)">${b.title}</h1>
-          ${b.subtitle ? `<p class="slide-desc" style="margin:0;font-size:.82rem;color:rgba(255,255,255,.9)">${b.subtitle}</p>` : ''}
-          ${(b.buttonText||'').trim() ? `<a href="${b.buttonLink || 'san-pham.html'}" class="slide-btn" style="align-self:flex-start">${b.buttonText}</a>` : ''}
+      <div class="hero-slide" style="min-width:100%;min-height:120px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.48);backdrop-filter:blur(8px)">
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:.35rem;max-width:60%">
+          <h1 class="slide-title" style="font-size:clamp(.9rem,1.8vw,1.45rem);line-height:1.15;color:${b.titleColor||'#fff'};margin:0;text-shadow:0 2px 6px rgba(0,0,0,.35)">${b.title}</h1>
+          ${b.subtitle ? `<p style="margin:0;font-size:.78rem;color:rgba(255,255,255,.88);line-height:1.5">${b.subtitle}</p>` : ''}
+          ${(b.buttonText||'').trim() ? `<a href="${b.buttonLink || 'san-pham.html'}" class="slide-btn" style="margin-top:.25rem;align-self:flex-start;padding:.5rem 1.4rem;font-size:.78rem">${b.buttonText}</a>` : ''}
         </div>
         <img src="${b.image&&b.image.startsWith('http')?b.image:API+b.image}" alt="${b.title}"
-          style="position:absolute;right:0;top:0;height:100%;width:56%;object-fit:cover;object-position:left center;z-index:1"/>
+          style="position:absolute;right:0;top:0;height:100%;width:42%;object-fit:contain;object-position:right center;z-index:1"/>
       </div>`).join('');
 
     heroTotal = banners.length;

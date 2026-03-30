@@ -202,16 +202,16 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 /* RESPONSIVE */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
-@media(max-width:768px){.hero{height:260px;margin:.6rem 3% 1rem;border-radius:.9rem}}
-@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero{height:220px;margin:.5rem 2.5% .8rem}}
+@media(max-width:768px){.hero{height:280px}.hero-slides{left:3%;right:3%}}
+@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero{height:240px}.hero-slides{left:2%;right:2%;bottom:.6rem}}
 
-.hero{position:relative;overflow:hidden;height:380px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0 4% 1.2rem;border-radius:1.2rem;box-shadow:0 4px 24px rgba(0,0,0,.12)}
-/* Slides bar nằm ở dưới cùng hero */
-.hero-slides{display:flex;position:absolute;bottom:0;left:0;right:0;height:auto;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1);overflow:hidden}
-.hero-slide{min-width:100%;min-height:120px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0}
-.slide-1{background:linear-gradient(90deg,rgba(180,15,15,.88) 0%,rgba(140,10,10,.82) 100%);backdrop-filter:blur(6px)}
-.slide-2{background:linear-gradient(90deg,rgba(150,8,8,.88) 0%,rgba(110,5,5,.82) 100%);backdrop-filter:blur(6px)}
-.slide-3{background:linear-gradient(90deg,rgba(190,20,20,.88) 0%,rgba(150,12,12,.82) 100%);backdrop-filter:blur(6px)}
+.hero{position:relative;overflow:hidden;height:380px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0 0 1.2rem}
+/* Banner card: khối riêng nằm phía dưới hero, có bo góc như Long Châu */
+.hero-slides{display:flex;position:absolute;bottom:1rem;left:4%;right:4%;height:auto;border-radius:1rem;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.28);opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
+.hero-slide{min-width:100%;min-height:140px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0}
+.slide-1{background:linear-gradient(135deg,#e8192c 0%,#c0392b 55%,#96281b 100%)}
+.slide-2{background:linear-gradient(135deg,#d32f2f 0%,#b71c1c 55%,#880e0e 100%)}
+.slide-3{background:linear-gradient(135deg,#e53935 0%,#c0392b 55%,#9c1f1f 100%)}
 /* Trang trí hình tròn mờ phía sau */
 .hero-deco{position:absolute;border-radius:50%;pointer-events:none;z-index:1}
 .hero-deco-1{width:260px;height:260px;top:-80px;right:28%;background:rgba(255,255,255,.07)}
@@ -682,14 +682,15 @@ async function loadHeroBanners() {
     setHeroState('is-switching');
 
     slidesEl.innerHTML = banners.map((b, i) => `
-      <div class="hero-slide" style="min-width:100%;min-height:120px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.48);backdrop-filter:blur(8px)">
-        <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:.35rem;max-width:60%">
-          <h1 class="slide-title" style="font-size:clamp(.9rem,1.8vw,1.45rem);line-height:1.15;color:${b.titleColor||'#fff'};margin:0;text-shadow:0 2px 6px rgba(0,0,0,.35)">${b.title}</h1>
-          ${b.subtitle ? `<p style="margin:0;font-size:.78rem;color:rgba(255,255,255,.88);line-height:1.5">${b.subtitle}</p>` : ''}
-          ${(b.buttonText||'').trim() ? `<a href="${b.buttonLink || 'san-pham.html'}" class="slide-btn" style="margin-top:.25rem;align-self:flex-start;padding:.5rem 1.4rem;font-size:.78rem">${b.buttonText}</a>` : ''}
-        </div>
+      <div class="hero-slide" style="min-width:100%;min-height:140px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0">
         <img src="${b.image&&b.image.startsWith('http')?b.image:API+b.image}" alt="${b.title}"
-          style="position:absolute;right:0;top:0;height:100%;width:42%;object-fit:contain;object-position:right center;z-index:1"/>
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,${b.overlayOpacity??0.3}) 0%,transparent 65%);z-index:1"></div>
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:.35rem;max-width:55%">
+          <h1 class="slide-title" style="font-size:clamp(.9rem,1.8vw,1.5rem);line-height:1.15;color:${b.titleColor||'#fff'};margin:0;text-shadow:0 2px 6px rgba(0,0,0,.4)">${b.title}</h1>
+          ${b.subtitle ? `<p style="margin:0;font-size:.78rem;color:rgba(255,255,255,.9);line-height:1.5">${b.subtitle}</p>` : ''}
+          ${(b.buttonText||'').trim() ? `<a href="${b.buttonLink || 'san-pham.html'}" class="slide-btn" style="margin-top:.3rem;align-self:flex-start;padding:.5rem 1.4rem;font-size:.78rem">${b.buttonText}</a>` : ''}
+        </div>
       </div>`).join('');
 
     heroTotal = banners.length;

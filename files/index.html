@@ -523,12 +523,21 @@ function goSlide(n){
   slides.style.transform=`translateX(${-heroIdx*100}%)`;
   document.querySelectorAll('.hero-dot').forEach((d,i)=>d.classList.toggle('active',i===heroIdx));
 }
+// Ẩn prev/next/dots mặc định — chỉ hiện khi có ≥2 banner
+document.getElementById('heroPrev').style.display='none';
+document.getElementById('heroNext').style.display='none';
+const dotsWrap=document.querySelector('.hero-dots');
+if(dotsWrap) dotsWrap.style.display='none';
+
 document.getElementById('heroPrev').addEventListener('click',()=>goSlide(heroIdx-1));
 document.getElementById('heroNext').addEventListener('click',()=>goSlide(heroIdx+1));
 document.querySelectorAll('.hero-dot').forEach(d=>d.addEventListener('click',()=>goSlide(+d.dataset.idx)));
-let auto=setInterval(()=>goSlide(heroIdx+1),4500);
-document.querySelector('.hero').addEventListener('mouseenter',()=>clearInterval(auto));
-document.querySelector('.hero').addEventListener('mouseleave',()=>{auto=setInterval(()=>goSlide(heroIdx+1),4500)});
+
+let auto=null;
+function startAuto(){ if(heroTotal>1) auto=setInterval(()=>goSlide(heroIdx+1),4500); }
+function stopAuto(){ clearInterval(auto); }
+document.querySelector('.hero').addEventListener('mouseenter',stopAuto);
+document.querySelector('.hero').addEventListener('mouseleave',()=>{ if(heroTotal>1) startAuto(); });
 // Filter
 const fbns=document.querySelectorAll('.filter-btn');
 const pcards=document.querySelectorAll('.product-card');
@@ -695,7 +704,7 @@ async function loadHeroBanners() {
 
     heroTotal = banners.length;
     heroIdx = 0;
-    clearInterval(auto);
+    stopAuto();
     if (banners.length > 1) {
       if (dotsEl) {
         dotsEl.innerHTML = banners.map((_,i) =>
@@ -704,7 +713,7 @@ async function loadHeroBanners() {
       }
       document.getElementById('heroPrev').style.display = '';
       document.getElementById('heroNext').style.display = '';
-      auto = setInterval(()=>goSlide(heroIdx+1), 4500);
+      startAuto();
     } else {
       if (dotsEl) dotsEl.style.display = 'none';
       document.getElementById('heroPrev').style.display = 'none';

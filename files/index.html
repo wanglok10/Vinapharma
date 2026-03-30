@@ -202,13 +202,13 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 /* RESPONSIVE */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
-@media(max-width:768px){.hero{height:480px}.hero-banner-card{width:50%}}
-@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero{height:360px}.hero-banner-card{width:80%;bottom:.6rem}}
+@media(max-width:768px){.hero{height:480px}.hero-banner-card{width:90%}}
+@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero{height:320px}.hero-banner-card{width:92%;bottom:.5rem}}
 
 /* Hero height cố định — không đổi theo banner */
 .hero{position:relative;overflow:hidden;height:760px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0 0 1.2rem}
-/* Card 16:9, width 19%, nằm giữa phía dưới */
-.hero-banner-card{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);width:19%;aspect-ratio:16/9;border-radius:1rem;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.28)}
+/* Card tỉ lệ 4:1 (wide banner), căn giữa phía dưới */
+.hero-banner-card{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);width:84%;aspect-ratio:4/1;border-radius:1rem;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.28)}
 /* Inner flex */
 .hero-slides{display:flex;height:100%;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
 .hero-slide{min-width:100%;height:100%;display:flex;align-items:center;padding:1.2rem 6%;position:relative;overflow:hidden;flex-shrink:0}

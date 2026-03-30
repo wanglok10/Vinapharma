@@ -202,15 +202,16 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 /* RESPONSIVE */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
-@media(max-width:768px){.hero{height:480px}.hero-slides{left:4%;right:4%}}
-@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero{height:400px}.hero-slides{left:3%;right:3%;bottom:.6rem}}
+@media(max-width:768px){.hero-banner-card{left:4%;right:4%}}
+@media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}.hero-banner-card{left:2%;right:2%;bottom:.6rem}}
 
-.hero{position:relative;overflow:hidden;height:760px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0 0 1.2rem}
-/* Card wrapper: cố định vị trí, overflow:hidden để clip slides */
-.hero-banner-card{position:absolute;bottom:1.2rem;left:8%;right:8%;border-radius:1rem;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.28)}
-/* Inner flex: cái này mới bị translateX khi chuyển slide */
-.hero-slides{display:flex;height:auto;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
-.hero-slide{min-width:100%;min-height:140px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0}
+/* Hero cao = chiều cao card 16:9 (84vw*9/16) + 5rem nền hiển thị phía trên */
+.hero{position:relative;overflow:hidden;height:calc(47.25vw + 5rem);background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0 0 1.2rem}
+/* Card wrapper: tỉ lệ 16:9, nằm sát đáy */
+.hero-banner-card{position:absolute;bottom:1.2rem;left:8%;right:8%;aspect-ratio:16/9;border-radius:1rem;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.28)}
+/* Inner flex */
+.hero-slides{display:flex;height:100%;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
+.hero-slide{min-width:100%;height:100%;display:flex;align-items:center;padding:1.2rem 6%;position:relative;overflow:hidden;flex-shrink:0}
 .slide-1{background:linear-gradient(135deg,#e8192c 0%,#c0392b 55%,#96281b 100%)}
 .slide-2{background:linear-gradient(135deg,#d32f2f 0%,#b71c1c 55%,#880e0e 100%)}
 .slide-3{background:linear-gradient(135deg,#e53935 0%,#c0392b 55%,#9c1f1f 100%)}
@@ -691,7 +692,7 @@ async function loadHeroBanners() {
     setHeroState('is-switching');
 
     slidesEl.innerHTML = banners.map((b, i) => `
-      <div class="hero-slide" style="min-width:100%;min-height:140px;height:auto;display:flex;align-items:center;padding:.9rem 5%;position:relative;overflow:hidden;flex-shrink:0">
+      <div class="hero-slide" style="min-width:100%;height:100%;display:flex;align-items:center;padding:1.2rem 6%;position:relative;overflow:hidden;flex-shrink:0">
         <img src="${b.image&&b.image.startsWith('http')?b.image:API+b.image}" alt="${b.title}"
           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0"/>
         <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,${b.overlayOpacity??0.3}) 0%,transparent 65%);z-index:1"></div>

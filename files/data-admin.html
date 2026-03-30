@@ -931,14 +931,23 @@ i.fa-solid,i.fa-regular{line-height:1}
           <select id="bPos"><option value="hero">Hero Slider</option><option value="promo">Quảng cáo</option></select>
         </div>
         <div class="form-group"><label>Thứ tự</label><input type="number" id="bOrder" value="0"/></div>
-        <div class="form-group full">
-          <label>Ảnh banner *</label>
+        <div class="form-group" style="flex:1">
+          <label>Ảnh máy tính *<span style="font-size:.7rem;color:#999;font-weight:400;margin-left:.4rem">1200×300px, tỉ lệ 4:1</span></label>
           <div class="drop-zone" onclick="document.getElementById('bImgInput').click()">
-            <div style="font-size:2rem"><i class="fa-solid fa-image ic-gray"></i></div>
-            <div class="dz-text" id="bImgText">Bấm để chọn ảnh (1920×600px)</div>
+            <div style="font-size:2rem"><i class="fa-solid fa-desktop ic-gray"></i></div>
+            <div class="dz-text" id="bImgText">Bấm để chọn ảnh</div>
             <input type="file" id="bImgInput" accept="image/*" onchange="previewImg(this,'bImgPreview','bImgText')"/>
           </div>
           <img id="bImgPreview" class="preview-img"/>
+        </div>
+        <div class="form-group" style="flex:1">
+          <label>Ảnh điện thoại<span style="font-size:.7rem;color:#999;font-weight:400;margin-left:.4rem">tùy chọn — nếu bỏ trống dùng ảnh máy tính</span></label>
+          <div class="drop-zone" onclick="document.getElementById('bImgMobileInput').click()">
+            <div style="font-size:2rem"><i class="fa-solid fa-mobile-screen ic-gray"></i></div>
+            <div class="dz-text" id="bImgMobileText">Bấm để chọn ảnh</div>
+            <input type="file" id="bImgMobileInput" accept="image/*" onchange="previewImg(this,'bImgMobilePreview','bImgMobileText')"/>
+          </div>
+          <img id="bImgMobilePreview" class="preview-img"/>
         </div>
       </div>
     </div>
@@ -2741,9 +2750,12 @@ function openBannerModal() {
   document.getElementById('bPos').value = 'hero';
   document.getElementById('bOrder').value = '0';
   document.getElementById('bImgPreview').style.display = 'none';
-  document.getElementById('bImgText').textContent = 'Bấm để chọn ảnh (1920×600px)';
+  document.getElementById('bImgText').textContent = 'Bấm để chọn ảnh';
+  document.getElementById('bImgMobilePreview').style.display = 'none';
+  document.getElementById('bImgMobileText').textContent = 'Bấm để chọn ảnh';
   document.querySelector('#bannerOverlay .modal-title').textContent = 'Thêm Banner';
   selectedFiles['banner'] = null;
+  selectedFiles['bannerMobile'] = null;
   document.getElementById('bannerOverlay').classList.add('show');
 }
 
@@ -2761,10 +2773,20 @@ function editBanner(id) {
   document.getElementById('bOverlay').value  = b.overlayOpacity ?? 0.55;
   updateBannerPreview();
   selectedFiles['banner'] = null;
+  selectedFiles['bannerMobile'] = null;
   const prev = document.getElementById('bImgPreview');
   prev.src = b.image.startsWith('http') ? b.image : API + b.image;
   prev.style.display = 'block';
   document.getElementById('bImgText').textContent = 'Ảnh hiện tại (chọn ảnh mới để thay)';
+  const prevM = document.getElementById('bImgMobilePreview');
+  if (b.imageMobile) {
+    prevM.src = b.imageMobile.startsWith('http') ? b.imageMobile : API + b.imageMobile;
+    prevM.style.display = 'block';
+    document.getElementById('bImgMobileText').textContent = 'Ảnh hiện tại (chọn ảnh mới để thay)';
+  } else {
+    prevM.style.display = 'none';
+    document.getElementById('bImgMobileText').textContent = 'Bấm để chọn ảnh';
+  }
   document.querySelector('#bannerOverlay .modal-title').textContent = 'Sửa Banner';
   document.getElementById('bannerOverlay').classList.add('show');
 }
@@ -2781,6 +2803,7 @@ async function saveBanner() {
   formData.append('titleColor', document.getElementById('bTitleColor').value);
   formData.append('overlayOpacity', document.getElementById('bOverlay').value);
   if (selectedFiles['banner']) formData.append('image', selectedFiles['banner']);
+  if (selectedFiles['bannerMobile']) formData.append('imageMobile', selectedFiles['bannerMobile']);
   try {
     const url = editingBannerId ? `${API}/api/banners/${editingBannerId}` : `${API}/api/banners`;
     const method = editingBannerId ? 'PUT' : 'POST';
@@ -3331,7 +3354,7 @@ async function updateContact(id, status) {
 function previewImg(input, previewId, textId) {
   const file = input.files[0];
   if (!file) return;
-  const key = previewId.includes('pImg') ? 'product' : previewId.includes('postImg') ? 'post' : 'banner';
+  const key = previewId.includes('pImg') ? 'product' : previewId.includes('postImg') ? 'post' : previewId.includes('bImgMobile') ? 'bannerMobile' : 'banner';
   selectedFiles[key] = file;
   const reader = new FileReader();
   reader.onload = e => {

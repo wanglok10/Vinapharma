@@ -5,6 +5,10 @@ const { protect, adminOnly } = require('../middleware/auth');
 const { createUpload } = require('../utils/cloudinaryUpload');
 
 const upload = createUpload('banners', 5);
+const uploadFields = upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'imageMobile', maxCount: 1 }
+]);
 
 // GET /api/banners?position=hero
 router.get('/', async (req, res) => {
@@ -18,19 +22,24 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/banners - Upload banner mới (admin)
-router.post('/', protect, adminOnly, upload.single('image'), async (req, res) => {
+router.post('/', protect, adminOnly, uploadFields, async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ success: false, message: 'Vui lòng upload ảnh' });
-    const banner = await Banner.create({ ...req.body, image: req.file.path });
+    const files = req.files || {};
+    if (!files.image) return res.status(400).json({ success: false, message: 'Vui lòng upload ảnh' });
+    const data = { ...req.body, image: files.image[0].path };
+    if (files.imageMobile) data.imageMobile = files.imageMobile[0].path;
+    const banner = await Banner.create(data);
     res.status(201).json({ success: true, message: 'Thêm banner thành công', data: banner });
   } catch (e) { res.status(400).json({ success: false, message: e.message }); }
 });
 
 // PUT /api/banners/:id - Sửa banner (admin)
-router.put('/:id', protect, adminOnly, upload.single('image'), async (req, res) => {
+router.put('/:id', protect, adminOnly, uploadFields, async (req, res) => {
   try {
+    const files = req.files || {};
     const update = { ...req.body };
-    if (req.file) update.image = req.file.path;
+    if (files.image) update.image = files.image[0].path;
+    if (files.imageMobile) update.imageMobile = files.imageMobile[0].path;
     const banner = await Banner.findByIdAndUpdate(req.params.id, update, { new: true });
     if (!banner) return res.status(404).json({ success: false, message: 'Không tìm thấy banner' });
     res.json({ success: true, message: 'Cập nhật thành công', data: banner });

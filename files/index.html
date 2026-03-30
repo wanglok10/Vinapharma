@@ -703,9 +703,12 @@ async function loadHeroBanners() {
     document.head.appendChild(style);
     setHeroState('is-switching');
 
-    slidesEl.innerHTML = banners.map((b, i) => `
+    const isMob = window.innerWidth <= 768;
+    slidesEl.innerHTML = banners.map((b, i) => {
+      const imgSrc = (isMob && b.imageMobile) ? (b.imageMobile.startsWith('http')?b.imageMobile:API+b.imageMobile) : (b.image&&b.image.startsWith('http')?b.image:API+b.image);
+      return `
       <div class="hero-slide" style="min-width:100%;height:100%;display:flex;align-items:center;padding:1.2rem 6%;position:relative;overflow:hidden;flex-shrink:0">
-        <img src="${b.image&&b.image.startsWith('http')?b.image:API+b.image}" alt="${b.title}"
+        <img src="${imgSrc}" alt="${b.title}"
           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0"/>
         <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,${b.overlayOpacity??0.3}) 0%,transparent 65%);z-index:1"></div>
         <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:.35rem;max-width:55%">
@@ -713,7 +716,8 @@ async function loadHeroBanners() {
           ${b.subtitle ? `<p style="margin:0;font-size:.78rem;color:rgba(255,255,255,.9);line-height:1.5">${b.subtitle}</p>` : ''}
           ${(b.buttonText||'').trim() ? `<a href="${b.buttonLink || 'san-pham.html'}" class="slide-btn" style="margin-top:.3rem;align-self:flex-start;padding:.5rem 1.4rem;font-size:.78rem">${b.buttonText}</a>` : ''}
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
 
     heroTotal = banners.length;
     heroIdx = 0;

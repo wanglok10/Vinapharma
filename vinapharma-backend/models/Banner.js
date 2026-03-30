@@ -9,6 +9,7 @@ const bannerSchema = new mongoose.Schema({
   position: { type: String, enum: ['hero', 'promo'], default: 'hero' },
   order: { type: Number, default: 0 },
   active: { type: Boolean, default: true },
+  imageMobile: { type: String, default: '' },
   titleColor: { type: String, default: '#ffffff' },
   overlayOpacity: { type: Number, default: 0.55 }
 }, { timestamps: true });

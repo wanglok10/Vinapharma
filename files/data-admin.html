@@ -426,28 +426,57 @@ i.fa-solid,i.fa-regular{line-height:1}
           </div>
           <div style="padding:1.4rem 1.2rem;max-width:760px" id="bgContainer">
 
-            <!-- Hero background -->
-            <div style="margin-bottom:2rem">
-              <div style="font-weight:700;font-size:.93rem;margin-bottom:.4rem">Hình nền Hero (Banner chính)</div>
-              <div style="font-size:.78rem;color:#888;margin-bottom:.9rem">Kích thước khuyến nghị: 1920×480px. Hiển thị phía sau toàn bộ khu vực banner trang chủ.</div>
-              <div id="heroBgDropzone"
-                style="width:100%;height:220px;background:#f8f8f8;border-radius:.7rem;overflow:hidden;border:2px dashed #ddd;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;cursor:pointer;position:relative;transition:border-color .2s"
-                onclick="document.getElementById('heroBgInput').click()"
-                ondragover="event.preventDefault();this.style.borderColor='var(--red)'"
-                ondragleave="this.style.borderColor='#ddd'"
-                ondrop="dropBg('hero',event)">
-                <img id="heroBgImg" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"/>
-                <div id="heroBgText" style="display:flex;flex-direction:column;align-items:center;gap:.5rem;color:#bbb;pointer-events:none">
-                  <i class="fa-solid fa-cloud-arrow-up" style="font-size:2.2rem"></i>
-                  <span style="font-size:.8rem">Kéo thả hoặc bấm để chọn ảnh nền</span>
+            <!-- Hero background — 2 cột máy tính / điện thoại -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+
+              <!-- Desktop -->
+              <div>
+                <div style="font-weight:700;font-size:.9rem;margin-bottom:.25rem"><i class="fa-solid fa-desktop" style="color:#888;margin-right:.4rem"></i>Máy tính</div>
+                <div style="font-size:.75rem;color:#888;margin-bottom:.8rem">1920×760px</div>
+                <div id="heroBgDropzone"
+                  style="width:100%;height:180px;background:#f8f8f8;border-radius:.7rem;overflow:hidden;border:2px dashed #ddd;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;cursor:pointer;position:relative;transition:border-color .2s"
+                  onclick="document.getElementById('heroBgInput').click()"
+                  ondragover="event.preventDefault();this.style.borderColor='var(--red)'"
+                  ondragleave="this.style.borderColor='#ddd'"
+                  ondrop="dropBg('hero',event)">
+                  <img id="heroBgImg" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"/>
+                  <div id="heroBgText" style="display:flex;flex-direction:column;align-items:center;gap:.5rem;color:#bbb;pointer-events:none">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem"></i>
+                    <span style="font-size:.78rem">Kéo thả hoặc bấm chọn</span>
+                  </div>
+                </div>
+                <input type="file" id="heroBgInput" accept="image/*" style="display:none" onchange="previewBg('hero',this)"/>
+                <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+                  <button class="btn btn-red btn-sm" onclick="saveBg('hero')"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                  <button class="btn btn-outline btn-sm" onclick="removeBg('hero')" style="color:#cc1f1f;border-color:#cc1f1f"><i class="fa-solid fa-trash"></i> Xóa</button>
+                  <span id="heroBgStatus" style="font-size:.74rem;color:#888"></span>
                 </div>
               </div>
-              <input type="file" id="heroBgInput" accept="image/*" style="display:none" onchange="previewBg('hero',this)"/>
-              <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap">
-                <button class="btn btn-red" onclick="saveBg('hero')"><i class="fa-solid fa-floppy-disk"></i> Lưu hình nền</button>
-                <button class="btn btn-outline btn-sm" onclick="removeBg('hero')" style="color:#cc1f1f;border-color:#cc1f1f"><i class="fa-solid fa-trash"></i> Xóa hình nền</button>
-                <span id="heroBgStatus" style="font-size:.76rem;color:#888"></span>
+
+              <!-- Mobile -->
+              <div>
+                <div style="font-weight:700;font-size:.9rem;margin-bottom:.25rem"><i class="fa-solid fa-mobile-screen" style="color:#888;margin-right:.4rem"></i>Điện thoại <span style="font-weight:400;color:#aaa;font-size:.78rem">(tùy chọn)</span></div>
+                <div style="font-size:.75rem;color:#888;margin-bottom:.8rem">900×760px — nếu bỏ trống dùng ảnh máy tính</div>
+                <div id="heroMobileBgDropzone"
+                  style="width:100%;height:180px;background:#f8f8f8;border-radius:.7rem;overflow:hidden;border:2px dashed #ddd;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;cursor:pointer;position:relative;transition:border-color .2s"
+                  onclick="document.getElementById('heroMobileBgInput').click()"
+                  ondragover="event.preventDefault();this.style.borderColor='var(--red)'"
+                  ondragleave="this.style.borderColor='#ddd'"
+                  ondrop="dropBg('heroMobile',event)">
+                  <img id="heroMobileBgImg" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none"/>
+                  <div id="heroMobileBgText" style="display:flex;flex-direction:column;align-items:center;gap:.5rem;color:#bbb;pointer-events:none">
+                    <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem"></i>
+                    <span style="font-size:.78rem">Kéo thả hoặc bấm chọn</span>
+                  </div>
+                </div>
+                <input type="file" id="heroMobileBgInput" accept="image/*" style="display:none" onchange="previewBg('heroMobile',this)"/>
+                <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+                  <button class="btn btn-red btn-sm" onclick="saveBg('heroMobile')"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
+                  <button class="btn btn-outline btn-sm" onclick="removeBg('heroMobile')" style="color:#cc1f1f;border-color:#cc1f1f"><i class="fa-solid fa-trash"></i> Xóa</button>
+                  <span id="heroMobileBgStatus" style="font-size:.74rem;color:#888"></span>
+                </div>
               </div>
+
             </div>
 
           </div>
@@ -2832,19 +2861,22 @@ async function deleteBanner(id) {
 
 // ── BACKGROUNDS ──
 async function loadBackgrounds() {
-  try {
-    const res = await fetch(API + '/api/settings/hero_bg');
-    const data = await res.json();
-    if (data.success && data.data) {
-      const img = document.getElementById('heroBgImg');
-      img.src = data.data;
-      img.style.display = 'block';
-      document.getElementById('heroBgText').style.display = 'none';
-      document.getElementById('heroBgStatus').textContent = 'Đã có hình nền';
-    } else {
-      document.getElementById('heroBgStatus').textContent = 'Chưa có hình nền';
-    }
-  } catch(e) {}
+  const loadOne = async (settingKey, imgId, textId, statusId) => {
+    try {
+      const res = await fetch(API + '/api/settings/' + settingKey);
+      const data = await res.json();
+      if (data.success && data.data) {
+        const img = document.getElementById(imgId);
+        img.src = data.data; img.style.display = 'block';
+        document.getElementById(textId).style.display = 'none';
+        document.getElementById(statusId).textContent = 'Đã có hình nền';
+      } else {
+        document.getElementById(statusId).textContent = 'Chưa có hình nền';
+      }
+    } catch(e) {}
+  };
+  loadOne('hero_bg',       'heroBgImg',       'heroBgText',       'heroBgStatus');
+  loadOne('heroMobile_bg', 'heroMobileBgImg', 'heroMobileBgText', 'heroMobileBgStatus');
 }
 
 function previewBg(key, input) {

@@ -811,37 +811,30 @@ loadHeroBanners();
 loadFeaturedProducts();
 loadPromoBanner();
 
-// Tải hình nền hero từ settings
+// Tải hình nền hero — desktop + mobile riêng
 (async function loadHeroBg() {
   try {
     var _API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://api.vinapharmajsc.vn';
-    var res = await fetch(_API + '/api/settings/hero_bg');
-    var data = await res.json();
-    if (data.success && data.data) {
+    var isMob = window.innerWidth <= 768;
+    var [resDt, resMob] = await Promise.all([
+      fetch(_API + '/api/settings/hero_bg'),
+      fetch(_API + '/api/settings/heroMobile_bg')
+    ]);
+    var [dataDt, dataMob] = await Promise.all([resDt.json(), resMob.json()]);
+    var bgUrl = (isMob && dataMob.success && dataMob.data) ? dataMob.data
+              : (dataDt.success && dataDt.data) ? dataDt.data : null;
+    if (bgUrl) {
       var hero = document.getElementById('homeHero');
+      var wrap = hero && hero.closest('.hero-wrap');
       if (hero) {
-        hero.style.backgroundImage = 'url(' + data.data + ')';
+        hero.style.backgroundImage = 'url(' + bgUrl + ')';
         hero.style.backgroundSize = 'cover';
         hero.style.backgroundPosition = 'center';
-        // Mobile: trích màu trung bình từ ảnh → set backgroundColor cho wrap
-        var wrap = hero.closest('.hero-wrap');
-        if (wrap) {
-          var img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.onload = function() {
-            try {
-              var c = document.createElement('canvas');
-              c.width = 10; c.height = 10;
-              var ctx = c.getContext('2d');
-              ctx.drawImage(img, 0, 0, 10, 10);
-              var d = ctx.getImageData(0, 0, 10, 10).data;
-              var r=0, g=0, b=0, px=d.length/4;
-              for(var i=0;i<d.length;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2];}
-              wrap.style.backgroundColor = 'rgb('+Math.round(r/px)+','+Math.round(g/px)+','+Math.round(b/px)+')';
-            } catch(e) {}
-          };
-          img.src = data.data;
-        }
+      }
+      if (wrap) {
+        wrap.style.backgroundImage = 'url(' + bgUrl + ')';
+        wrap.style.backgroundSize = 'cover';
+        wrap.style.backgroundPosition = 'center';
       }
     }
   } catch(e) {}

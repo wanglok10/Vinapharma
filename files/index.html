@@ -210,14 +210,14 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
 @media(max-width:768px){
-  /* Mobile: hero-wrap dạng cột dọc, banner nằm dưới hình nền */
-  .hero-wrap{display:flex;flex-direction:column;margin:0 0 1.2rem;background:var(--red);padding-bottom:.8rem}
-  .hero{height:380px;overflow:hidden;margin:0;flex-shrink:0}
-  .hero-banner-card{position:static;bottom:auto;left:auto;transform:none;width:92%;margin:.8rem auto 0;display:block}
+  /* Mobile: banner nằm chồng phía dưới hình nền, hình nền đủ cao chứa cả banner */
+  .hero-wrap{display:block;margin:0 0 1.2rem}
+  .hero{height:500px;overflow:visible;margin:0}
+  .hero-banner-card{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);width:90%}
 }
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}
-  .hero{height:280px}
-  .hero-banner-card{width:96%}
+  .hero{height:440px}
+  .hero-banner-card{width:94%}
 }
 /* Inner flex */
 .hero-slides{display:flex;height:100%;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}

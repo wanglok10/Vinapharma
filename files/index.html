@@ -211,8 +211,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
 @media(max-width:768px){
   /* Mobile: hero-wrap dạng cột dọc, banner nằm dưới hình nền */
-  .hero-wrap{display:flex;flex-direction:column;margin:0 0 1.2rem;background:var(--red);background-size:cover;background-position:center;padding-bottom:.8rem}
-  .hero{height:380px;overflow:hidden;margin:0;flex-shrink:0;background:transparent!important}
+  .hero-wrap{display:flex;flex-direction:column;margin:0 0 1.2rem;background:var(--red);padding-bottom:.8rem}
+  .hero{height:380px;overflow:hidden;margin:0;flex-shrink:0}
   .hero-banner-card{position:static;bottom:auto;left:auto;transform:none;width:92%;margin:.8rem auto 0;display:block}
 }
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}
@@ -819,12 +819,24 @@ loadPromoBanner();
         hero.style.backgroundImage = 'url(' + data.data + ')';
         hero.style.backgroundSize = 'cover';
         hero.style.backgroundPosition = 'center';
-        // Mobile: áp ảnh nền lên hero-wrap để vùng dưới banner cùng màu
+        // Mobile: trích màu trung bình từ ảnh → set backgroundColor cho wrap
         var wrap = hero.closest('.hero-wrap');
         if (wrap) {
-          wrap.style.backgroundImage = 'url(' + data.data + ')';
-          wrap.style.backgroundSize = 'cover';
-          wrap.style.backgroundPosition = 'center';
+          var img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = function() {
+            try {
+              var c = document.createElement('canvas');
+              c.width = 10; c.height = 10;
+              var ctx = c.getContext('2d');
+              ctx.drawImage(img, 0, 0, 10, 10);
+              var d = ctx.getImageData(0, 0, 10, 10).data;
+              var r=0, g=0, b=0, px=d.length/4;
+              for(var i=0;i<d.length;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2];}
+              wrap.style.backgroundColor = 'rgb('+Math.round(r/px)+','+Math.round(g/px)+','+Math.round(b/px)+')';
+            } catch(e) {}
+          };
+          img.src = data.data;
         }
       }
     }

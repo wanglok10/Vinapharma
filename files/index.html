@@ -199,22 +199,13 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s,transform .55s}
 .reveal.visible{opacity:1;transform:none}
 
-/* Hero wrap: bao ngoài cả hero + banner card */
-.hero-wrap{position:relative;margin:0 0 1.2rem}
-/* Hero height cố định — không đổi theo banner */
-.hero{position:relative;overflow:hidden;height:760px;background:var(--red);background-size:cover;background-position:center;background-repeat:no-repeat;margin:0}
-/* Card tỉ lệ 4:1 (wide banner), căn giữa phía dưới hero-wrap */
-.hero-banner-card{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);width:42%;aspect-ratio:4/1;border-radius:1rem;overflow:hidden;box-shadow:0 6px 28px rgba(0,0,0,.28)}
+.hero{position:relative;overflow:hidden;height:560px;background:var(--red);margin:0 0 1.2rem}
+.hero-banner-card{position:absolute;inset:0;width:100%;border-radius:0;overflow:hidden;box-shadow:none}
 
 /* RESPONSIVE */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
-@media(max-width:768px){
-  /* Mobile: banner fill toàn bộ nền đỏ */
-  .hero-wrap{display:block;margin:0 0 1.2rem}
-  .hero{height:220px;overflow:hidden;margin:0}
-  .hero-banner-card{position:absolute;inset:0;width:100%;aspect-ratio:unset;border-radius:0;transform:none;bottom:auto;left:auto;box-shadow:none}
-}
+@media(max-width:768px){.hero{height:220px}}
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}
   .hero{height:180px}
 }
@@ -252,8 +243,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .hero-loading-spinner{width:42px;height:42px;border-radius:50%;border:3px solid rgba(255,255,255,.24);border-top-color:#fff;animation:heroSpin .8s linear infinite}
 .hero-loading-text{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.88)}
 .hero.is-hydrating .hero-loading{opacity:1;visibility:visible}
-.hero.is-hydrating ~ .hero-banner-card,.hero.is-switching ~ .hero-banner-card{opacity:0}
-.hero.is-ready ~ .hero-banner-card{opacity:1}
+.hero.is-hydrating .hero-banner-card,.hero.is-switching .hero-banner-card{opacity:0}
+.hero.is-ready .hero-banner-card{opacity:1}
 .hero-banner-card{transition:opacity .35s ease}
 @keyframes heroSpin{to{transform:rotate(360deg)}}
 .promo-banner{background:linear-gradient(120deg,#cc1f1f,#8a1010);border-radius:1rem;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:2.2rem 3.5rem;margin:0 4% 3rem;position:relative}
@@ -418,7 +409,6 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 </header>
 
 <!-- HERO -->
-<div class="hero-wrap">
 <section class="hero is-hydrating" id="homeHero">
   <div class="hero-loading" aria-hidden="true">
     <div class="hero-loading-inner">
@@ -426,51 +416,48 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
       <div class="hero-loading-text">Đang tải nội dung nổi bật</div>
     </div>
   </div>
-  <!-- Trang trí hình tròn mờ (nằm trên hình nền) -->
   <div class="hero-deco hero-deco-1" aria-hidden="true"></div>
   <div class="hero-deco hero-deco-2" aria-hidden="true"></div>
   <div class="hero-deco hero-deco-3" aria-hidden="true"></div>
+  <div class="hero-banner-card">
+    <div class="hero-slides" id="heroSlides">
+      <div class="hero-slide slide-1">
+        <div class="slide-text">
+          <div class="slide-badge"><i class="fa-solid fa-leaf" style="color:#16a34a"></i> Thực Phẩm Chức Năng Số 1 Việt Nam</div>
+          <h1 class="slide-title">Vì một Việt Nam<br><span>khỏe đẹp</span></h1>
+          <p class="slide-desc">Vinapharma cung cấp sản phẩm chức năng cao cấp, chiết xuất từ nguyên liệu tự nhiên thuần khiết.</p>
+          <a href="san-pham.html" class="slide-btn">Khám phá ngay</a>
+        </div>
+        <div class="slide-visual"><i class="fa-solid fa-pills" style="color:#cc1f1f"></i></div>
+      </div>
+      <div class="hero-slide slide-2">
+        <div class="slide-text">
+          <div class="slide-badge"><i class="fa-solid fa-dumbbell" style="color:#cc1f1f"></i> Mới ra mắt</div>
+          <h1 class="slide-title">Tăng cơ mạnh mẽ<br>với <span>GoldCare Pro</span></h1>
+          <p class="slide-desc">Công thức độc quyền kết hợp Whey Protein và BCAA giúp phục hồi cơ tối ưu.</p>
+          <a href="san-pham.html?brand=TH5" class="slide-btn">Mua ngay</a>
+        </div>
+        <div class="slide-visual"><i class="fa-solid fa-dumbbell" style="color:#cc1f1f"></i></div>
+      </div>
+      <div class="hero-slide slide-3">
+        <div class="slide-text">
+          <div class="slide-badge"><i class="fa-solid fa-star" style="color:#d97706"></i> Bán chạy nhất</div>
+          <h1 class="slide-title">Đẹp từ bên trong<br>với <span>AquaVita</span></h1>
+          <p class="slide-desc">Collagen thủy phân + Hyaluronic Acid + Vitamin C giúp da căng mịn rạng rỡ.</p>
+          <a href="san-pham.html?brand=TH4" class="slide-btn">Tìm hiểu thêm</a>
+        </div>
+        <div class="slide-visual"><i class="fa-solid fa-wand-magic-sparkles" style="color:#cc1f1f"></i></div>
+      </div>
+    </div>
+    <button class="hero-prev" id="heroPrev">‹</button>
+    <button class="hero-next" id="heroNext">›</button>
+    <div class="hero-dots" id="heroDots">
+      <div class="hero-dot active" data-idx="0"></div>
+      <div class="hero-dot" data-idx="1"></div>
+      <div class="hero-dot" data-idx="2"></div>
+    </div>
+  </div>
 </section>
-<!-- Banner card nằm ngoài section để mobile có thể stack dọc -->
-<div class="hero-banner-card">
-  <div class="hero-slides" id="heroSlides">
-    <div class="hero-slide slide-1">
-      <div class="slide-text">
-        <div class="slide-badge"><i class="fa-solid fa-leaf" style="color:#16a34a"></i> Thực Phẩm Chức Năng Số 1 Việt Nam</div>
-        <h1 class="slide-title">Vì một Việt Nam<br><span>khỏe đẹp</span></h1>
-        <p class="slide-desc">Vinapharma cung cấp sản phẩm chức năng cao cấp, chiết xuất từ nguyên liệu tự nhiên thuần khiết.</p>
-        <a href="san-pham.html" class="slide-btn">Khám phá ngay</a>
-      </div>
-      <div class="slide-visual"><i class="fa-solid fa-pills" style="color:#cc1f1f"></i></div>
-    </div>
-    <div class="hero-slide slide-2">
-      <div class="slide-text">
-        <div class="slide-badge"><i class="fa-solid fa-dumbbell" style="color:#cc1f1f"></i> Mới ra mắt</div>
-        <h1 class="slide-title">Tăng cơ mạnh mẽ<br>với <span>GoldCare Pro</span></h1>
-        <p class="slide-desc">Công thức độc quyền kết hợp Whey Protein và BCAA giúp phục hồi cơ tối ưu.</p>
-        <a href="san-pham.html?brand=TH5" class="slide-btn">Mua ngay</a>
-      </div>
-      <div class="slide-visual"><i class="fa-solid fa-dumbbell" style="color:#cc1f1f"></i></div>
-    </div>
-    <div class="hero-slide slide-3">
-      <div class="slide-text">
-        <div class="slide-badge"><i class="fa-solid fa-star" style="color:#d97706"></i> Bán chạy nhất</div>
-        <h1 class="slide-title">Đẹp từ bên trong<br>với <span>AquaVita</span></h1>
-        <p class="slide-desc">Collagen thủy phân + Hyaluronic Acid + Vitamin C giúp da căng mịn rạng rỡ.</p>
-        <a href="san-pham.html?brand=TH4" class="slide-btn">Tìm hiểu thêm</a>
-      </div>
-      <div class="slide-visual"><i class="fa-solid fa-wand-magic-sparkles" style="color:#cc1f1f"></i></div>
-    </div>
-  </div>
-  <button class="hero-prev" id="heroPrev">‹</button>
-  <button class="hero-next" id="heroNext">›</button>
-  <div class="hero-dots" id="heroDots">
-    <div class="hero-dot active" data-idx="0"></div>
-    <div class="hero-dot" data-idx="1"></div>
-    <div class="hero-dot" data-idx="2"></div>
-  </div>
-</div>
-</div>
 
 <!-- TRUST BAR -->
 <div class="trust-bar">
@@ -810,34 +797,6 @@ loadHeroBanners();
 loadFeaturedProducts();
 loadPromoBanner();
 
-// Tải hình nền hero — desktop + mobile riêng
-(async function loadHeroBg() {
-  try {
-    var _API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://api.vinapharmajsc.vn';
-    var isMob = window.innerWidth <= 768;
-    if (isMob) return; // Không dùng hình nền trên mobile
-    var [resDt, resMob] = await Promise.all([
-      fetch(_API + '/api/settings/hero_bg'),
-      fetch(_API + '/api/settings/heroMobile_bg')
-    ]);
-    var [dataDt, dataMob] = await Promise.all([resDt.json(), resMob.json()]);
-    var bgUrl = (dataDt.success && dataDt.data) ? dataDt.data : null;
-    if (bgUrl) {
-      var hero = document.getElementById('homeHero');
-      var wrap = hero && hero.closest('.hero-wrap');
-      if (hero) {
-        hero.style.backgroundImage = 'url(' + bgUrl + ')';
-        hero.style.backgroundSize = 'cover';
-        hero.style.backgroundPosition = 'center';
-      }
-      if (wrap) {
-        wrap.style.backgroundImage = 'url(' + bgUrl + ')';
-        wrap.style.backgroundSize = 'cover';
-        wrap.style.backgroundPosition = 'center';
-      }
-    }
-  } catch(e) {}
-})();
 
 // Load latest posts for homepage
 (function(){

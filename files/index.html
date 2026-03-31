@@ -206,13 +206,16 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .hero-sub-area{flex:1;min-height:0;width:100%}
 .hero-sub-item{display:block;width:100%;height:100%;border-radius:1rem;overflow:hidden;cursor:pointer;text-decoration:none}
 .hero-sub-item img{width:100%;height:100%;object-fit:cover;display:block}
+.no-sub .hero-sub-area{display:none}
+.no-main .hero-main-area{display:none}
+.hero-sub-prev,.hero-sub-next{position:absolute;top:50%;transform:translateY(-50%);z-index:5;background:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.3);color:#fff;width:28px;height:28px;border-radius:50%;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.hero-sub-prev{left:.4rem}.hero-sub-next{right:.4rem}
 
 /* RESPONSIVE */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
-@media(max-width:768px){.hero{height:360px}.hero-inner{padding:.5rem;gap:.5rem}.hero-main-area{aspect-ratio:unset}.hero-sub-area{aspect-ratio:unset}#stripBannerImg{max-height:90px}}
+@media(max-width:768px){.hero{height:50vh;min-height:320px}.hero-inner{padding:.8rem 8%;gap:.5rem}.hero-main-area{aspect-ratio:unset}.hero-sub-area{aspect-ratio:unset}#stripBannerImg{max-height:90px}}
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}
-  .hero{height:auto}.hero-main-area{aspect-ratio:4/3}.hero-sub-item{aspect-ratio:1}
 }
 /* Inner flex */
 .hero-slides{display:flex;height:100%;opacity:1;transition:opacity .45s ease,transform .5s cubic-bezier(.4,0,.2,1)}
@@ -423,7 +426,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
   </div>
   <img class="hero-bg" id="heroBgImg" src="" alt="" style="display:none"/>
   <div class="hero-inner no-sub" id="heroInner">
-    <div class="hero-main-area">
+    <div class="hero-main-area" id="heroMainArea">
       <div class="hero-slides" id="heroSlides"></div>
       <button class="hero-prev" id="heroPrev">‹</button>
       <button class="hero-next" id="heroNext">›</button>
@@ -520,8 +523,18 @@ document.querySelectorAll('.hero-dot').forEach(d=>d.addEventListener('click',()=
 let auto=null;
 function startAuto(){ if(heroTotal>1) auto=setInterval(()=>goSlide(heroIdx+1),4500); }
 function stopAuto(){ clearInterval(auto); }
-document.querySelector('.hero').addEventListener('mouseenter',stopAuto);
-document.querySelector('.hero').addEventListener('mouseleave',()=>{ if(heroTotal>1) startAuto(); });
+
+let subIdx=0, subTotal=0, subAuto=null;
+function goSubSlide(n){
+  subIdx=((n%subTotal)+subTotal)%subTotal;
+  const el=document.querySelector('.hero-sub-slides');
+  if(el) el.style.transform=`translateX(${-subIdx*100}%)`;
+}
+function startSubAuto(){ if(subTotal>1) subAuto=setInterval(()=>goSubSlide(subIdx+1),5000); }
+function stopSubAuto(){ clearInterval(subAuto); }
+
+document.querySelector('.hero').addEventListener('mouseenter',()=>{stopAuto();stopSubAuto();});
+document.querySelector('.hero').addEventListener('mouseleave',()=>{ if(heroTotal>1) startAuto(); if(subTotal>1) startSubAuto(); });
 // Filter
 const fbns=document.querySelectorAll('.filter-btn');
 const pcards=document.querySelectorAll('.product-card');
@@ -686,9 +699,15 @@ async function loadHeroBanners() {
 
     // ── Phân loại theo slot ──────────────────────────────
     const mainBanners = banners.filter(b => !b.slot || b.slot === 'main');
-    const subBanners  = banners.filter(b => b.slot === 'sub').slice(0, 1);
+    const subBanners  = banners.filter(b => b.slot === 'sub');
 
     // ── Main carousel ───────────────────────────────────
+    const mainArea = document.getElementById('heroMainArea');
+    if (!mainBanners.length) {
+      if (heroInner) heroInner.classList.add('no-main');
+    } else {
+      if (heroInner) heroInner.classList.remove('no-main');
+    }
     if (mainBanners.length) {
       slidesEl.innerHTML = mainBanners.map((b) => {
         const imgSrc = (isMob && b.imageMobile)
@@ -722,17 +741,29 @@ async function loadHeroBanners() {
       }
     }
 
-    // ── Sub banners (phải) ──────────────────────────────
+    // ── Sub banners ──────────────────────────────────────
     const subArea = document.getElementById('heroSubArea');
     if (subArea) {
       if (subBanners.length) {
-        subArea.innerHTML = subBanners.map(b => {
+        stopSubAuto();
+        subTotal = subBanners.length; subIdx = 0;
+        const slides = subBanners.map(b => {
           const imgSrc = b.image.startsWith('http') ? b.image : API + b.image;
-          return `<a href="${b.buttonLink||'#'}" class="hero-sub-item">
-            <img src="${imgSrc}" alt="${b.title||''}"/>
-          </a>`;
+          return `<div style="min-width:100%;flex-shrink:0;height:100%;overflow:hidden">
+            <a href="${b.buttonLink||'#'}" style="display:block;width:100%;height:100%">
+              <img src="${imgSrc}" alt="${b.title||''}" style="width:100%;height:100%;object-fit:cover;display:block"/>
+            </a>
+          </div>`;
         }).join('');
+        const navBtns = subTotal > 1 ? `
+          <button class="hero-sub-prev" onclick="goSubSlide(subIdx-1)">&#8249;</button>
+          <button class="hero-sub-next" onclick="goSubSlide(subIdx+1)">&#8250;</button>` : '';
+        subArea.innerHTML = `<div style="position:relative;width:100%;height:100%;border-radius:1rem;overflow:hidden">
+          <div class="hero-sub-slides" style="display:flex;height:100%;transition:transform .4s ease">${slides}</div>
+          ${navBtns}
+        </div>`;
         if (heroInner) heroInner.classList.remove('no-sub');
+        if (subTotal > 1) startSubAuto();
       } else {
         if (heroInner) heroInner.classList.add('no-sub');
       }
@@ -791,8 +822,10 @@ function renderHeroDemoFallback() {
   if (bgImg) { bgImg.src = HERO_DEMO.bg; bgImg.style.display = 'block'; }
 
   // Main banner
+  const heroInnerEl = document.getElementById('heroInner');
   const slidesEl = document.getElementById('heroSlides');
   if (slidesEl && HERO_DEMO.main && HERO_DEMO.main.length) {
+    if (heroInnerEl) heroInnerEl.classList.remove('no-main');
     slidesEl.innerHTML = HERO_DEMO.main.map(b =>
       `<div class="hero-slide" style="min-width:100%;height:100%;flex-shrink:0;position:relative;overflow:hidden;padding:0">
         <a href="${b.link}" style="display:block;width:100%;height:100%">
@@ -813,10 +846,24 @@ function renderHeroDemoFallback() {
   const subArea = document.getElementById('heroSubArea');
   const heroInner = document.getElementById('heroInner');
   if (subArea && HERO_DEMO.sub && HERO_DEMO.sub.length) {
-    subArea.innerHTML = HERO_DEMO.sub.map(s =>
-      `<a href="${s.link}" class="hero-sub-item"><img src="${s.image}" alt=""/></a>`
+    stopSubAuto();
+    subTotal = HERO_DEMO.sub.length; subIdx = 0;
+    const slides = HERO_DEMO.sub.map(s =>
+      `<div style="min-width:100%;flex-shrink:0;height:100%;overflow:hidden">
+        <a href="${s.link}" style="display:block;width:100%;height:100%">
+          <img src="${s.image}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>
+        </a>
+      </div>`
     ).join('');
+    const navBtns = subTotal > 1 ? `
+      <button class="hero-sub-prev" onclick="goSubSlide(subIdx-1)">&#8249;</button>
+      <button class="hero-sub-next" onclick="goSubSlide(subIdx+1)">&#8250;</button>` : '';
+    subArea.innerHTML = `<div style="position:relative;width:100%;height:100%;border-radius:1rem;overflow:hidden">
+      <div class="hero-sub-slides" style="display:flex;height:100%;transition:transform .4s ease">${slides}</div>
+      ${navBtns}
+    </div>`;
     if (heroInner) heroInner.classList.remove('no-sub');
+    if (subTotal > 1) startSubAuto();
   } else {
     if (heroInner) heroInner.classList.add('no-sub');
   }

@@ -145,8 +145,16 @@
   .hero-arrow { width: 28px !important; height: 28px !important; font-size: .8rem !important; }
 
   /* ── TRUST BAR ── */
-  .trust-bar { grid-template-columns: 1fr 1fr !important; }
-  .trust-item { padding: .8rem .5rem !important; }
+  .trust-bar {
+    grid-template-columns: 1fr 1fr !important;
+    background: #fff !important;
+    background-image: none !important;
+  }
+  .trust-item {
+    padding: .8rem .5rem !important;
+    background: #fff !important;
+    background-image: none !important;
+  }
   .trust-item .t-title { font-size: .78rem !important; }
   .trust-item .t-sub { font-size: .65rem !important; }
 

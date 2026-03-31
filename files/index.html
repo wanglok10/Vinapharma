@@ -107,8 +107,25 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .page-hero-sub{font-size:.92rem;color:rgba(255,255,255,.8);max-width:520px;line-height:1.65}
 
 /* TRUST BAR */
-.trust-bar{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
-.trust-item{display:flex;align-items:center;gap:.8rem;padding:1.1rem 2rem;border-right:1px solid var(--border)}
+.trust-bar{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--border);
+  background:#fff;
+  background-image:none!important;
+  position:relative;
+  isolation:isolate;
+}
+.trust-bar::before,.trust-bar::after{content:none!important}
+.trust-item{
+  display:flex;
+  align-items:center;
+  gap:.8rem;
+  padding:1.1rem 2rem;
+  border-right:1px solid var(--border);
+  background:#fff;
+  background-image:none!important;
+}
 .trust-item:last-child{border-right:none}
 .trust-icon{font-size:1.6rem;flex-shrink:0}
 .trust-title{font-size:.85rem;font-weight:700;margin-bottom:.1rem}

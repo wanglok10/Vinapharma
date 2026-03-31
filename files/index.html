@@ -115,7 +115,14 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .trust-sub{font-size:.72rem;color:var(--gray)}
 
 /* PRODUCT GRID */
-.products-section{padding:3rem 4%}
+.products-section{
+  padding:3rem 4%;
+  background:#fff;
+  background-image:none!important;
+  position:relative;
+  isolation:isolate;
+}
+.products-section::before,.products-section::after{content:none!important}
 .sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1.5rem}
 .sec-label{font-size:.68rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem}
 .sec-title{font-size:clamp(1.3rem,2.2vw,1.8rem);font-weight:800;line-height:1.2}
@@ -171,7 +178,14 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .about-list li::before{content:'';background:var(--red);color:#fff;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0}
 
 /* GOALS */
-.goals-section{padding:3rem 4%;background:var(--light)}
+.goals-section{
+  padding:3rem 4%;
+  background:#fff;
+  background-image:none!important;
+  position:relative;
+  isolation:isolate;
+}
+.goals-section::before,.goals-section::after{content:none!important}
 .goals-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.9rem}
 .goal-card{background:#fff;border-radius:.9rem;padding:1.2rem .8rem;text-align:center;text-decoration:none;color:var(--dark);border:1.5px solid var(--border);transition:border-color .2s,transform .2s,box-shadow .2s}
 .goal-card:hover{border-color:var(--red);transform:translateY(-3px);box-shadow:0 6px 20px rgba(204,31,31,.1)}

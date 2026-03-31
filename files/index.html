@@ -713,19 +713,8 @@ async function loadHeroBanners() {
     const isMob = window.innerWidth <= 768;
 
     // ── Phân loại theo slot ──────────────────────────────
-    const bgBanners   = banners.filter(b => b.slot === 'bg');
     const mainBanners = banners.filter(b => !b.slot || b.slot === 'main');
-    const subBanners  = banners.filter(b => b.slot === 'sub').slice(0, 2);
-
-    // ── Background ─────────────────────────────────────
-    if (bgBanners.length) {
-      const bgImg = document.getElementById('heroBgImg');
-      if (bgImg) {
-        const src = bgBanners[0].image.startsWith('http') ? bgBanners[0].image : API + bgBanners[0].image;
-        bgImg.src = src;
-        bgImg.style.display = 'block';
-      }
-    }
+    const subBanners  = banners.filter(b => b.slot === 'sub').slice(0, 1);
 
     // ── Main carousel ───────────────────────────────────
     if (mainBanners.length) {
@@ -782,6 +771,20 @@ async function loadHeroBanners() {
   finally {
     if (!heroSection?.classList.contains('is-ready')) revealHero();
   }
+}
+
+async function loadHeroBg() {
+  try {
+    const isMob = window.innerWidth <= 768;
+    const key = isMob ? 'heroMobile_bg' : 'hero_bg';
+    const res = await fetch(API + '/api/settings/' + key);
+    const data = await res.json();
+    const src = data?.data?.value || data?.value;
+    if (src) {
+      const bgImg = document.getElementById('heroBgImg');
+      if (bgImg) { bgImg.src = src; bgImg.style.display = 'block'; }
+    }
+  } catch(e) {}
 }
 
 async function loadStripBanner() {
@@ -907,6 +910,7 @@ async function loadPromoBanner() {
   } catch(e) { console.log('Promo banner load error', e); }
 }
 
+loadHeroBg();
 loadHeroBanners();
 loadStripBanner();
 loadFeaturedProducts();

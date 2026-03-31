@@ -407,12 +407,35 @@ i.fa-solid,i.fa-regular{line-height:1}
 
       <!-- ── BANNERS ── -->
       <div id="tab-banners" class="tab-pane">
+        <!-- Banner lớn -->
         <div class="section">
           <div class="section-header">
-            <div class="section-title"><i class="fa-solid fa-image ic-gray"></i> Quản lý Banner</div>
-            <div class="section-actions"><button class="btn btn-red" onclick="openBannerModal()">+ Thêm banner</button></div>
+            <div class="section-title"><i class="fa-solid fa-rectangle-ad ic-gray"></i> Banner lớn <span style="font-size:.72rem;font-weight:400;color:#999">(hiển thị phía trên hero, có thể thêm nhiều — carousel tự động)</span></div>
+            <div class="section-actions"><button class="btn btn-red" onclick="openBannerModal('main')">+ Thêm banner lớn</button></div>
           </div>
-          <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGrid">
+          <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGridMain">
+            <div class="empty-state">Đang tải...</div>
+          </div>
+        </div>
+
+        <!-- Banner nhỏ -->
+        <div class="section" style="margin-top:1.5rem">
+          <div class="section-header">
+            <div class="section-title"><i class="fa-solid fa-image ic-gray"></i> Banner nhỏ <span style="font-size:.72rem;font-weight:400;color:#999">(hiển thị phía dưới banner lớn)</span></div>
+            <div class="section-actions"><button class="btn btn-red" onclick="openBannerModal('sub')">+ Thêm banner nhỏ</button></div>
+          </div>
+          <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGridSub">
+            <div class="empty-state">Đang tải...</div>
+          </div>
+        </div>
+
+        <!-- Hình nền Hero -->
+        <div class="section" style="margin-top:1.5rem">
+          <div class="section-header">
+            <div class="section-title"><i class="fa-solid fa-panorama ic-gray"></i> Hình nền Hero <span style="font-size:.72rem;font-weight:400;color:#999">(phủ toàn bộ phía sau, khuyến nghị 1920×704px)</span></div>
+            <div class="section-actions"><button class="btn btn-red" onclick="openBannerModal('bg')">+ Upload hình nền</button></div>
+          </div>
+          <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem" id="bannerGridBg">
             <div class="empty-state">Đang tải...</div>
           </div>
         </div>
@@ -957,7 +980,14 @@ i.fa-solid,i.fa-regular{line-height:1}
         <div class="form-group"><label>Text nút bấm</label><input id="bBtn" value="Khám phá ngay"/></div>
         <div class="form-group"><label>Link nút bấm</label><input id="bLink" value="san-pham.html"/></div>
         <div class="form-group"><label>Vị trí</label>
-          <select id="bPos"><option value="hero">Hero Slider</option><option value="promo">Quảng cáo</option></select>
+          <select id="bPos"><option value="hero">Hero</option><option value="promo">Quảng cáo</option></select>
+        </div>
+        <div class="form-group"><label>Slot Hero</label>
+          <select id="bSlot">
+            <option value="main">🖼 Banner chính (carousel trái)</option>
+            <option value="sub">📌 Banner phụ (phải, tối đa 2)</option>
+            <option value="bg">🌄 Hình nền</option>
+          </select>
         </div>
         <div class="form-group"><label>Thứ tự</label><input type="number" id="bOrder" value="0"/></div>
         <div class="form-group" style="flex:1">
@@ -2724,35 +2754,53 @@ async function saveActivities(silent) {
 }
 
 // ── BANNERS ──
+function renderBannerCard(b) {
+  const slotLabel = b.slot==='sub' ? 'Banner nhỏ' : b.slot==='bg' ? 'Nền' : 'Banner lớn';
+  return `
+    <div style="background:#fff;border-radius:.6rem;border:1px solid #e8e8e8;overflow:hidden">
+      <div style="height:140px;overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center">
+        <img src="${b.image&&b.image.startsWith('http')?b.image:API+b.image}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-image ic-gray\\'></i>'"/>
+      </div>
+      <div style="padding:.8rem">
+        <div style="font-weight:700;font-size:.83rem;margin-bottom:.3rem">${b.title||'(Chưa đặt tên)'}</div>
+        <div style="display:flex;gap:.5rem;margin-bottom:.6rem;align-items:center;flex-wrap:wrap">
+          <span class="badge badge-blue">${slotLabel}</span>
+          <span class="badge ${b.active?'badge-green':'badge-gray'}">${b.active?'Hiển thị':'Ẩn'}</span>
+          <span style="font-size:.7rem;color:#999">Thứ tự: ${b.order??0}</span>
+        </div>
+        <div style="display:flex;gap:.4rem">
+          <button class="btn btn-sm btn-outline" onclick="toggleBanner('${b._id}',${!b.active})">${b.active?'Ẩn':'Hiện'}</button>
+          <button class="btn btn-sm btn-outline" onclick="editBanner('${b._id}')" style="color:#d97706;border-color:#d97706"><i class="fa-solid fa-pen"></i> Sửa</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteBanner('${b._id}')">Xóa</button>
+        </div>
+      </div>
+    </div>`;
+}
+
 async function loadBanners() {
-  const grid = document.getElementById('bannerGrid');
-  grid.innerHTML = '<div class="empty-state">Đang tải...</div>';
+  const gridMain = document.getElementById('bannerGridMain');
+  const gridSub  = document.getElementById('bannerGridSub');
+  const gridBg   = document.getElementById('bannerGridBg');
+  if (gridMain) gridMain.innerHTML = '<div class="empty-state">Đang tải...</div>';
+  if (gridSub)  gridSub.innerHTML  = '<div class="empty-state">Đang tải...</div>';
+  if (gridBg)   gridBg.innerHTML   = '<div class="empty-state">Đang tải...</div>';
   try {
     const res = await fetch(API + '/api/banners');
     const data = await res.json();
     if (data.success) {
       allBanners = data.data;
-      if (!allBanners.length) { grid.innerHTML = '<div class="empty-state">Chưa có banner nào</div>'; return; }
-      grid.innerHTML = allBanners.map(b => `
-        <div style="background:#fff;border-radius:.6rem;border:1px solid #e8e8e8;overflow:hidden">
-          <div style="height:140px;overflow:hidden;background:#f5f5f5">
-            <img src="${b.image&&b.image.startsWith('http')?b.image:API+b.image}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-image ic-gray\\'></i>'"/>
-          </div>
-          <div style="padding:.8rem">
-            <div style="font-weight:700;font-size:.83rem;margin-bottom:.3rem">${b.title}</div>
-            <div style="display:flex;gap:.5rem;margin-bottom:.6rem;align-items:center">
-              <span class="badge ${b.position==='hero'?'badge-blue':'badge-green'}">${b.position==='hero'?'Hero':'Promo'}</span>
-              <span class="badge ${b.active?'badge-green':'badge-gray'}">${b.active?'Hiển thị':'Ẩn'}</span>
-            </div>
-            <div style="display:flex;gap:.4rem">
-              <button class="btn btn-sm btn-outline" onclick="toggleBanner('${b._id}',${!b.active})">${b.active?'Ẩn':'Hiện'}</button>
-              <button class="btn btn-sm btn-outline" onclick="editBanner('${b._id}')" style="color:#d97706;border-color:#d97706"><i class="fa-solid fa-pen"></i> Sửa</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteBanner('${b._id}')">Xóa</button>
-            </div>
-          </div>
-        </div>`).join('');
+      const mainList = allBanners.filter(b => !b.slot || b.slot === 'main');
+      const subList  = allBanners.filter(b => b.slot === 'sub');
+      const bgList   = allBanners.filter(b => b.slot === 'bg');
+      if (gridMain) gridMain.innerHTML = mainList.length ? mainList.map(renderBannerCard).join('') : '<div class="empty-state">Chưa có banner lớn nào</div>';
+      if (gridSub)  gridSub.innerHTML  = subList.length  ? subList.map(renderBannerCard).join('')  : '<div class="empty-state">Chưa có banner nhỏ nào</div>';
+      if (gridBg)   gridBg.innerHTML   = bgList.length   ? bgList.map(renderBannerCard).join('')   : '<div class="empty-state">Chưa có hình nền nào</div>';
     }
-  } catch(e) { grid.innerHTML = '<div class="empty-state">Lỗi tải dữ liệu</div>'; }
+  } catch(e) {
+    if (gridMain) gridMain.innerHTML = '<div class="empty-state">Lỗi tải dữ liệu</div>';
+    if (gridSub)  gridSub.innerHTML  = '<div class="empty-state">Lỗi tải dữ liệu</div>';
+    if (gridBg)   gridBg.innerHTML   = '<div class="empty-state">Lỗi tải dữ liệu</div>';
+  }
 }
 
 function updateBannerPreview() {
@@ -2768,7 +2816,7 @@ function updateBannerPreview() {
   txt.textContent = document.getElementById('bTitle').value || 'Tiêu đề banner';
 }
 
-function openBannerModal() {
+function openBannerModal(defaultSlot) {
   editingBannerId = null;
   ['bTitle','bSubtitle'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('bBtn').value = '';
@@ -2777,6 +2825,7 @@ function openBannerModal() {
   document.getElementById('bOverlay').value = 0.55;
   updateBannerPreview();
   document.getElementById('bPos').value = 'hero';
+  document.getElementById('bSlot').value = defaultSlot || 'main';
   document.getElementById('bOrder').value = '0';
   document.getElementById('bImgPreview').style.display = 'none';
   document.getElementById('bImgText').textContent = 'Bấm để chọn ảnh';
@@ -2797,6 +2846,7 @@ function editBanner(id) {
   document.getElementById('bBtn').value      = b.buttonText ?? '';
   document.getElementById('bLink').value     = b.buttonLink || 'san-pham.html';
   document.getElementById('bPos').value      = b.position || 'hero';
+  document.getElementById('bSlot').value     = b.slot || 'main';
   document.getElementById('bOrder').value    = b.order ?? 0;
   document.getElementById('bTitleColor').value = b.titleColor || '#ffffff';
   document.getElementById('bOverlay').value  = b.overlayOpacity ?? 0.55;
@@ -2828,6 +2878,7 @@ async function saveBanner() {
   formData.append('buttonText', document.getElementById('bBtn').value);
   formData.append('buttonLink', document.getElementById('bLink').value);
   formData.append('position', document.getElementById('bPos').value);
+  formData.append('slot', document.getElementById('bSlot').value);
   formData.append('order', document.getElementById('bOrder').value);
   formData.append('titleColor', document.getElementById('bTitleColor').value);
   formData.append('overlayOpacity', document.getElementById('bOverlay').value);

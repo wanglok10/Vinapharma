@@ -6,7 +6,8 @@ const bannerSchema = new mongoose.Schema({
   buttonText: { type: String, default: 'Khám phá ngay' },
   buttonLink: { type: String, default: '#' },
   image: { type: String, required: true }, // URL ảnh
-  position: { type: String, enum: ['hero', 'promo'], default: 'hero' },
+  position: { type: String, enum: ['hero', 'promo', 'strip'], default: 'hero' },
+  slot: { type: String, enum: ['main', 'sub', 'bg'], default: 'main' },
   order: { type: Number, default: 0 },
   active: { type: Boolean, default: true },
   imageMobile: { type: String, default: '' },

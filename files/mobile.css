@@ -143,6 +143,59 @@
   .slide-btn { padding: .55rem 1.1rem !important; font-size: .8rem !important; }
   .hero-dots { bottom: .5rem !important; }
   .hero-arrow { width: 28px !important; height: 28px !important; font-size: .8rem !important; }
+  #homeHero.hero {
+    height: auto !important;
+    min-height: 560px !important;
+    max-height: none !important;
+    align-items: stretch !important;
+  }
+  #homeHero .hero-bg {
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+  #homeHero .hero-inner {
+    height: auto !important;
+    min-height: 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 1rem 5% 1.35rem !important;
+    gap: .85rem !important;
+    justify-content: flex-end !important;
+  }
+  #homeHero .hero-main-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 16 / 8.8 !important;
+    margin: 0 auto !important;
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+    box-shadow: 0 14px 32px rgba(0,0,0,.14) !important;
+  }
+  #homeHero .hero-inner.no-sub .hero-main-area {
+    width: 100% !important;
+    aspect-ratio: 16 / 8.8 !important;
+    margin: 0 auto !important;
+  }
+  #homeHero .hero-sub-area {
+    display: block !important;
+    width: min(88%, 360px) !important;
+    max-width: 100% !important;
+    aspect-ratio: 16 / 7.1 !important;
+    margin: 0 auto !important;
+    transform: none !important;
+  }
+  #homeHero .hero-inner.no-main .hero-sub-area {
+    width: min(88%, 360px) !important;
+  }
+  #homeHero .hero-sub-frame,
+  #homeHero .hero-sub-slides,
+  #homeHero .hero-sub-slides > div,
+  #homeHero .hero-sub-slides a,
+  #homeHero .hero-sub-slides img {
+    border-radius: 1rem !important;
+  }
   #stripBannerWrap,
   #stripBannerLink,
   #stripBannerImg {
@@ -221,6 +274,9 @@
   .blog-grid { grid-template-columns: 1fr !important; }
   .footer-top { grid-template-columns: 1fr !important; }
   .hero-section, .hero { height: 180px !important; }
+  #homeHero.hero { min-height: 500px !important; }
+  #homeHero .hero-main-area { aspect-ratio: 16 / 9.3 !important; }
+  #homeHero .hero-sub-area { width: min(92%, 340px) !important; }
   .slide-title { font-size: 1.05rem !important; }
   .products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: .5rem !important; }
   .more-grid { grid-template-columns: 1fr !important; }

@@ -144,8 +144,8 @@
   .hero-dots { bottom: .5rem !important; }
   .hero-arrow { width: 28px !important; height: 28px !important; font-size: .8rem !important; }
   #homeHero.hero {
-    height: auto !important;
-    min-height: 720px !important;
+    height: 760px !important;
+    min-height: 760px !important;
     max-height: none !important;
     align-items: stretch !important;
   }
@@ -274,7 +274,10 @@
   .blog-grid { grid-template-columns: 1fr !important; }
   .footer-top { grid-template-columns: 1fr !important; }
   .hero-section, .hero { height: 180px !important; }
-  #homeHero.hero { min-height: 620px !important; }
+  #homeHero.hero {
+    height: 680px !important;
+    min-height: 680px !important;
+  }
   #homeHero .hero-main-area { aspect-ratio: 16 / 9.3 !important; }
   #homeHero .hero-sub-area { width: min(92%, 340px) !important; }
   .slide-title { font-size: 1.05rem !important; }

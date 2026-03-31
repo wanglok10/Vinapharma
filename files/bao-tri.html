@@ -3,228 +3,386 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vinapharma | Dang bao tri</title>
-  <meta name="description" content="Website Vinapharma dang tam bao tri de nang cap he thong." />
+  <title>Vinapharma | Đang bảo trì</title>
+  <meta
+    name="description"
+    content="Website Vinapharma đang tạm bảo trì để nâng cấp hệ thống và cập nhật nội dung."
+  />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --red: #c91f26;
-      --red-dark: #8f1117;
-      --white: #ffffff;
-      --text: #191919;
-      --muted: #6f6f6f;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
+
+    :root {
+      --red: #cf171f;
+      --red-deep: #880f14;
+      --paper: #fffaf8;
+      --ink: #181818;
+      --muted: #6b6670;
+      --line: rgba(255, 255, 255, 0.16);
+      --card-line: rgba(207, 23, 31, 0.08);
+    }
+
     body {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
-      font-family: "Be Vietnam Pro", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(255,255,255,.18), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(255,255,255,.12), transparent 24%),
-        linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-      color: var(--text);
-    }
-    .wrap {
-      width: min(980px, 100%);
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
       overflow: hidden;
-      border-radius: 28px;
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.2);
-      box-shadow: 0 30px 80px rgba(0,0,0,.22);
-      backdrop-filter: blur(10px);
+      font-family: "Be Vietnam Pro", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.18), transparent 22%),
+        radial-gradient(circle at 84% 72%, rgba(255, 255, 255, 0.15), transparent 20%),
+        linear-gradient(135deg, var(--red) 0%, #ba1219 42%, var(--red-deep) 100%);
     }
-    .hero {
-      padding: 52px;
-      color: var(--white);
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(16px);
+      pointer-events: none;
+      opacity: 0.55;
     }
-    .brand {
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: .08em;
+
+    body::before {
+      width: 280px;
+      height: 280px;
+      top: -110px;
+      left: -80px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    body::after {
+      width: 320px;
+      height: 320px;
+      right: -80px;
+      bottom: -120px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .shell {
+      position: relative;
+      width: min(1100px, 100%);
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      border-radius: 30px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--line);
+      box-shadow: 0 36px 100px rgba(0, 0, 0, 0.24);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-panel {
+      position: relative;
+      padding: 56px 52px;
+      color: #ffffff;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    }
+
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
       margin-bottom: 28px;
     }
-    .label {
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      position: relative;
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      border-radius: 14px;
+      transform: rotate(45deg);
+      flex: 0 0 auto;
+    }
+
+    .brand-icon::before {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      background: #ffffff;
+      border-radius: 8px;
+      clip-path: polygon(50% 100%, 100% 38%, 82% 18%, 50% 48%, 18% 18%, 0 38%);
+    }
+
+    .brand-name {
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
       display: inline-block;
       padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.2);
-      font-size: .76rem;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
       margin-bottom: 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
+
     h1 {
-      font-size: clamp(2.2rem, 4.5vw, 4rem);
-      line-height: 1;
-      font-weight: 900;
+      max-width: 540px;
       margin-bottom: 16px;
-      max-width: 520px;
+      font-size: clamp(2.3rem, 4.4vw, 4.2rem);
+      line-height: 0.98;
+      font-weight: 900;
     }
+
     .lead {
       max-width: 520px;
-      font-size: 1rem;
-      line-height: 1.8;
-      color: rgba(255,255,255,.84);
       margin-bottom: 28px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 1rem;
+      line-height: 1.82;
     }
-    .chips {
+
+    .status-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
     }
-    .chip {
-      padding: 12px 16px;
+
+    .status-card {
+      min-width: 170px;
+      padding: 14px 16px;
       border-radius: 18px;
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.16);
-      font-size: .88rem;
-      color: rgba(255,255,255,.92);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
-    .chip strong {
+
+    .status-card strong {
       display: block;
-      font-size: .7rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.66);
       margin-bottom: 4px;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
-    .panel {
-      background: rgba(255,255,255,.95);
-      padding: 38px;
+
+    .status-card span {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .info-panel {
       display: flex;
       align-items: center;
+      padding: 34px;
+      background: rgba(255, 249, 247, 0.98);
     }
-    .card {
+
+    .info-card {
       width: 100%;
-      background: var(--white);
-      border-radius: 22px;
-      padding: 28px;
-      box-shadow: 0 16px 44px rgba(18,18,18,.08);
+      padding: 30px;
+      border-radius: 24px;
+      background: var(--paper);
+      border: 1px solid var(--card-line);
+      box-shadow: 0 18px 50px rgba(26, 18, 18, 0.08);
     }
-    .icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
+
+    .alert-icon {
+      width: 66px;
+      height: 66px;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, #fff1f1 0%, #ffe3e3 100%);
-      color: var(--red);
-      font-size: 1.7rem;
-      font-weight: 800;
       margin-bottom: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fff0ef 0%, #ffe0dc 100%);
+      color: var(--red);
+      font-size: 1.85rem;
+      font-weight: 900;
     }
-    h2 {
-      font-size: 1.4rem;
-      font-weight: 800;
+
+    .info-card h2 {
       margin-bottom: 10px;
+      font-size: 1.44rem;
+      font-weight: 850;
+      color: #121212;
     }
-    .card p {
+
+    .info-card p {
       color: var(--muted);
-      line-height: 1.75;
-      font-size: .95rem;
+      font-size: 0.96rem;
+      line-height: 1.8;
     }
+
     .divider {
       height: 1px;
-      background: #efefef;
-      margin: 20px 0;
+      margin: 22px 0;
+      background: rgba(207, 23, 31, 0.08);
     }
-    .contact-title {
-      font-size: .78rem;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #9b9b9b;
+
+    .contact-heading {
       margin-bottom: 12px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #9a8f92;
     }
-    .contact {
+
+    .contact-list {
       display: grid;
       gap: 12px;
     }
-    .item {
+
+    .contact-item {
       padding: 14px 16px;
       border-radius: 18px;
-      background: #fafafa;
+      background: #ffffff;
+      border: 1px solid rgba(207, 23, 31, 0.08);
     }
-    .item strong {
+
+    .contact-item strong {
       display: block;
-      font-size: .8rem;
-      color: #8e8e8e;
       margin-bottom: 4px;
-    }
-    .item a {
-      color: var(--red);
+      font-size: 0.78rem;
       font-weight: 800;
+      color: #8d8588;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .contact-item a {
+      color: var(--red);
       text-decoration: none;
+      font-size: 1.02rem;
+      font-weight: 850;
     }
-    .item a:hover { text-decoration: underline; }
-    .foot {
+
+    .contact-item a:hover {
+      text-decoration: underline;
+    }
+
+    .note {
       margin-top: 18px;
-      color: #a0a0a0;
-      font-size: .8rem;
+      color: #9c9093;
+      font-size: 0.82rem;
+      line-height: 1.7;
     }
-    @media (max-width: 860px) {
-      .wrap { grid-template-columns: 1fr; }
-      .hero, .panel { padding: 26px; }
+
+    @media (max-width: 920px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-panel,
+      .info-panel {
+        padding: 26px;
+      }
     }
-    @media (max-width: 520px) {
-      body { padding: 14px; }
-      .hero, .panel { padding: 18px; }
-      .card { padding: 22px 18px; }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 14px;
+      }
+
+      .brand-panel,
+      .info-panel {
+        padding: 18px;
+      }
+
+      .info-card {
+        padding: 22px 18px;
+      }
+
+      .brand-mark {
+        gap: 12px;
+      }
+
+      .brand-name {
+        font-size: 1.08rem;
+      }
+
+      .status-card {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="hero">
-      <div class="brand">VINAPHARMA</div>
-      <div class="label">He thong dang cap</div>
-      <h1>Website dang tam bao tri.</h1>
+  <main class="shell">
+    <section class="brand-panel">
+      <div class="brand-mark">
+        <div class="brand-icon" aria-hidden="true"></div>
+        <div class="brand-name">Vinapharma</div>
+      </div>
+      <div class="eyebrow">Website tam bao tri</div>
+      <h1>Chung toi dang nang cap he thong.</h1>
       <p class="lead">
-        Chung toi dang nang cap he thong de website van hanh on dinh hon, nhanh hon
-        va mang lai trai nghiem tot hon cho khach hang.
+        Website Vinapharma dang tam dung trong thoi gian ngan de cap nhat noi dung
+        va toi uu trai nghiem truy cap. Chung toi se quay lai som nhat co the.
       </p>
-      <div class="chips">
-        <div class="chip">
+      <div class="status-row">
+        <div class="status-card">
           <strong>Trang thai</strong>
-          Tam thoi gian doan
+          <span>Tam thoi gian doan</span>
         </div>
-        <div class="chip">
-          <strong>Muc tieu</strong>
-          Hoan tat som nhat co the
+        <div class="status-card">
+          <strong>Ho tro</strong>
+          <span>Lien he truc tiep qua hotline va email</span>
         </div>
       </div>
     </section>
-    <aside class="panel">
-      <div class="card">
-        <div class="icon">!</div>
-        <h2>Cam on ban da cho.</h2>
+
+    <aside class="info-panel">
+      <div class="info-card">
+        <div class="alert-icon">!</div>
+        <h2>Cam on ban da thong cam.</h2>
         <p>
-          Mot so tinh nang tren website dang tam dung de phuc vu qua trinh bao tri
-          va cap nhat noi dung.
+          Trong thoi gian bao tri, mot so tinh nang dat hang, tim kiem va xem noi
+          dung co the tam thoi khong kha dung. Neu can ho tro gap, vui long lien he
+          truc tiep voi Vinapharma theo thong tin ben duoi.
         </p>
+
         <div class="divider"></div>
-        <div class="contact-title">Lien he trong thoi gian bao tri</div>
-        <div class="contact">
-          <div class="item">
-            <strong>Hotline</strong>
-            <a href="tel:19001234">1900 1234</a>
+
+        <div class="contact-heading">Thong tin lien he</div>
+        <div class="contact-list">
+          <div class="contact-item">
+            <strong>Hotline cong ty</strong>
+            <a href="tel:0901683380">090 168 33 80</a>
           </div>
-          <div class="item">
-            <strong>Email</strong>
-            <a href="mailto:info@vinapharma.vn">info@vinapharma.vn</a>
+          <div class="contact-item">
+            <strong>Email cong ty</strong>
+            <a href="mailto:vinapharmapartner@gmail.com">vinapharmapartner@gmail.com</a>
           </div>
         </div>
-        <div class="foot">© 2026 Vinapharma. Xin cam on su thong cam cua ban.</div>
+
+        <div class="note">
+          &copy; 2026 Vinapharma. Xin cam on quy khach da cho doi trong thoi gian
+          chung toi nang cap he thong.
+        </div>
       </div>
     </aside>
   </main>

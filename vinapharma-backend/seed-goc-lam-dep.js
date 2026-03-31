@@ -10,13 +10,13 @@ const posts = [
   {
     title: 'Sự thật về SPF: Cách chọn và dùng kem chống nắng đúng để bảo vệ da thực sự',
     category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: true,
-    thumbnail: 'https://images.unsplash.com/photo-1556228720-da4b4f9ce08e?w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=1200&q=80',
     excerpt: 'Kem chống nắng là bước skincare quan trọng nhất — quan trọng hơn cả serum hay kem dưỡng đắt tiền. Nhưng phần lớn mọi người dùng sai cách, sai lượng, hoặc chọn sai loại. Giải mã khoa học đằng sau con số SPF và cách bảo vệ da hiệu quả nhất trước lão hóa và ung thư da.',
     readTime: 7, published: true,
     tags: ['Chống nắng', 'SPF', 'Chăm sóc da', 'Chống lão hóa'],
     content: `<p>Các chuyên gia da liễu đồng thuận: nếu chỉ được chọn <strong>một</strong> sản phẩm skincare duy nhất, đó phải là kem chống nắng. 90% các dấu hiệu lão hóa da sớm — nếp nhăn, đốm nâu, da chảy xệ — là do tia UV từ mặt trời, không phải do tuổi tác. Tuy nhiên, theo khảo sát 2024, chỉ <strong>31% người Việt Nam</strong> dùng kem chống nắng đúng cách hàng ngày.</p>
 
-<img src="https://images.unsplash.com/photo-1556228720-da4b4f9ce08e?w=900&q=80" alt="Kem chống nắng và bảo vệ da" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+<img src="https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=900&q=80" alt="Kem chống nắng và bảo vệ da" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
 
 <h2>SPF là gì và con số đó thực sự có nghĩa gì?</h2>
 <p>SPF (Sun Protection Factor) đo khả năng chống tia <strong>UVB</strong> — loại tia gây cháy nắng và ung thư da tế bào vảy. Cách đọc đúng:</p>
@@ -81,7 +81,7 @@ const posts = [
   {
     title: 'Retinol, Niacinamide, AHA/BHA: Hướng dẫn toàn diện về các thành phần skincare hot nhất',
     category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: true,
-    thumbnail: 'https://images.unsplash.com/photo-1601612628452-9e99ced43a45?w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=1200&q=80',
     excerpt: 'Thị trường skincare ngập tràn các thành phần "thần kỳ" với lời hứa cải thiện da trong vài tuần. Nhưng không phải tất cả đều có bằng chứng khoa học vững chắc. Đây là hướng dẫn dựa trên bằng chứng về các thành phần dưỡng da thực sự hiệu quả — và cách dùng chúng đúng.',
     readTime: 9, published: true,
     tags: ['Retinol', 'Niacinamide', 'AHA BHA', 'Skincare', 'Thành phần mỹ phẩm'],
@@ -146,7 +146,7 @@ const posts = [
   {
     title: 'Mụn trứng cá: Nguyên nhân thực sự và phác đồ điều trị hiệu quả theo khoa học',
     category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
-    thumbnail: 'https://images.unsplash.com/photo-1559181567-c3190ca9d5db?w=1200&q=80',
+    thumbnail: 'https://images.unsplash.com/photo-1576426863848-c21f53c60b19?w=1200&q=80',
     excerpt: 'Mụn trứng cá ảnh hưởng đến 85% người trong độ tuổi 12–24 và ngày càng phổ biến ở người trưởng thành. Nhiều người điều trị sai cách hàng năm trời không khỏi vì không hiểu đúng cơ chế. Bài viết này phân tích khoa học về mụn và con đường điều trị hiệu quả nhất.',
     readTime: 8, published: true,
     tags: ['Mụn trứng cá', 'Chăm sóc da', 'Da dầu', 'Điều trị da'],

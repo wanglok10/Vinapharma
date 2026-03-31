@@ -14,7 +14,7 @@
   --light:#f5f5f5;--border:#e8e8e8;--white:#fff;
 }
 html{scroll-behavior:smooth}
-body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(--dark);overflow-x:hidden;margin-top:0}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(--dark);overflow-x:hidden;margin-top:0;background-color:#cc1f1f;background-image:none;background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:fixed}
 
 /* PROMO BAR */
 .promo-bar{background:var(--red);color:#fff;text-align:center;padding:.42rem 1rem;font-size:.78rem;font-weight:500;letter-spacing:.03em;position:relative;z-index:300}
@@ -201,7 +201,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 
 .hero{position:relative;overflow:hidden;height:clamp(360px,58vh,704px);max-height:80vh;background:var(--red);margin:0 0 1.2rem;display:flex;justify-content:center;align-items:center}
 .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block}
-.hero-inner{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;gap:.8rem;padding:.8rem 10%;box-sizing:border-box;width:100%;max-width:66.666%;margin:0 auto;align-items:center}
+.hero-inner{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;gap:.8rem;padding:.8rem 10%;box-sizing:border-box;width:100%;max-width:66.666%;margin:130px auto 0;align-items:center}
 .hero-main-area{position:relative;flex:2;border-radius:1rem;overflow:hidden;min-height:0;width:100%;max-width:100%;margin:0 auto;box-sizing:border-box}
 .hero-sub-area{flex:1;min-height:0;width:100%;max-width:100%;margin:0 auto;box-sizing:border-box}
 .hero-sub-item{display:block;width:100%;height:100%;border-radius:1rem;overflow:hidden;cursor:pointer;text-decoration:none}
@@ -752,7 +752,7 @@ async function loadHeroBanners() {
           const imgSrc = b.image.startsWith('http') ? b.image : API + b.image;
           return `<div style="min-width:100%;flex-shrink:0;height:100%;overflow:hidden">
             <a href="${b.buttonLink||'#'}" style="display:block;width:100%;height:100%">
-              <img src="${imgSrc}" alt="${b.title||''}" style="width:100%;height:100%;object-fit:cover;display:block"/>
+              <img src="${imgSrc}" alt="${b.title||''}" style="width:100%;height:100%;object-fit:contain;display:block"/>
             </a>
           </div>`;
         }).join('');
@@ -788,6 +788,11 @@ async function loadHeroBg() {
     if (src) {
       const bgImg = document.getElementById('heroBgImg');
       if (bgImg) { bgImg.src = src; bgImg.style.display = 'block'; }
+      document.body.style.backgroundImage = `url('${src}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center top';
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundAttachment = 'fixed';
     }
   } catch(e) {}
 }
@@ -852,7 +857,7 @@ function renderHeroDemoFallback() {
     const slides = HERO_DEMO.sub.map(s =>
       `<div style="min-width:100%;flex-shrink:0;height:100%;overflow:hidden">
         <a href="${s.link}" style="display:block;width:100%;height:100%">
-          <img src="${s.image}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>
+          <img src="${s.image}" alt="" style="width:100%;height:100%;object-fit:contain;display:block"/>
         </a>
       </div>`
     ).join('');

@@ -145,14 +145,14 @@
   .hero-arrow { width: 28px !important; height: 28px !important; font-size: .8rem !important; }
   #homeHero.hero {
     height: auto !important;
-    min-height: 640px !important;
+    min-height: 720px !important;
     max-height: none !important;
     align-items: stretch !important;
   }
   #homeHero .hero-bg {
     display: block !important;
     object-fit: cover !important;
-    object-position: center !important;
+    object-position: center top !important;
   }
   #homeHero .hero-inner {
     height: auto !important;
@@ -274,7 +274,7 @@
   .blog-grid { grid-template-columns: 1fr !important; }
   .footer-top { grid-template-columns: 1fr !important; }
   .hero-section, .hero { height: 180px !important; }
-  #homeHero.hero { min-height: 560px !important; }
+  #homeHero.hero { min-height: 620px !important; }
   #homeHero .hero-main-area { aspect-ratio: 16 / 10.8 !important; }
   #homeHero .hero-sub-area { width: min(92%, 340px) !important; aspect-ratio: 16 / 8.8 !important; }
   .slide-title { font-size: 1.05rem !important; }

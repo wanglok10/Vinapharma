@@ -232,6 +232,15 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 
 .hero{position:relative;overflow:hidden;height:clamp(360px,58vh,704px);max-height:80vh;background:var(--red);margin:0 0 1.2rem;display:flex;justify-content:center;align-items:center}
 .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;display:block}
+#stripBannerWrap,#stripBannerLink{
+  background:#fff;
+  background-image:none!important;
+}
+#stripBannerImg{
+  display:block;
+  background:#fff;
+  background-image:none!important;
+}
 .hero-inner{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;gap:.8rem;padding:.8rem 10%;box-sizing:border-box;width:100%;max-width:66.666%;margin:130px auto 0;align-items:center}
 .hero-main-area{position:relative;flex:2;border-radius:1rem;overflow:hidden;min-height:0;width:100%;max-width:100%;margin:0 auto;box-sizing:border-box}
 .hero-sub-area{flex:1;min-height:0;width:100%;max-width:100%;margin:0 auto;box-sizing:border-box}
@@ -819,11 +828,11 @@ async function loadHeroBg() {
     if (src) {
       const bgImg = document.getElementById('heroBgImg');
       if (bgImg) { bgImg.src = src; bgImg.style.display = 'block'; }
-      document.body.style.backgroundImage = `url('${src}')`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center top';
-      document.body.style.backgroundRepeat = 'no-repeat';
-      document.body.style.backgroundAttachment = 'fixed';
+      document.body.style.backgroundImage = 'none';
+      document.body.style.backgroundSize = '';
+      document.body.style.backgroundPosition = '';
+      document.body.style.backgroundRepeat = '';
+      document.body.style.backgroundAttachment = '';
     }
   } catch(e) {}
 }

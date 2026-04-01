@@ -410,7 +410,7 @@ i.fa-solid,i.fa-regular{line-height:1}
         <!-- Banner lớn -->
         <div class="section">
           <div class="section-header">
-            <div class="section-title"><i class="fa-solid fa-rectangle-ad ic-gray"></i> Banner lớn <span style="font-size:.72rem;font-weight:400;color:#999">(hiển thị phía trên hero, có thể thêm nhiều — carousel tự động)</span></div>
+            <div class="section-title"><i class="fa-solid fa-rectangle-ad ic-gray"></i> Banner lớn <span style="font-size:.72rem;font-weight:400;color:#999">(PC: 1920×500px — Mobile: 800×465px | carousel tự động)</span></div>
             <div class="section-actions"><button class="btn btn-red" onclick="openBannerModal('main')">+ Thêm banner lớn</button></div>
           </div>
           <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGridMain">
@@ -421,7 +421,7 @@ i.fa-solid,i.fa-regular{line-height:1}
         <!-- Banner nhỏ -->
         <div class="section" style="margin-top:1.5rem">
           <div class="section-header">
-            <div class="section-title"><i class="fa-solid fa-image ic-gray"></i> Banner nhỏ <span style="font-size:.72rem;font-weight:400;color:#999">(hiển thị phía dưới banner lớn)</span></div>
+            <div class="section-title"><i class="fa-solid fa-image ic-gray"></i> Banner nhỏ <span style="font-size:.72rem;font-weight:400;color:#999">(PC: 880×358px — Mobile: 720×320px)</span></div>
             <div class="section-actions"><button class="btn btn-red" onclick="openBannerModal('sub')">+ Thêm banner nhỏ</button></div>
           </div>
           <div style="padding:1rem 1.2rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem" id="bannerGridSub">
@@ -445,7 +445,7 @@ i.fa-solid,i.fa-regular{line-height:1}
               <!-- Desktop -->
               <div>
                 <div style="font-weight:700;font-size:.9rem;margin-bottom:.25rem"><i class="fa-solid fa-desktop" style="color:#888;margin-right:.4rem"></i>Máy tính</div>
-                <div style="font-size:.75rem;color:#888;margin-bottom:.8rem">1920×760px</div>
+                <div style="font-size:.75rem;color:#888;margin-bottom:.8rem">1920×1080px</div>
                 <div id="heroBgDropzone"
                   style="width:100%;height:180px;background:#f8f8f8;border-radius:.7rem;overflow:hidden;border:2px dashed #ddd;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;cursor:pointer;position:relative;transition:border-color .2s"
                   onclick="document.getElementById('heroBgInput').click()"
@@ -469,7 +469,7 @@ i.fa-solid,i.fa-regular{line-height:1}
               <!-- Mobile -->
               <div>
                 <div style="font-weight:700;font-size:.9rem;margin-bottom:.25rem"><i class="fa-solid fa-mobile-screen" style="color:#888;margin-right:.4rem"></i>Điện thoại <span style="font-weight:400;color:#aaa;font-size:.78rem">(tùy chọn)</span></div>
-                <div style="font-size:.75rem;color:#888;margin-bottom:.8rem">900×760px — nếu bỏ trống dùng ảnh máy tính</div>
+                <div style="font-size:.75rem;color:#888;margin-bottom:.8rem">1080×1920px — nếu bỏ trống dùng ảnh máy tính</div>
                 <div id="heroMobileBgDropzone"
                   style="width:100%;height:180px;background:#f8f8f8;border-radius:.7rem;overflow:hidden;border:2px dashed #ddd;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;cursor:pointer;position:relative;transition:border-color .2s"
                   onclick="document.getElementById('heroMobileBgInput').click()"

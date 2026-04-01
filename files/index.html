@@ -252,25 +252,27 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
   background-image:none!important;
   border-radius:1.1rem;
 }
-.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:row;gap:0;padding:0;box-sizing:border-box;width:100%;max-width:100%;margin:0;align-items:stretch}
-.hero-main-area{position:relative;flex:0 0 65%;border-radius:0;overflow:hidden;height:100%;box-sizing:border-box}
-.hero-inner.no-sub .hero-main-area{flex:0 0 100%;width:100%;height:100%;aspect-ratio:unset;margin:0;box-shadow:none}
+.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:row;gap:0;padding:.5rem;box-sizing:border-box;width:100%;max-width:100%;margin:0;align-items:stretch;gap:.5rem}
+/* Cột trái: banner lớn + banner nhỏ */
+.hero-left-col{flex:0 0 65%;display:flex;flex-direction:column;gap:.5rem;min-height:0;box-sizing:border-box}
+.hero-main-area{position:relative;flex:1 1 0;border-radius:.8rem;overflow:hidden;min-height:0;box-sizing:border-box}
+.hero-inner.no-sub .hero-main-area{flex:1 1 0;border-radius:.8rem}
 .hero-sub-area{
-  flex:0 0 35%;
+  flex:0 0 160px;
   min-height:0;
-  height:100%;
-  padding:.6rem .6rem .6rem .4rem;
+  width:100%;
+  height:160px;
+  padding:0;
   background:transparent;
-  border-radius:0;
+  border-radius:.8rem;
   overflow:hidden;
   box-shadow:none;
   box-sizing:border-box;
   position:relative;
-  display:flex;
-  flex-direction:column;
-  gap:.5rem;
   transform:none;
 }
+/* Cột phải: 2 bài viết */
+.hero-right-col{flex:0 0 35%;display:flex;flex-direction:column;gap:.5rem;min-height:0;box-sizing:border-box}
 .hero-sub-frame{
   position:relative;
   width:100%;
@@ -525,19 +527,20 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
   </div>
   <img class="hero-bg" id="heroBgImg" src="" alt="" style="display:none"/>
   <div class="hero-inner no-sub" id="heroInner">
-    <div class="hero-main-area" id="heroMainArea">
-      <div class="hero-slides" id="heroSlides"></div>
-      <button class="hero-prev" id="heroPrev">‹</button>
-      <button class="hero-next" id="heroNext">›</button>
-      <div class="hero-dots" id="heroDots">
-        <div class="hero-dot active" data-idx="0"></div>
-        <div class="hero-dot" data-idx="1"></div>
-        <div class="hero-dot" data-idx="2"></div>
+    <div class="hero-left-col" id="heroLeftCol">
+      <div class="hero-main-area" id="heroMainArea">
+        <div class="hero-slides" id="heroSlides"></div>
+        <button class="hero-prev" id="heroPrev">‹</button>
+        <button class="hero-next" id="heroNext">›</button>
+        <div class="hero-dots" id="heroDots">
+          <div class="hero-dot active" data-idx="0"></div>
+          <div class="hero-dot" data-idx="1"></div>
+          <div class="hero-dot" data-idx="2"></div>
+        </div>
       </div>
+      <div class="hero-sub-area" id="heroSubArea"></div>
     </div>
-    <div class="hero-sub-area" id="heroSubArea">
-      <div id="heroPostPanel" style="display:flex;flex-direction:column;gap:.5rem;height:100%"></div>
-    </div>
+    <div class="hero-right-col" id="heroPostPanel"></div>
   </div>
 </section>
 
@@ -885,19 +888,19 @@ async function loadHeroPostPanel() {
   try {
     const res = await fetch(API + '/api/posts?limit=2&published=true&sort=-publishedAt');
     const data = await res.json();
-    if (!data.success || !data.data?.length) return;
+    if (!data.success || !data.data?.length) { panel.style.display='none'; return; }
     panel.innerHTML = data.data.slice(0,2).map(p => {
       const img = p.thumbnail?.startsWith('http') ? p.thumbnail : (p.thumbnail ? API + p.thumbnail : '');
       const href = 'tin-tuc-chi-tiet.html?slug=' + (p.slug || p._id);
       return `<a href="${href}" class="hero-post-card">
-        ${img ? `<img src="${img}" alt="${p.title||''}"/>` : `<div style="width:100%;height:100%;background:#c0392b"></div>`}
+        ${img ? `<img src="${img}" alt="${p.title||''}"/>` : `<div style="width:100%;height:100%;background:#c0392b;border-radius:.8rem"></div>`}
         <div class="hero-post-overlay">
           <div class="hero-post-cat">${p.category||'Tin tức'}</div>
           <div class="hero-post-title">${p.title||''}</div>
         </div>
       </a>`;
     }).join('');
-  } catch(e) {}
+  } catch(e) { panel.style.display='none'; }
 }
 
 async function loadHeroBg() {

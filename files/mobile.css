@@ -200,6 +200,10 @@
   #homeHero .hero-sub-slides img {
     border-radius: 1rem !important;
   }
+  #homeHero.hero::after {
+    height: 80px !important;
+    background: linear-gradient(to bottom, transparent 0%, rgba(255,245,245,.35) 35%, rgba(255,235,235,.7) 60%, rgba(255,255,255,.92) 82%, #fff 100%) !important;
+  }
   #stripBannerWrap,
   #stripBannerLink,
   #stripBannerImg {

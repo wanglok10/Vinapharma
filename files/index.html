@@ -252,14 +252,14 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
   background-image:none!important;
   border-radius:1.1rem;
 }
-.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;gap:.5rem;padding:.5rem 4%;box-sizing:border-box;width:100%;max-width:100%;margin:0;align-items:stretch}
+.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;gap:.5rem;padding:.5rem 10%;box-sizing:border-box;width:100%;max-width:100%;margin:0;align-items:stretch}
 /* Banner lớn chiếm phần trên, co giãn */
 .hero-main-area{position:relative;flex:1 1 0;border-radius:.8rem;overflow:hidden;min-height:0;box-sizing:border-box}
 .hero-inner.no-sub .hero-main-area{flex:1 1 0;border-radius:.8rem}
-/* Hàng dưới: banner nhỏ (trái) + 2 bài viết (phải), cùng height */
-.hero-left-col{display:flex;flex-direction:row;gap:.5rem;flex:0 0 200px;min-height:0;box-sizing:border-box}
+/* Hàng dưới: banner nhỏ (65%) + 2 bài viết (35%) */
+.hero-left-col{display:flex;flex-direction:row;gap:.6rem;flex:0 0 200px;min-height:0;box-sizing:border-box}
 .hero-sub-area{
-  flex:0 0 50%;
+  flex:0 0 65%;
   height:200px;
   padding:0;
   background:transparent;
@@ -270,8 +270,8 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
   position:relative;
   transform:none;
 }
-/* Cột phải: 2 bài viết, mỗi cái flex:1 = 50% height */
-.hero-right-col{flex:1 1 0;display:flex;flex-direction:column;gap:.5rem;height:200px;box-sizing:border-box}
+/* Cột phải: 2 bài viết xếp dọc */
+.hero-right-col{flex:1 1 0;display:flex;flex-direction:column;gap:.6rem;height:200px;box-sizing:border-box}
 .hero-sub-frame{
   position:relative;
   width:100%;

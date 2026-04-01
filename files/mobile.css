@@ -200,6 +200,7 @@
   #homeHero .hero-sub-slides a,
   #homeHero .hero-sub-slides img {
     border-radius: 1rem !important;
+    object-fit: contain !important;
   }
   #homeHero.hero::after {
     height: 80px !important;

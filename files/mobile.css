@@ -144,8 +144,8 @@
   .hero-dots { bottom: .5rem !important; }
   .hero-arrow { width: 28px !important; height: 28px !important; font-size: .8rem !important; }
   #homeHero.hero {
-    height: 1013px !important;
-    min-height: 1013px !important;
+    height: auto !important;
+    min-height: 0 !important;
     max-height: none !important;
     align-items: stretch !important;
   }
@@ -156,11 +156,11 @@
   }
   #homeHero .hero-inner {
     height: auto !important;
-    min-height: 100% !important;
+    min-height: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
-    padding: 1rem 5% 1.35rem !important;
+    padding: 120px 5% 1.35rem !important;
     gap: .85rem !important;
     justify-content: flex-end !important;
   }
@@ -277,8 +277,8 @@
   .footer-top { grid-template-columns: 1fr !important; }
   .hero-section, .hero { height: 180px !important; }
   #homeHero.hero {
-    height: 907px !important;
-    min-height: 907px !important;
+    height: auto !important;
+    min-height: 0 !important;
   }
   #homeHero .hero-main-area { flex: 0 0 auto !important; aspect-ratio: 16 / 9.3 !important; }
   #homeHero .hero-sub-area { width: min(92%, 340px) !important; }

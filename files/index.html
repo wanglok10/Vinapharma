@@ -252,30 +252,24 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
   background-image:none!important;
   border-radius:1.1rem;
 }
-.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;gap:.8rem;padding:0;box-sizing:border-box;width:100%;max-width:100%;margin:0;align-items:center;justify-content:flex-end}
-.hero-main-area{position:relative;flex:0 0 auto;border-radius:0;overflow:hidden;width:100%;max-width:100%;margin:0;box-sizing:border-box;aspect-ratio:16/6;max-height:55%}
-.hero-inner.no-sub .hero-main-area{
-  flex:0 0 auto;
-  width:min(520px,100%);
-  aspect-ratio:16/6.5;
-  margin:0 auto 1.15rem;
-  box-shadow:0 18px 42px rgba(0,0,0,.18);
-}
+.hero-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:row;gap:0;padding:0;box-sizing:border-box;width:100%;max-width:100%;margin:0;align-items:stretch}
+.hero-main-area{position:relative;flex:0 0 65%;border-radius:0;overflow:hidden;height:100%;box-sizing:border-box}
+.hero-inner.no-sub .hero-main-area{flex:0 0 100%;width:100%;height:100%;aspect-ratio:unset;margin:0;box-shadow:none}
 .hero-sub-area{
-  flex:0 0 auto;
+  flex:0 0 35%;
   min-height:0;
-  width:53%;
-  max-width:100%;
-  height:239px;
-  margin:0 auto 2.6rem;
-  padding:0;
+  height:100%;
+  padding:.6rem .6rem .6rem .4rem;
   background:transparent;
   border-radius:0;
   overflow:hidden;
   box-shadow:none;
   box-sizing:border-box;
   position:relative;
-  transform:translateY(-18px);
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+  transform:none;
 }
 .hero-sub-frame{
   position:relative;
@@ -307,11 +301,18 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
 .no-main .hero-main-area{display:none}
 .hero-sub-prev,.hero-sub-next{position:absolute;top:50%;transform:translateY(-50%);z-index:5;background:rgba(255,255,255,.25);border:1.5px solid rgba(255,255,255,.3);color:#fff;width:28px;height:28px;border-radius:50%;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
 .hero-sub-prev{left:.4rem}.hero-sub-next{right:.4rem}
+/* Hero right panel — 2 bài viết */
+.hero-post-card{flex:1;min-height:0;border-radius:.8rem;overflow:hidden;position:relative;cursor:pointer;text-decoration:none;display:block}
+.hero-post-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.hero-post-card:hover img{transform:scale(1.04)}
+.hero-post-overlay{position:absolute;bottom:0;left:0;right:0;padding:.55rem .7rem;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff}
+.hero-post-cat{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.8);margin-bottom:.2rem}
+.hero-post-title{font-size:.78rem;font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
 /* RESPONSIVE */
 @media(max-width:1024px){.products-grid{grid-template-columns:repeat(3,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.footer-top{grid-template-columns:1fr 1fr 1fr;gap:2rem}}
 @media(max-width:768px){.header-hotline{display:none}.trust-bar{grid-template-columns:repeat(2,1fr)}.products-grid{grid-template-columns:repeat(2,1fr)}.goals-grid{grid-template-columns:repeat(3,1fr)}.about-grid,.contact-inner{grid-template-columns:1fr}.about-imgs{display:none}.blog-grid{grid-template-columns:1fr 1fr}.footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}.form-row{grid-template-columns:1fr}.mega-products-grid{grid-template-columns:repeat(2,1fr)}.mega-brands-layout{grid-template-columns:1fr}}
-@media(max-width:768px){.hero{height:47vh;min-height:280px;max-height:none}.hero-inner{padding:.8rem 8%;gap:.5rem;max-width:100%;width:100%;margin-top:0}.hero-inner.no-sub{padding-bottom:1rem}.hero-inner.no-main{padding-bottom:0}.hero-main-area{aspect-ratio:unset;width:100%;max-width:100%;margin:0 auto}.hero-inner.no-sub .hero-main-area{width:min(100%,520px);aspect-ratio:16/7.1;margin:0 auto 1rem}.hero-sub-area{width:min(92%,420px);aspect-ratio:16/7.1;margin:0 auto 1.8rem;padding:0;border-radius:0;transform:translateY(-12px)}.hero-slide,.hero-sub-slides>div{min-width:100%!important;width:100%!important;box-sizing:border-box}#stripBannerWrap{padding:0 3% .85rem}#stripBannerImg{max-height:90px}.page-content{margin-top:0}}
+@media(max-width:768px){.hero{height:47vh;min-height:280px;max-height:none}.hero-inner{flex-direction:column!important;padding:.8rem 8%;gap:.5rem;max-width:100%;width:100%;margin-top:0}.hero-inner.no-sub{padding-bottom:1rem}.hero-inner.no-main{padding-bottom:0}.hero-main-area{aspect-ratio:unset;width:100%;max-width:100%;margin:0 auto}.hero-inner.no-sub .hero-main-area{width:min(100%,520px);aspect-ratio:16/7.1;margin:0 auto 1rem}.hero-sub-area{width:min(92%,420px);aspect-ratio:16/7.1;margin:0 auto 1.8rem;padding:0;border-radius:0;transform:translateY(-12px)}.hero-slide,.hero-sub-slides>div{min-width:100%!important;width:100%!important;box-sizing:border-box}#stripBannerWrap{padding:0 3% .85rem}#stripBannerImg{max-height:90px}.page-content{margin-top:0}}
 @media(max-width:500px){.products-grid{grid-template-columns:1fr 1fr}.goals-grid{grid-template-columns:repeat(2,1fr)}.blog-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr}.trust-bar{grid-template-columns:1fr}.trust-item{border-right:none;border-bottom:1px solid var(--border)}
 }
 @media(max-width:768px){.hero-slide,.hero-sub-slides>div{min-width:100%!important;width:100%!important}}
@@ -534,7 +535,9 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--white);color:var(-
         <div class="hero-dot" data-idx="2"></div>
       </div>
     </div>
-    <div class="hero-sub-area" id="heroSubArea"></div>
+    <div class="hero-sub-area" id="heroSubArea">
+      <div id="heroPostPanel" style="display:flex;flex-direction:column;gap:.5rem;height:100%"></div>
+    </div>
   </div>
 </section>
 
@@ -876,6 +879,27 @@ async function loadHeroBanners() {
   }
 }
 
+async function loadHeroPostPanel() {
+  const panel = document.getElementById('heroPostPanel');
+  if (!panel || window.innerWidth <= 768) return;
+  try {
+    const res = await fetch(API + '/api/posts?limit=2&published=true&sort=-publishedAt');
+    const data = await res.json();
+    if (!data.success || !data.data?.length) return;
+    panel.innerHTML = data.data.slice(0,2).map(p => {
+      const img = p.thumbnail?.startsWith('http') ? p.thumbnail : (p.thumbnail ? API + p.thumbnail : '');
+      const href = 'tin-tuc-chi-tiet.html?slug=' + (p.slug || p._id);
+      return `<a href="${href}" class="hero-post-card">
+        ${img ? `<img src="${img}" alt="${p.title||''}"/>` : `<div style="width:100%;height:100%;background:#c0392b"></div>`}
+        <div class="hero-post-overlay">
+          <div class="hero-post-cat">${p.category||'Tin tức'}</div>
+          <div class="hero-post-title">${p.title||''}</div>
+        </div>
+      </a>`;
+    }).join('');
+  } catch(e) {}
+}
+
 async function loadHeroBg() {
   try {
     const isMob = window.innerWidth <= 768;
@@ -1038,6 +1062,7 @@ async function loadPromoBanner() {
 loadHeroBg();
 loadHeroBanners();
 loadStripBanner();
+loadHeroPostPanel();
 loadFeaturedProducts();
 loadPromoBanner();
 

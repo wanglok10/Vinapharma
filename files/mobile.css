@@ -184,12 +184,14 @@
   }
   #homeHero .hero-sub-area {
     display: block !important;
-    width: 100% !important;
+    width: 90% !important;
     max-width: 100% !important;
     height: 160px !important;
     aspect-ratio: unset !important;
     margin: 0 auto !important;
     transform: none !important;
+    border-radius: 1rem !important;
+    overflow: hidden !important;
   }
   #homeHero .hero-inner.no-main .hero-sub-area {
     width: 100% !important;

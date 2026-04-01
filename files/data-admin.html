@@ -1107,14 +1107,13 @@ i.fa-solid,i.fa-regular{line-height:1}
               <input type="radio" name="uUserType" id="uTypeBtoB" value="btob" style="width:auto"/> <i class="fa-solid fa-building ic-blue"></i> Quý đối tác
             </label>
           </div>
-          <div style="font-size:.7rem;color:#aaa;margin-top:.3rem">Quý đối tác: Đồng 0–20tr | Bạc 20–50tr | Vàng 50–80tr | Kim Cương ≥80tr</div>
         </div>
         <div class="form-group full" style="grid-column:1/-1" id="totalSpentGroup">
           <label>Tổng tiền đã mua (VND)</label>
           <input type="number" id="uTotalSpent" min="0" placeholder="0" oninput="updateRankPreview(this.value)"/>
           <div style="margin-top:.5rem;font-size:.78rem;color:#666">Rank hiện tại: <span id="uRankPreview" style="font-weight:700"></span></div>
-          <div id="totalSpentNote" style="margin-top:.3rem;font-size:.72rem;color:#aaa">Đồng: 0–2tr | Bạc: 2–10tr | Vàng: 10–50tr | Kim Cương: ≥50tr</div>
-          <div id="btobSpentNote" style="display:none;margin-top:.3rem;font-size:.72rem;background:#eff6ff;color:#1e40af;padding:.4rem .6rem;border-radius:.3rem"><i class="fa-solid fa-building ic-blue"></i> Quý đối tác: Tổng chi tiêu được tính tự động từ các công nợ <b>đã thanh toán</b>. Nhập ở đây chỉ để hiển thị ban đầu.</div>
+          <div id="totalSpentNote" style="margin-top:.3rem;font-size:.72rem;color:#aaa">Thành Viên: &lt;5tr | Đồng: 5–10tr | Bạc: 10–20tr | Vàng: 20–35tr | Kim Cương: ≥35tr</div>
+          <div id="btobSpentNote" style="display:none;margin-top:.3rem;font-size:.72rem;background:#eff6ff;color:#1e40af;padding:.4rem .6rem;border-radius:.3rem"><i class="fa-solid fa-building ic-blue"></i> Quý đối tác: Tổng chi tiêu được tính tự động từ các công nợ <b>đã thanh toán</b>. Nhập ở đây chỉ để hiển thị ban đầu.<br><span style="color:#374151;margin-top:.25rem;display:block">Thành Viên: &lt;500tr | Đồng: 500tr–1tỷ | Bạc: 1–2tỷ | Vàng: 2–2.5tỷ | Kim Cương: ≥2.5tỷ</span></div>
         </div>
       </div>
     </div>

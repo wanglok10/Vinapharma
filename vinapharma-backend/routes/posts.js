@@ -128,6 +128,20 @@ async function replaceContentImages(html, folder) {
   return updated;
 }
 
+// PATCH fix publishedAt cho các bài đã seed
+router.patch('/admin-fix-dates', protect, adminOnly, async (req, res) => {
+  try {
+    const { updates } = req.body; // [{ title, publishedAt }]
+    if (!Array.isArray(updates)) return res.status(400).json({ success: false, message: 'updates phải là array' });
+    const results = [];
+    for (const u of updates) {
+      const r = await Post.findOneAndUpdate({ title: u.title }, { publishedAt: new Date(u.publishedAt) }, { new: true });
+      results.push({ title: u.title, status: r ? 'updated' : 'not_found' });
+    }
+    res.json({ success: true, results });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+});
+
 router.post('/admin-seed', protect, adminOnly, async (req, res) => {
   try {
     const { seedKey } = req.body;

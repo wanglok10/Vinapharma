@@ -1,363 +1,378 @@
 // Seed 5 bài Góc Làm Đẹp — node seed-goc-lam-dep.js
-require('dotenv').config();
+if (require.main === module) {
+  require('dotenv').config();
+}
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Post = require('./models/Post');
 
 const posts = [
 
-  // ── BÀI 1: KEM CHỐNG NẮNG ─────────────────────────────────────────────────
+  // ── BÀI 1: CHỐNG NẮNG ────────────────────────────────────────────────────
   {
-    title: 'Sự thật về SPF: Cách chọn và dùng kem chống nắng đúng để bảo vệ da thực sự',
-    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: true,
-    thumbnail: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=1200&q=80',
-    excerpt: 'Kem chống nắng là bước skincare quan trọng nhất — quan trọng hơn cả serum hay kem dưỡng đắt tiền. Nhưng phần lớn mọi người dùng sai cách, sai lượng, hoặc chọn sai loại. Giải mã khoa học đằng sau con số SPF và cách bảo vệ da hiệu quả nhất trước lão hóa và ung thư da.',
+    title: 'Chống nắng SPF: Bước skincare quan trọng nhất mà 90% người Việt đang bỏ qua',
+    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
+    thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=1200&q=80',
+    excerpt: 'Các chuyên gia da liễu đồng thuận: nếu chỉ được dùng một sản phẩm skincare, hãy chọn kem chống nắng. Tuy vậy, hơn 90% người Việt dùng sai cách hoặc bỏ qua bước này hoàn toàn. Bài viết giải thích khoa học đằng sau SPF, PA, UVA/UVB và cách chọn kem chống nắng phù hợp với từng loại da.',
     readTime: 7, published: true,
-    tags: ['Chống nắng', 'SPF', 'Chăm sóc da', 'Chống lão hóa'],
-    content: `<p>Các chuyên gia da liễu đồng thuận: nếu chỉ được chọn <strong>một</strong> sản phẩm skincare duy nhất, đó phải là kem chống nắng. 90% các dấu hiệu lão hóa da sớm — nếp nhăn, đốm nâu, da chảy xệ — là do tia UV từ mặt trời, không phải do tuổi tác. Tuy nhiên, theo khảo sát 2024, chỉ <strong>31% người Việt Nam</strong> dùng kem chống nắng đúng cách hàng ngày.</p>
+    publishedAt: new Date('2026-04-02'),
+    tags: ['Chống nắng', 'SPF', 'UVA UVB', 'Skincare', 'Chăm sóc da'],
+    content: `<p>Theo Tổ chức Y tế Thế giới (WHO), tia UV là nguyên nhân hàng đầu gây <strong>lão hóa da sớm</strong>, đốm nám, và ung thư da. Đáng lo ngại, tia UVA — loại xuyên qua cả kính cửa sổ và mây — tấn công da suốt 365 ngày, ngay cả những ngày trời âm u.</p>
 
-<img src="https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=900&q=80" alt="Kem chống nắng và bảo vệ da" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+<img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=900&q=80" alt="Kem chống nắng SPF bảo vệ da" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
 
-<h2>SPF là gì và con số đó thực sự có nghĩa gì?</h2>
-<p>SPF (Sun Protection Factor) đo khả năng chống tia <strong>UVB</strong> — loại tia gây cháy nắng và ung thư da tế bào vảy. Cách đọc đúng:</p>
-<ul>
-<li><strong>SPF 15:</strong> Chặn ~93% tia UVB</li>
-<li><strong>SPF 30:</strong> Chặn ~97% tia UVB</li>
-<li><strong>SPF 50:</strong> Chặn ~98% tia UVB</li>
-<li><strong>SPF 100:</strong> Chặn ~99% tia UVB</li>
-</ul>
-<p>Lưu ý: Không có sản phẩm nào chặn 100% tia UV. Và sự chênh lệch giữa SPF 50 và SPF 100 chỉ là 1% — nhỏ hơn nhiều người nghĩ.</p>
+<h2>SPF và PA là gì? Hiểu đúng để chọn đúng</h2>
+<p><strong>SPF (Sun Protection Factor)</strong> đo khả năng chặn tia UVB — loại tia gây cháy nắng và ung thư da. SPF 30 chặn 97% tia UVB; SPF 50 chặn 98%. Sự chênh lệch chỉ 1% nhưng ý nghĩa lâm sàng khá lớn với người có nguy cơ cao.</p>
+<p><strong>PA (Protection Grade of UVA)</strong> là hệ thống Nhật Bản đo khả năng chặn tia UVA — loại gây nám, lão hóa và làm sạm da. PA+ đến PA++++ tương ứng mức bảo vệ tăng dần.</p>
 
-<h2>UVA vs UVB — Tại sao cần "Broad Spectrum"?</h2>
-<p>SPF chỉ đo bảo vệ khỏi UVB. Nhưng <strong>UVA</strong> — chiếm 95% bức xạ UV chạm đến mặt đất — mới là thủ phạm chính gây:</p>
-<ul>
-<li>Lão hóa sớm (photoaging): nếp nhăn, đốm nâu, da sần sùi</li>
-<li>Ung thư da tế bào hắc tố (melanoma) — loại nguy hiểm nhất</li>
-<li>Tia UVA xuyên qua kính cửa sổ và mây — nghĩa là bạn vẫn bị tác động khi ngồi trong nhà cạnh cửa sổ</li>
-</ul>
-<p>Vì vậy, luôn chọn kem chống nắng ghi nhãn <strong>"Broad Spectrum"</strong> hoặc bảo vệ cả UVA + UVB.</p>
-
-<img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&q=80" alt="Chăm sóc da đúng cách" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Sai lầm phổ biến nhất: Bôi quá ít</h2>
-<p>Để đạt mức SPF ghi trên nhãn, bạn cần bôi <strong>2mg/cm²</strong> — tương đương khoảng:</p>
-<ul>
-<li>¼ thìa cà phê (1,25ml) cho mặt và cổ</li>
-<li>1 thìa canh (15ml) cho toàn thân</li>
-</ul>
-<p>Nghiên cứu cho thấy hầu hết mọi người chỉ bôi <strong>25–50%</strong> lượng cần thiết — có nghĩa là SPF 50 của bạn thực chất chỉ đang hoạt động ở mức SPF 7–12!</p>
-
-<h2>Hóa học (Chemical) vs Khoáng chất (Mineral) — Chọn loại nào?</h2>
-<p><strong>Chống nắng hóa học</strong> (avobenzone, oxybenzone, octinoxate): Thấm vào da, hấp thụ tia UV và chuyển thành nhiệt. Kết cấu nhẹ, dễ thấm, phù hợp da dầu. Nhược điểm: có thể gây kích ứng da nhạy cảm, cần bôi 20 phút trước khi ra nắng.</p>
-<p><strong>Chống nắng khoáng chất</strong> (zinc oxide, titanium dioxide): Tạo lớp phản chiếu vật lý trên bề mặt da. An toàn hơn cho da nhạy cảm và trẻ em, hiệu quả ngay lập tức, ít gây kích ứng. Nhược điểm: dễ để lại vệt trắng (white cast).</p>
-
-<h2>Quy tắc bôi lại — nhiều người bỏ qua</h2>
-<p>Kem chống nắng cần được <strong>bôi lại mỗi 2 tiếng</strong> khi ở ngoài nắng — dù là loại chống nước. Mồ hôi, chà sát và tiếp xúc ánh sáng làm giảm hiệu quả dần. Nếu không muốn bôi lại kem nền, có thể dùng dạng xịt (spray) hoặc phấn chống nắng để dặm lên.</p>
-
-<h2>5 nguyên tắc dùng kem chống nắng đúng</h2>
-<ol>
-<li>Dùng SPF 30+ hàng ngày, kể cả ngày mây hoặc trong nhà</li>
-<li>Bôi đủ lượng (¼ thìa cà phê cho mặt)</li>
-<li>Bôi lại sau mỗi 2 tiếng khi ra ngoài</li>
-<li>Không bỏ qua cổ, tai, mu bàn tay</li>
-<li>Chọn Broad Spectrum để bảo vệ cả UVA + UVB</li>
-</ol>
-
-<blockquote style="border-left:4px solid #cc1f1f;padding:1rem 1.5rem;background:#fff5f5;border-radius:0 .5rem .5rem 0;margin:1.5rem 0">
-<p style="margin:0;font-style:italic;color:#555">"Nếu bạn chỉ làm được một điều cho làn da, hãy dùng kem chống nắng. Đây là bằng chứng chống lão hóa mạnh nhất mà khoa học da liễu có được."</p>
-<p style="margin:.5rem 0 0;font-weight:700;color:#cc1f1f">— GS. Henry Lim, Chủ tịch Hiệp hội Da liễu Hoa Kỳ</p>
+<blockquote style="border-left:4px solid #e91e8c;padding:1rem 1.5rem;background:#fff0f7;border-radius:0 .5rem .5rem 0;margin:1.5rem 0">
+<p style="margin:0;font-style:italic;color:#555">"Kem chống nắng SPF 30 dùng đủ lượng và thoa lại đúng giờ hiệu quả hơn SPF 100 dùng sai cách. Lượng = 1/4 muỗng cà phê cho mặt, thoa lại mỗi 2 giờ."</p>
+<p style="margin:.5rem 0 0;font-weight:700;color:#e91e8c">— TS. Henry Lim, Chủ tịch Hiệp hội Da liễu Hoa Kỳ</p>
 </blockquote>
 
+<h2>Sai lầm phổ biến khi dùng kem chống nắng</h2>
+<ul>
+<li><strong>Dùng quá ít:</strong> Nghiên cứu cho thấy hầu hết người chỉ thoa 20–50% lượng cần thiết, làm giảm hiệu quả chống nắng xuống còn SPF 3–7.</li>
+<li><strong>Không thoa lại:</strong> Kem chống nắng mất hiệu quả sau 2 giờ, đặc biệt khi đổ mồ hôi hoặc tiếp xúc nước.</li>
+<li><strong>Chỉ thoa khi ra ngoài nắng:</strong> Tia UVA xuyên qua kính — làm việc bên cửa sổ cả ngày vẫn cần chống nắng.</li>
+<li><strong>Bỏ qua vùng cổ, tai, mu bàn tay:</strong> Đây là các vùng lão hóa nhanh nhất nhưng thường bị bỏ quên.</li>
+</ul>
+
+<img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=900&q=80" alt="Chăm sóc da mặt đúng cách" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>Chọn kem chống nắng theo loại da</h2>
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0">
+<tr style="background:#fce4ec">
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Loại da</th>
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Loại kem nên dùng</th>
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Công thức phù hợp</th>
+</tr>
+<tr>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Da dầu, mụn</td>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Chemical / Hybrid</td>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Gel, fluid, kiềm dầu, niacinamide</td>
+</tr>
+<tr style="background:#fafafa">
+<td style="padding:.75rem;border:1px solid #f8bbd0">Da khô, nhạy cảm</td>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Mineral (Zinc oxide)</td>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Cream, dưỡng ẩm, không cồn</td>
+</tr>
+<tr>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Da hỗn hợp</td>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Hybrid</td>
+<td style="padding:.75rem;border:1px solid #f8bbd0">Lotion nhẹ, PA++++</td>
+</tr>
+</table>
+
+<h2>Lượng kem cần dùng mỗi lần</h2>
+<p>Quy tắc "<strong>hai ngón</strong>" (two-finger rule): bơm kem chống nắng dọc theo 2 ngón trỏ và giữa — đây là lượng đủ cho mặt và cổ. Với toàn thân, cần khoảng 30ml (1 muỗng canh đầy).</p>
+
+<h2>Kem chống nắng có cần thiết vào mùa mưa?</h2>
+<p>Có. Mây chỉ chặn được khoảng 20% tia UVA. Theo nghiên cứu đăng trên <em>Journal of the American Academy of Dermatology</em> (2020), 80% tia UV vẫn chạm đến da trong ngày trời mây. Thậm chí khi lái xe, tia UVA xuyên thẳng qua kính xe.</p>
+
+<h2>Top thành phần chống nắng đáng tin</h2>
+<ul>
+<li><strong>Zinc Oxide:</strong> Khoáng chất an toàn, phổ rộng, phù hợp da nhạy cảm và phụ nữ mang thai</li>
+<li><strong>Tinosorb S/M:</strong> Bộ lọc hóa học thế hệ mới, ổn định quang học cao</li>
+<li><strong>Uvinul A Plus:</strong> Chặn UVA hiệu quả, phổ biến trong kem Châu Âu</li>
+<li><strong>Mexoryl SX/XL:</strong> Công nghệ L'Oréal, chống UVA phổ rộng</li>
+</ul>
+
 <hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
 <p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
+• WHO: "Ultraviolet radiation and skin cancer" (2023)<br/>
 • American Academy of Dermatology: "Sunscreen FAQs" (2024)<br/>
-• Skin Cancer Foundation: "Sun Protection" (2024)<br/>
-• Lim H.W. et al.: "Sunscreen in the prevention of skin cancer" — Photodermatology (2023)<br/>
-• WHO: "Radiation: Ultraviolet (UV) radiation" (2024)<br/>
-• Bệnh viện Da liễu TP.HCM: Hướng dẫn chăm sóc da vùng nhiệt đới (2023)</p>`
+• Lim H.W. et al.: "Current challenges in photoprotection" — JAAD (2017)<br/>
+• Bộ Y tế Việt Nam: Hướng dẫn phòng chống ung thư da (2022)<br/>
+• Journal of the American Academy of Dermatology: "UV exposure through car windows" (2020)</p>`
   },
 
-  // ── BÀI 2: RETINOL VÀ THÀNH PHẦN ACTIVE ────────────────────────────────────
+  // ── BÀI 2: COLLAGEN ──────────────────────────────────────────────────────
   {
-    title: 'Retinol, Niacinamide, AHA/BHA: Hướng dẫn toàn diện về các thành phần skincare hot nhất',
-    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: true,
-    thumbnail: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=1200&q=80',
-    excerpt: 'Thị trường skincare ngập tràn các thành phần "thần kỳ" với lời hứa cải thiện da trong vài tuần. Nhưng không phải tất cả đều có bằng chứng khoa học vững chắc. Đây là hướng dẫn dựa trên bằng chứng về các thành phần dưỡng da thực sự hiệu quả — và cách dùng chúng đúng.',
-    readTime: 9, published: true,
-    tags: ['Retinol', 'Niacinamide', 'AHA BHA', 'Skincare', 'Thành phần mỹ phẩm'],
-    content: `<p>Kệ dưỡng da của bạn có đang chứa đúng thứ? Trong hàng nghìn thành phần skincare, chỉ một số ít được nghiên cứu lâm sàng đủ mạnh để khẳng định hiệu quả. Hiểu đúng về từng thành phần giúp bạn đầu tư thông minh hơn và tránh được nhiều sai lầm gây hại cho da.</p>
-
-<img src="https://images.unsplash.com/photo-1601612628452-9e99ced43a45?w=900&q=80" alt="Các thành phần skincare hiệu quả" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Retinol (Vitamin A) — "Vàng" của chống lão hóa</h2>
-<p>Retinol là dẫn xuất của Vitamin A và là <strong>thành phần chống lão hóa được nghiên cứu nhiều nhất và chứng minh hiệu quả nhất</strong> trong lịch sử da liễu. FDA (Mỹ) chính thức công nhận là thành phần duy nhất được cấp phép ghi nhãn "chống lão hóa".</p>
-<p><strong>Cơ chế:</strong> Retinol chuyển hóa thành retinoic acid trong da, kích thích sản xuất collagen, tăng tốc chu kỳ đổi mới tế bào da (cell turnover), thu nhỏ lỗ chân lông và giảm sắc tố melanin.</p>
-<p><strong>Hiệu quả đã được chứng minh:</strong></p>
-<ul>
-<li>Giảm nếp nhăn nông và sâu sau 12–24 tuần dùng đều đặn</li>
-<li>Mờ đốm nâu, tàn nhang, vết thâm sau mụn</li>
-<li>Cải thiện kết cấu da, thu nhỏ lỗ chân lông</li>
-<li>Giảm mụn trứng cá (dạng kê đơn tretinoin được FDA phê duyệt điều trị mụn)</li>
-</ul>
-<p><strong>Cách dùng đúng:</strong> Bắt đầu với nồng độ thấp (0,025–0,05%), dùng 2–3 lần/tuần vào buổi tối. Tăng dần tần suất sau 4–6 tuần. Luôn dùng kem chống nắng ban ngày vì retinol làm da nhạy cảm hơn với ánh sáng. Tránh dùng đồng thời với AHA/BHA, vitamin C hoặc benzoyl peroxide cho đến khi da quen.</p>
-
-<img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&q=80" alt="Quy trình skincare khoa học" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Niacinamide (Vitamin B3) — "Đa năng" nhất trong skincare</h2>
-<p>Niacinamide là một trong những thành phần skincare được nghiên cứu nhiều nhất với phổ ứng dụng rộng nhất — và ít tác dụng phụ nhất. Phù hợp với hầu hết mọi loại da.</p>
-<p><strong>Lợi ích đã được chứng minh:</strong></p>
-<ul>
-<li><strong>Làm sáng da:</strong> Ức chế chuyển melanin từ tế bào sắc tố sang tế bào sừng, giảm đốm nâu sau 4–8 tuần ở nồng độ 4–5%</li>
-<li><strong>Thu nhỏ lỗ chân lông</strong> và kiểm soát dầu nhờn</li>
-<li><strong>Củng cố hàng rào bảo vệ da</strong> bằng cách tăng cường ceramide và fatty acid</li>
-<li><strong>Chống viêm</strong>, phù hợp da mụn và da nhạy cảm</li>
-<li><strong>Kết hợp được với hầu hết thành phần khác</strong> — kể cả retinol, AHA, Vitamin C</li>
-</ul>
-<p><strong>Nồng độ hiệu quả:</strong> 2–5% cho hầu hết mục đích. Trên 10% có thể gây đỏ và kích ứng ở một số người.</p>
-
-<h2>AHA & BHA — Exfoliation khoa học</h2>
-<p><strong>AHA (Alpha Hydroxy Acid)</strong> — gồm glycolic acid, lactic acid, mandelic acid — là acid hòa tan hoạt động trên <em>bề mặt da</em>, phá vỡ liên kết giữa các tế bào chết. Phù hợp với da khô, da lão hóa, da xỉn màu.</p>
-<p><strong>BHA (Beta Hydroxy Acid)</strong> — chủ yếu là salicylic acid — tan trong dầu, xâm nhập <em>sâu vào lỗ chân lông</em>, làm sạch bã nhờn và tế bào chết bên trong. Là lựa chọn tốt nhất cho da dầu mụn.</p>
-<p><strong>Lưu ý quan trọng:</strong> Không dùng AHA/BHA cùng lúc với retinol trong một buổi tối (gây kích ứng). Luôn dùng SPF sau khi tẩy da chết hóa học. Bắt đầu 1–2 lần/tuần, không lạm dụng.</p>
-
-<h2>Vitamin C — Chống oxy hóa và làm sáng da</h2>
-<p>L-ascorbic acid (dạng Vitamin C ổn định nhất) ở nồng độ 10–20% giúp trung hòa gốc tự do từ UV, ức chế melanin và kích thích tổng hợp collagen. Tuy nhiên, Vitamin C rất dễ oxy hóa (chuyển cam/nâu) khi tiếp xúc ánh sáng và không khí. Bảo quản trong tủ lạnh, dùng buổi sáng trước kem chống nắng.</p>
-
-<h2>Thứ tự ưu tiên cho người mới bắt đầu</h2>
-<p>Nếu bạn đang xây dựng routine skincare, thứ tự ưu tiên:</p>
-<ol>
-<li>☀️ <strong>Kem chống nắng SPF 30+</strong> (sáng) — quan trọng nhất</li>
-<li>💧 <strong>Kem dưỡng ẩm</strong> (ngày và đêm) — nền tảng</li>
-<li>🌙 <strong>Retinol</strong> (tối, 2–3 lần/tuần) — chống lão hóa</li>
-<li>✨ <strong>Niacinamide</strong> — làm sáng, kiểm soát dầu</li>
-<li>🍊 <strong>Vitamin C serum</strong> (sáng) — chống oxy hóa</li>
-</ol>
-
-<hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
-<p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
-• Zasada M. & Budzisz E.: "Retinoids: active molecules influencing skin structure formation" — Advances in Dermatology (2019)<br/>
-• Gehring W.: "Nicotinic acid/niacinamide and the skin" — Journal of Cosmetic Dermatology (2004)<br/>
-• American Academy of Dermatology: "Skin care on a budget" (2024)<br/>
-• Cosmetic Ingredient Review (CIR): Safety Assessment of Salicylic Acid (2023)<br/>
-• Hiệp hội Da liễu Việt Nam: Hướng dẫn chăm sóc da vùng nhiệt đới (2024)</p>`
-  },
-
-  // ── BÀI 3: MỤN TRỨNG CÁ ────────────────────────────────────────────────────
-  {
-    title: 'Mụn trứng cá: Nguyên nhân thực sự và phác đồ điều trị hiệu quả theo khoa học',
-    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
-    thumbnail: 'https://images.unsplash.com/photo-1576426863848-c21f53c60b19?w=1200&q=80',
-    excerpt: 'Mụn trứng cá ảnh hưởng đến 85% người trong độ tuổi 12–24 và ngày càng phổ biến ở người trưởng thành. Nhiều người điều trị sai cách hàng năm trời không khỏi vì không hiểu đúng cơ chế. Bài viết này phân tích khoa học về mụn và con đường điều trị hiệu quả nhất.',
-    readTime: 8, published: true,
-    tags: ['Mụn trứng cá', 'Chăm sóc da', 'Da dầu', 'Điều trị da'],
-    content: `<p>Mụn trứng cá (acne vulgaris) là bệnh da liễu phổ biến nhất thế giới, ảnh hưởng đến khoảng <strong>650 triệu người</strong> ở mọi độ tuổi. Dù vẻ ngoài có vẻ đơn giản, cơ chế hình thành mụn thực ra là một chuỗi phản ứng sinh hóa phức tạp — và hiểu đúng là chìa khóa để điều trị thành công.</p>
-
-<img src="https://images.unsplash.com/photo-1559181567-c3190ca9d5db?w=900&q=80" alt="Chăm sóc da mụn" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Cơ chế hình thành mụn — 4 yếu tố cốt lõi</h2>
-<p>Mụn không phải do "ăn nhiều đồ ngọt" hay "không rửa mặt sạch" đơn thuần. Đây là kết quả của sự tương tác 4 yếu tố:</p>
-<ol>
-<li><strong>Tăng tiết bã nhờn (sebum):</strong> Tuyến bã nhờn hoạt động quá mức, thường do hormone androgen kích thích — giải thích vì sao mụn bùng phát mạnh ở tuổi dậy thì và trước kỳ kinh nguyệt.</li>
-<li><strong>Tắc nghẽn nang lông:</strong> Tế bào chết và bã nhờn tích tụ bịt kín lỗ chân lông, tạo nhân mụn (comedone). Nhân mụn hở = đầu đen (blackhead), nhân mụn kín = đầu trắng (whitehead).</li>
-<li><strong>Vi khuẩn <em>Cutibacterium acnes</em>:</strong> Vi khuẩn thường trú trong nang lông sinh sôi trong môi trường bã nhờn, tiết ra enzyme phân giải triglyceride thành axit béo gây viêm.</li>
-<li><strong>Viêm:</strong> Hệ miễn dịch phản ứng với vi khuẩn và các sản phẩm của chúng, tạo ra mụn viêm đỏ, mụn mủ, mụn nang và mụn bọc.</li>
-</ol>
-
-<h2>Các loại mụn và cách nhận biết</h2>
-<ul>
-<li><strong>Mụn đầu đen (blackhead):</strong> Nhân mụn hở, oxy hóa thành màu đen. Không phải do bẩn!</li>
-<li><strong>Mụn đầu trắng (whitehead):</strong> Nhân mụn kín dưới da, màu trắng.</li>
-<li><strong>Mụn sẩn (papule):</strong> Nốt đỏ nhỏ, cứng, không có mủ — giai đoạn viêm ban đầu.</li>
-<li><strong>Mụn mủ (pustule):</strong> Có đầu trắng/vàng chứa mủ — tập hợp bạch cầu chết.</li>
-<li><strong>Mụn nang (nodule/cyst):</strong> To, sâu, đau — nguy cơ để lại sẹo cao nhất. Cần điều trị bởi bác sĩ da liễu.</li>
-</ul>
-
-<img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&q=80" alt="Routine chăm sóc da mụn" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Những "thủ phạm" kích hoạt mụn ít được biết</h2>
-<ul>
-<li><strong>Sữa bò và sản phẩm từ sữa:</strong> Các nghiên cứu gần đây cho thấy mối liên hệ giữa tiêu thụ sữa (đặc biệt sữa tách béo) và mụn trứng cá, có thể do IGF-1 trong sữa kích thích sản xuất bã nhờn.</li>
-<li><strong>Chỉ số đường huyết (GI) cao:</strong> Thực phẩm GI cao (bánh mì trắng, nước ngọt, kẹo) làm tăng insulin và IGF-1, kích thích tuyến bã nhờn.</li>
-<li><strong>Stress:</strong> Cortisol kích thích tuyến bã nhờn và phản ứng viêm.</li>
-<li><strong>Mỹ phẩm comedogenic:</strong> Nhiều sản phẩm trang điểm và kem dưỡng chứa thành phần bịt lỗ chân lông.</li>
-<li><strong>Ma sát cơ học:</strong> Điện thoại áp vào má, đội mũ bảo hiểm, tì tay lên mặt.</li>
-</ul>
-
-<h2>Phác đồ điều trị theo mức độ mụn</h2>
-<h3>Mụn nhẹ — tự điều trị</h3>
-<ul>
-<li><strong>Benzoyl peroxide 2,5–5%:</strong> Tiêu diệt vi khuẩn C. acnes, giảm viêm. Ít gây kháng thuốc hơn kháng sinh.</li>
-<li><strong>Salicylic acid 0,5–2% (BHA):</strong> Làm sạch sâu lỗ chân lông, phù hợp mụn đầu đen và đầu trắng.</li>
-<li><strong>Niacinamide 4–5%:</strong> Giảm viêm và kiểm soát bã nhờn.</li>
-<li>Rửa mặt 2 lần/ngày với sữa rửa mặt dịu nhẹ (không xà phòng). Không rửa quá nhiều — làm da tiết thêm dầu bù.</li>
-</ul>
-
-<h3>Mụn trung bình đến nặng — cần bác sĩ</h3>
-<ul>
-<li><strong>Tretinoin (Retin-A):</strong> Dạng kê đơn mạnh hơn retinol, chuẩn vàng điều trị mụn và lão hóa.</li>
-<li><strong>Kháng sinh tại chỗ</strong> (clindamycin, erythromycin): Thường kết hợp benzoyl peroxide để giảm kháng thuốc.</li>
-<li><strong>Isotretinoin (Accutane):</strong> Trường hợp mụn nặng kháng trị — hiệu quả cao nhưng nhiều tác dụng phụ, cần theo dõi chặt.</li>
-</ul>
-
-<h2>Điều không bao giờ được làm với mụn</h2>
-<ul>
-<li>❌ <strong>Nặn mụn bằng tay bẩn</strong> — đẩy vi khuẩn sâu hơn, tăng nguy cơ sẹo rỗ</li>
-<li>❌ <strong>Chà mạnh da</strong> — kích thích viêm thêm</li>
-<li>❌ <strong>Thay sản phẩm liên tục</strong> — da cần ít nhất 4–8 tuần để thấy kết quả</li>
-<li>❌ <strong>Dùng đồng thời quá nhiều thành phần active</strong> — gây kích ứng và phá vỡ hàng rào da</li>
-</ul>
-
-<hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
-<p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
-• Zaenglein A.L. et al.: "Guidelines of care for the management of acne vulgaris" — JAAD (2016)<br/>
-• Adebamowo C.A.: "Dairy consumption and acne in schoolgirls" — Dermatology Online Journal (2006)<br/>
-• American Academy of Dermatology: "Acne: Diagnosis and Treatment" (2024)<br/>
-• Bệnh viện Da liễu Trung ương: Hướng dẫn điều trị mụn trứng cá (2023)<br/>
-• VnExpress Sức Khỏe: "Sai lầm phổ biến khi tự điều trị mụn tại nhà" (2024)</p>`
-  },
-
-  // ── BÀI 4: CHĂM SÓC DA BAN ĐÊM ─────────────────────────────────────────────
-  {
-    title: 'Chu kỳ phục hồi da ban đêm: Tại sao skincare tối quan trọng hơn skincare sáng',
-    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
-    thumbnail: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=1200&q=80',
-    excerpt: 'Trong khi bạn ngủ, da không nghỉ ngơi — đây là lúc quá trình sửa chữa, tái tạo tế bào và hấp thu dưỡng chất diễn ra mạnh nhất. Xây dựng routine ban đêm đúng cách có thể tăng hiệu quả skincare lên 2–3 lần so với chỉ chăm sóc ban ngày.',
-    readTime: 6, published: true,
-    tags: ['Skincare tối', 'Dưỡng da ban đêm', 'Tái tạo da', 'Night cream'],
-    content: `<p>Nhiều người đầu tư nhiều vào routine buổi sáng nhưng bỏ qua buổi tối. Đây là sai lầm lớn. Khoa học da liễu cho thấy <strong>ban đêm là "giờ vàng" của làn da</strong> — lúc da hoạt động theo cách hoàn toàn khác với ban ngày, và cũng là lúc dưỡng chất được hấp thu hiệu quả nhất.</p>
-
-<img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=900&q=80" alt="Chăm sóc da ban đêm" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Khoa học đằng sau "đồng hồ sinh học" của da</h2>
-<p>Da có nhịp sinh học (circadian rhythm) riêng, điều tiết bởi gen đồng hồ CLOCK và BMAL1:</p>
-<ul>
-<li><strong>Ban ngày:</strong> Da ưu tiên chế độ <em>bảo vệ</em> — tăng cường hàng rào bảo vệ, tăng sản xuất sebum để chống mất nước, tăng nhạy cảm với ánh sáng UV.</li>
-<li><strong>Ban đêm (đặc biệt 23:00–4:00):</strong> Da chuyển sang chế độ <em>sửa chữa và tái tạo</em> — tăng tốc phân chia tế bào (lên đến 8 lần so với ban ngày), sản xuất collagen và elastin, tiêu diệt các tổn thương DNA do UV.</li>
-</ul>
-<p>Đồng thời, nhiệt độ da tăng nhẹ về đêm làm tăng khả năng thấm thấu (permeability) của các thành phần dưỡng chất — nghĩa là các sản phẩm dưỡng da thấm vào và hoạt động hiệu quả hơn.</p>
-
-<h2>Mất nước qua da (TEWL) về đêm</h2>
-<p>Một thực tế ít được biết: da mất nhiều nước hơn vào ban đêm do nhiệt độ cơ thể tăng nhẹ trong giấc ngủ. Đây là lý do tại sao buổi sáng thức dậy da thường khô hơn — đặc biệt trong phòng điều hòa. Dưỡng ẩm buổi tối không chỉ là tùy chọn — đây là nhu cầu sinh lý thực sự.</p>
-
-<img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&q=80" alt="Routine skincare tối đúng cách" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Routine ban đêm lý tưởng — theo thứ tự</h2>
-<h3>Bước 1: Tẩy trang (nếu có trang điểm hoặc kem chống nắng)</h3>
-<p>Dùng dầu tẩy trang (cleansing oil/balm) cho da khô-trung bình, micellar water cho da nhạy cảm. Tẩy trang trước khi rửa mặt — không bỏ qua bước này dù chỉ đeo kem chống nắng.</p>
-
-<h3>Bước 2: Rửa mặt</h3>
-<p>Sữa rửa mặt dịu nhẹ, không xà phòng, pH 4,5–6,5 (gần với pH tự nhiên của da). Rửa bằng nước ấm — không nước nóng (làm khô da) hoặc nước lạnh (không làm sạch tốt).</p>
-
-<h3>Bước 3: Toner/Essence (tùy chọn)</h3>
-<p>Cân bằng pH da sau khi rửa mặt, chuẩn bị da hấp thu các bước tiếp theo. Ưu tiên toner dạng kem hoặc essence giàu dưỡng chất cho buổi tối.</p>
-
-<h3>Bước 4: Serum/Treatment — "nhân vật chính" của buổi tối</h3>
-<p>Đây là bước quan trọng nhất ban đêm. Gợi ý theo mục tiêu:</p>
-<ul>
-<li><strong>Chống lão hóa:</strong> Retinol serum (bắt đầu 0,025%, tăng dần)</li>
-<li><strong>Làm sáng/mờ thâm:</strong> Niacinamide 5% hoặc tranexamic acid</li>
-<li><strong>Phục hồi da yếu:</strong> Ceramide serum, centella asiatica (rau má)</li>
-<li><strong>Mụn:</strong> Benzoyl peroxide 2,5% hoặc salicylic acid</li>
-</ul>
-<p><em>Lưu ý: Không dùng retinol cùng AHA/BHA trong cùng một tối khi da chưa quen.</em></p>
-
-<h3>Bước 5: Dưỡng ẩm/Night cream</h3>
-<p>Buổi tối ưu tiên kem dưỡng kết cấu dày hơn ban ngày — chứa ceramide, hyaluronic acid, shea butter để "khóa ẩm" và hỗ trợ sửa chữa hàng rào da. Kỹ thuật "skin flooding" (bôi serum khi da còn ẩm rồi khóa ngay bằng kem) tăng độ ẩm đáng kể.</p>
-
-<h3>Bước 6: Mặt nạ ngủ (1–2 lần/tuần)</h3>
-<p>Sleeping mask tạo lớp màng bán thẩm thấu giảm TEWL đến 40%, tăng cường hấp thu dưỡng chất suốt đêm dài.</p>
-
-<h2>Điều kiện môi trường để da phục hồi tốt nhất</h2>
-<ul>
-<li><strong>Độ ẩm phòng 40–60%:</strong> Máy tạo độ ẩm trong phòng ngủ giúp giảm TEWL đáng kể</li>
-<li><strong>Thay vỏ gối mỗi 2–3 ngày:</strong> Vi khuẩn tích tụ trên vỏ gối là nguyên nhân mụn hay bị bỏ qua</li>
-<li><strong>Ngủ ngửa hoặc dùng gối lụa/satin:</strong> Giảm nếp nhăn cơ học do áp lực gối</li>
-</ul>
-
-<hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
-<p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
-• Matsui M.S. et al.: "Biological rhythms in the skin" — International Journal of Molecular Sciences (2016)<br/>
-• Reinberg A. et al.: "Circadian rhythms of skin and barrier function" — Chronobiology (2023)<br/>
-• Elias P.M.: "Skin barrier function" — Current Allergy and Asthma Reports (2008)<br/>
-• Bệnh viện Da liễu TP.HCM: Tư vấn chăm sóc da ban đêm (2024)<br/>
-• Cosmetic Dermatology: "Nighttime skin care: The science behind it" (2023)</p>`
-  },
-
-  // ── BÀI 5: HORMONE VÀ LÀN DA ────────────────────────────────────────────────
-  {
-    title: 'Hormone và làn da: Tại sao da thay đổi theo từng giai đoạn cuộc đời và cách ứng phó',
+    title: 'Collagen cho da: Uống hay thoa ngoài da hiệu quả hơn? Sự thật khoa học bạn cần biết',
     category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
     thumbnail: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=1200&q=80',
-    excerpt: 'Mụn trước kỳ kinh, da thay đổi sau sinh, da khô sần khi mãn kinh — hormone điều tiết da của bạn suốt cả cuộc đời. Hiểu rõ mối quan hệ này giúp bạn điều chỉnh skincare đúng thời điểm và không "đổ lỗi" oan cho sản phẩm dưỡng da.',
-    readTime: 7, published: true,
-    tags: ['Hormone', 'Làn da', 'Estrogen', 'Mãn kinh', 'Chu kỳ kinh nguyệt'],
-    content: `<p>Da không chỉ phản ánh những gì bạn bôi lên nó — da phản ánh cả những gì đang xảy ra bên trong cơ thể. Và không có gì ảnh hưởng đến da mạnh mẽ hơn hormone. Từ tuổi dậy thì đến mãn kinh, mỗi giai đoạn hormone tương ứng với một "phiên bản da" hoàn toàn khác nhau.</p>
+    excerpt: 'Thị trường collagen tại Việt Nam đạt hàng nghìn tỷ đồng mỗi năm, nhưng bao nhiêu người thực sự hiểu collagen hoạt động như thế nào? Bài viết phân tích khoa học về collagen peptide dạng uống, collagen thoa ngoài da và cách kích thích cơ thể tự sản sinh collagen hiệu quả nhất.',
+    readTime: 8, published: true,
+    publishedAt: new Date('2026-04-02'),
+    tags: ['Collagen', 'Làm đẹp', 'Chống lão hóa', 'Skincare', 'Da đẹp'],
+    content: `<p>Collagen là protein phổ biến nhất trong cơ thể người — chiếm 30% tổng lượng protein — đóng vai trò "giàn giáo" giữ cho da đàn hồi, xương chắc khỏe và khớp linh hoạt. Từ khoảng 25 tuổi, cơ thể bắt đầu giảm sản xuất collagen khoảng <strong>1% mỗi năm</strong>.</p>
 
-<img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=900&q=80" alt="Chăm sóc da theo từng giai đoạn cuộc đời" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+<img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=900&q=80" alt="Collagen và làn da đẹp" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
 
-<h2>Hormone nào ảnh hưởng đến da?</h2>
-<ul>
-<li><strong>Estrogen:</strong> "Hormone trẻ hóa" — kích thích sản xuất collagen, elastin và hyaluronic acid tự nhiên. Giữ da dày, đàn hồi, ẩm mịn. Giảm dần từ sau 25–30 tuổi.</li>
-<li><strong>Androgen (testosterone, DHT):</strong> Kích thích tuyến bã nhờn tiết dầu — nguyên nhân chính gây mụn ở tuổi dậy thì và trước kỳ kinh.</li>
-<li><strong>Progesterone:</strong> Tăng trong nửa sau chu kỳ kinh nguyệt, làm da dày hơn và tăng tiết bã nhờn.</li>
-<li><strong>Cortisol:</strong> Hormone stress — kích thích bã nhờn, gây viêm và phá hủy collagen khi dư thừa mạn tính.</li>
-<li><strong>Insulin và IGF-1:</strong> Tăng tiết bã nhờn, liên quan đến mụn trứng cá.</li>
-</ul>
+<h2>Collagen thoa ngoài da có thật sự hiệu quả?</h2>
+<p>Đây là sự thật ít ai muốn nghe: <strong>collagen trong kem dưỡng da không thể thẩm thấu vào tầng bì</strong>. Phân tử collagen quá lớn (300.000 dalton) để xuyên qua hàng rào bảo vệ của da. Chúng chỉ tạo màng giữ ẩm trên bề mặt — không kích thích sinh collagen mới.</p>
+<p>Các sản phẩm "chứa collagen" thực chất cung cấp tác dụng <em>moisturizing</em> (dưỡng ẩm) tạm thời. Không phải lừa dối — nhưng không phải phép màu.</p>
 
-<h2>Da theo chu kỳ kinh nguyệt — lịch skincare tối ưu</h2>
-<p>Hiểu chu kỳ 28 ngày giúp bạn điều chỉnh skincare chủ động:</p>
-<p><strong>Ngày 1–7 (hành kinh):</strong> Estrogen và progesterone thấp nhất. Da thường nhạy cảm, dễ kích ứng. Ưu tiên sản phẩm dịu nhẹ, tăng cường dưỡng ẩm, hạn chế tẩy da chết.</p>
-<p><strong>Ngày 8–14 (nang noãn):</strong> Estrogen tăng mạnh — đây là tuần da đẹp nhất! Da sáng, ẩm, ít dầu. Thời điểm tốt nhất để thử thành phần mới hoặc tẩy da chết.</p>
-<p><strong>Ngày 15–21 (rụng trứng và hoàng thể sớm):</strong> Progesterone tăng, da bắt đầu tiết dầu nhiều hơn. Tăng cường BHA để kiểm soát lỗ chân lông.</p>
-<p><strong>Ngày 22–28 (trước kinh):</strong> Cả estrogen và progesterone giảm, androgen tương đối nổi trội. Mụn nội tiết xuất hiện (thường ở cằm, quanh miệng). Dùng spot treatment với salicylic acid hoặc benzoyl peroxide.</p>
+<h2>Collagen uống (Collagen Peptide) — khoa học nói gì?</h2>
+<p>Collagen thủy phân (hydrolyzed collagen / collagen peptide) là collagen đã bị cắt nhỏ thành các đoạn 2–10 amino acid (khoảng 3.000–5.000 dalton). Chúng được hấp thu vào máu và có thể kích thích nguyên bào sợi (fibroblast) sản xuất collagen mới.</p>
 
-<img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80" alt="Hormone và chăm sóc da" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
-
-<h2>Da sau sinh — thách thức ít được nói đến</h2>
-<p>Sau sinh, estrogen và progesterone giảm đột ngột từ mức rất cao xuống rất thấp trong vài ngày. Hệ quả với da:</p>
-<ul>
-<li><strong>Mụn bùng phát</strong> (postpartum acne): Thường xuất hiện sau 2–4 tuần và có thể kéo dài 3–6 tháng</li>
-<li><strong>Da khô và nhạy cảm</strong>: Giảm collagen và hyaluronic acid tạm thời</li>
-<li><strong>Nám/tàn nhang</strong>: Tăng sắc tố melanin do biến động hormone — thường mờ dần sau 6–12 tháng</li>
-<li><strong>Rụng tóc</strong> (telogen effluvium): Phổ biến 3–6 tháng sau sinh, thường tự phục hồi</li>
-</ul>
-<p><em>Lưu ý: Nếu đang cho con bú, nhiều thành phần skincare cần tránh — đặc biệt retinol, salicylic acid liều cao. Tham khảo bác sĩ trước khi dùng.</em></p>
-
-<h2>Da và mãn kinh — thay đổi lớn nhất</h2>
-<p>Mãn kinh đánh dấu sự suy giảm estrogen đột ngột và kéo dài. Trong <strong>5 năm đầu sau mãn kinh</strong>, da mất khoảng <strong>30% collagen</strong> — giải thích tại sao nhiều phụ nữ thấy da thay đổi đột ngột ở giai đoạn này.</p>
-<p>Các vấn đề da phổ biến:</p>
-<ul>
-<li>Da khô, mỏng, dễ bị kích ứng hơn</li>
-<li>Nếp nhăn sâu hơn, da chảy xệ (giảm elastin)</li>
-<li>Tăng sắc tố (age spots)</li>
-<li>Ngược lại, mụn giảm đáng kể do androgen cũng giảm theo</li>
-</ul>
-
-<h2>Điều chỉnh skincare theo giai đoạn hormone</h2>
-<p><strong>Cho da mãn kinh:</strong></p>
-<ul>
-<li>Tăng cường retinol (kích thích collagen mạnh hơn)</li>
-<li>Dưỡng ẩm đậm với ceramide và peptides</li>
-<li>SPF nghiêm ngặt hơn (da mỏng hơn = dễ tổn thương hơn)</li>
-<li>Cân nhắc liệu pháp hormone thay thế (HRT) — tham khảo bác sĩ, có bằng chứng cải thiện da rõ rệt</li>
-</ul>
-
-<blockquote style="border-left:4px solid #cc1f1f;padding:1rem 1.5rem;background:#fff5f5;border-radius:0 .5rem .5rem 0;margin:1.5rem 0">
-<p style="margin:0;font-style:italic;color:#555">"Skincare hiệu quả nhất là skincare hiểu được nhịp sinh học và hormone của cơ thể bạn, không chỉ đơn thuần là bôi sản phẩm đắt tiền."</p>
-<p style="margin:.5rem 0 0;font-weight:700;color:#cc1f1f">— GS. Fayne Frey, Hội Da liễu Hoa Kỳ</p>
+<blockquote style="border-left:4px solid #e91e8c;padding:1rem 1.5rem;background:#fff0f7;border-radius:0 .5rem .5rem 0;margin:1.5rem 0">
+<p style="margin:0;font-style:italic;color:#555">"Các nghiên cứu lâm sàng cho thấy uống 2.5–10g collagen peptide mỗi ngày trong 8–12 tuần cải thiện đáng kể độ đàn hồi, độ ẩm da và giảm nếp nhăn."</p>
+<p style="margin:.5rem 0 0;font-weight:700;color:#e91e8c">— Proksch E. et al., Skin Pharmacology and Physiology (2014)</p>
 </blockquote>
+
+<img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=900&q=80" alt="Thực phẩm tăng cường collagen tự nhiên" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>Bằng chứng lâm sàng đáng chú ý</h2>
+<ul>
+<li>Nghiên cứu 2014 (Proksch et al.): 69 phụ nữ uống 2.5g collagen peptide/ngày trong 8 tuần — cải thiện độ đàn hồi da 15%, giảm khô da 12%</li>
+<li>Nghiên cứu 2019 (Journal of Drugs in Dermatology): 10g/ngày trong 60 ngày giảm rõ rệt nếp nhăn quanh mắt</li>
+<li>Meta-analysis 2021 (International Journal of Dermatology): Phân tích 19 nghiên cứu với 1.125 người — collagen peptide có tác dụng cải thiện da có ý nghĩa thống kê</li>
+</ul>
+
+<h2>Cách kích thích cơ thể tự sản sinh collagen</h2>
+<p>Đây mới là chiến lược hiệu quả và tiết kiệm nhất:</p>
+<ul>
+<li><strong>Vitamin C:</strong> Là đồng yếu tố không thể thiếu trong tổng hợp collagen. Thiếu vitamin C → collagen không hình thành được. Dùng serum vitamin C 10–20% buổi sáng</li>
+<li><strong>Retinol:</strong> Kích thích trực tiếp nguyên bào sợi tăng sản xuất collagen và giảm enzyme phân hủy collagen (MMP)</li>
+<li><strong>Tránh tia UV:</strong> UV phá vỡ collagen hiện có và ức chế sản xuất collagen mới — đây là lý do chống nắng là ưu tiên số 1</li>
+<li><strong>Không hút thuốc:</strong> Nicotine co mạch máu, giảm cung cấp dinh dưỡng cho da, đẩy nhanh phân hủy collagen</li>
+<li><strong>Protein đầy đủ:</strong> Collagen được tổng hợp từ glycine, proline, hydroxyproline — cần ăn đủ thịt, cá, đậu</li>
+</ul>
+
+<h2>Thực phẩm giàu tiền chất collagen</h2>
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0">
+<tr style="background:#fce4ec">
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Thực phẩm</th>
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Tác dụng</th>
+</tr>
+<tr><td style="padding:.75rem;border:1px solid #f8bbd0">Nước hầm xương</td><td style="padding:.75rem;border:1px solid #f8bbd0">Collagen Type I, II, III tự nhiên</td></tr>
+<tr style="background:#fafafa"><td style="padding:.75rem;border:1px solid #f8bbd0">Ổi, cam, ớt chuông</td><td style="padding:.75rem;border:1px solid #f8bbd0">Vitamin C — kích thích tổng hợp collagen</td></tr>
+<tr><td style="padding:.75rem;border:1px solid #f8bbd0">Trứng</td><td style="padding:.75rem;border:1px solid #f8bbd0">Proline — amino acid cấu tạo collagen</td></tr>
+<tr style="background:#fafafa"><td style="padding:.75rem;border:1px solid #f8bbd0">Cá hồi, cá ngừ</td><td style="padding:.75rem;border:1px solid #f8bbd0">Omega-3 chống viêm, bảo vệ collagen</td></tr>
+<tr><td style="padding:.75rem;border:1px solid #f8bbd0">Rau xanh đậm</td><td style="padding:.75rem;border:1px solid #f8bbd0">Chlorophyll, vitamin C, kẽm</td></tr>
+</table>
+
+<h2>Nên chọn collagen nào?</h2>
+<p>Nếu muốn bổ sung collagen peptide: chọn loại <strong>thủy phân (hydrolyzed)</strong>, trọng lượng phân tử thấp (&lt;5000 dalton), nguồn gốc từ cá biển (marine collagen) có độ hấp thu cao hơn collagen bò. Dùng ít nhất 8–12 tuần mới thấy kết quả. Kết hợp vitamin C để tối ưu hiệu quả.</p>
 
 <hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
 <p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
-• Thornton M.J.: "Estrogens and aging skin" — Dermato-Endocrinology (2013)<br/>
-• Choi E.H. et al.: "Skin aging and barrier function" — British Journal of Dermatology (2022)<br/>
-• Kucharska A. et al.: "Significance of diet in treated and untreated acne vulgaris" — Advances in Dermatology (2016)<br/>
-• Bệnh viện Phụ sản Trung ương: Tư vấn chăm sóc da sau sinh (2024)<br/>
-• VnExpress Sức Khỏe: "Hormone và da phụ nữ theo từng giai đoạn" (2024)<br/>
-• Hiệp hội Da liễu Việt Nam: Hội thảo Da học và nội tiết (2023)</p>`
+• Proksch E. et al.: "Oral supplementation of specific collagen peptides has beneficial effects on human skin physiology" — Skin Pharmacol Physiol (2014)<br/>
+• Barati M. et al.: "Collagen supplementation for skin health" — J Drugs Dermatol (2020)<br/>
+• Choi F.D. et al.: "Oral collagen supplementation: A systematic review" — Int J Dermatol (2019)<br/>
+• León-López A. et al.: "Hydrolyzed collagen sources and applications" — Molecules (2019)</p>`
+  },
+
+  // ── BÀI 3: TÓC KHÔ GÃY RỤNG ─────────────────────────────────────────────
+  {
+    title: 'Tóc khô, gãy rụng nhiều: 7 nguyên nhân ẩn bên trong cơ thể và cách khắc phục từ gốc',
+    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
+    thumbnail: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&q=80',
+    excerpt: 'Rụng từ 50–100 sợi tóc mỗi ngày là bình thường. Nhưng nếu bạn thấy tóc đầy gối, bít lỗ thoát bồn tắm hay tóc ngày càng thưa dần — đây là tín hiệu cơ thể đang gửi đến bạn. 90% trường hợp rụng tóc bất thường có nguyên nhân có thể điều trị được.',
+    readTime: 9, published: true,
+    publishedAt: new Date('2026-04-02'),
+    tags: ['Rụng tóc', 'Tóc khô', 'Chăm sóc tóc', 'Sức khỏe tóc', 'Làm đẹp'],
+    content: `<p>Mỗi sợi tóc có vòng đời 2–7 năm, trải qua 3 giai đoạn: <strong>mọc (anagen)</strong> chiếm 85–90% số tóc, <strong>chuyển tiếp (catagen)</strong> và <strong>nghỉ (telogen)</strong>. Rụng tóc bất thường xảy ra khi chu kỳ này bị gián đoạn — và nguyên nhân thường đến từ bên trong cơ thể, không phải từ dầu gội.</p>
+
+<img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&q=80" alt="Chăm sóc tóc khỏe mạnh" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>7 nguyên nhân bên trong khiến tóc rụng nhiều</h2>
+
+<h3>1. Thiếu sắt (Ferritin thấp)</h3>
+<p>Ferritin là protein dự trữ sắt trong cơ thể — và nang tóc cần sắt để hoạt động. Nghiên cứu đăng trên <em>Journal of the American Academy of Dermatology</em> cho thấy ferritin &lt;30 ng/mL liên quan chặt chẽ đến rụng tóc ở phụ nữ. Xét nghiệm máu cơ bản có thể phát hiện điều này.</p>
+
+<h3>2. Suy giáp / Cường giáp</h3>
+<p>Hormone tuyến giáp điều tiết chu kỳ tóc. Cả suy giáp lẫn cường giáp đều gây rụng tóc toàn đầu, thường lan rộng và đồng đều. Kiểm tra TSH, T3, T4 nếu kèm theo mệt mỏi, tăng/giảm cân bất thường.</p>
+
+<h3>3. Rối loạn hormone androgen</h3>
+<p>DHT (dihydrotestosterone) là dạng testosterone hoạt động mạnh, gây thu nhỏ nang tóc theo thời gian. Ảnh hưởng cả nam lẫn nữ — ở nữ thường biểu hiện tóc thưa đỉnh đầu và đường chân tóc rộng ra.</p>
+
+<h3>4. Thiếu Vitamin D</h3>
+<p>Thụ thể vitamin D (VDR) có mặt trong nang tóc. Vitamin D thấp liên quan đến Telogen Effluvium — rụng tóc lan tỏa. Người Việt dù sống vùng nhiệt đới vẫn thiếu vitamin D vì ít ra nắng và dùng kem chống nắng.</p>
+
+<h3>5. Stress mạn tính (Cortisol cao)</h3>
+<p>Cortisol cao kéo dài đẩy nang tóc vào giai đoạn telogen sớm. Điều đặc biệt: tóc rụng thường xảy ra 3–6 tháng <em>sau</em> sự kiện gây stress, khiến nhiều người không nhận ra mối liên hệ.</p>
+
+<blockquote style="border-left:4px solid #e91e8c;padding:1rem 1.5rem;background:#fff0f7;border-radius:0 .5rem .5rem 0;margin:1.5rem 0">
+<p style="margin:0;font-style:italic;color:#555">"Telogen Effluvium — rụng tóc do stress — là dạng rụng tóc phổ biến thứ hai ở phụ nữ. Tin tốt là tóc thường mọc lại hoàn toàn khi nguyên nhân được kiểm soát."</p>
+<p style="margin:.5rem 0 0;font-weight:700;color:#e91e8c">— TS. Lynne Goldberg, Đại học Boston Medical Center</p>
+</blockquote>
+
+<h3>6. Thiếu kẽm và biotin</h3>
+<p>Kẽm cần thiết cho tổng hợp protein tóc và phân chia tế bào nang tóc. Biotin (B7) hỗ trợ keratin — protein cấu tạo tóc. Cả hai đều cần từ chế độ ăn; thiếu phổ biến ở người ăn kiêng hoặc ăn chay không cân đối.</p>
+
+<h3>7. Protein không đủ</h3>
+<p>Tóc cấu tạo gần 95% là keratin — protein. Ăn kiêng thiếu protein, chế độ ăn thuần chay không đủ amino acid thiết yếu có thể khiến cơ thể "hy sinh" tóc để ưu tiên cho các cơ quan quan trọng hơn.</p>
+
+<img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=900&q=80" alt="Chế độ dinh dưỡng tốt cho tóc" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>Phân biệt các dạng rụng tóc</h2>
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0">
+<tr style="background:#fce4ec">
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Dạng</th>
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Biểu hiện</th>
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Nguyên nhân chính</th>
+</tr>
+<tr><td style="padding:.75rem;border:1px solid #f8bbd0">Telogen Effluvium</td><td style="padding:.75rem;border:1px solid #f8bbd0">Rụng đều toàn đầu, đột ngột</td><td style="padding:.75rem;border:1px solid #f8bbd0">Stress, thiếu dinh dưỡng, hậu COVID</td></tr>
+<tr style="background:#fafafa"><td style="padding:.75rem;border:1px solid #f8bbd0">Androgenetic Alopecia</td><td style="padding:.75rem;border:1px solid #f8bbd0">Tóc thưa đỉnh đầu, tiến triển chậm</td><td style="padding:.75rem;border:1px solid #f8bbd0">Di truyền + DHT</td></tr>
+<tr><td style="padding:.75rem;border:1px solid #f8bbd0">Alopecia Areata</td><td style="padding:.75rem;border:1px solid #f8bbd0">Rụng thành mảng tròn</td><td style="padding:.75rem;border:1px solid #f8bbd0">Tự miễn</td></tr>
+</table>
+
+<h2>Chăm sóc tóc đúng cách từ bên ngoài</h2>
+<ul>
+<li><strong>Gội đúng tần suất:</strong> Da đầu dầu: 2–3 lần/tuần; da đầu khô: 1–2 lần/tuần</li>
+<li><strong>Tránh nước nóng:</strong> Làm khô dầu tự nhiên, gây khô và gãy. Dùng nước ấm hoặc mát</li>
+<li><strong>Không chải khi tóc ướt:</strong> Tóc ướt yếu hơn 30%, dễ đứt gãy. Dùng lược răng thưa</li>
+<li><strong>Hạn chế nhiệt:</strong> Máy sấy, uốn, duỗi — luôn dùng serum nhiệt bảo vệ</li>
+<li><strong>Massage da đầu:</strong> 5 phút/ngày kích thích tuần hoàn, tăng nuôi dưỡng nang tóc</li>
+</ul>
+
+<hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
+<p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
+• Almohanna H.M. et al.: "The Role of Vitamins and Minerals in Hair Loss" — Dermatol Ther (2019)<br/>
+• Trüeb R.M.: "Serum Biotin Levels in Women Complaining of Hair Loss" — IJTS (2016)<br/>
+• Goldberg L.J., Lenzy Y.: "Nutrition and hair" — Clin Dermatol (2010)<br/>
+• Bệnh viện Da liễu TP.HCM: Hướng dẫn chẩn đoán và điều trị rụng tóc (2023)</p>`
+  },
+
+  // ── BÀI 4: DƯỠNG ẨM ─────────────────────────────────────────────────────
+  {
+    title: 'Dưỡng ẩm da đúng cách: Tại sao bạn thoa kem mãi mà da vẫn khô và cách khắc phục',
+    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
+    thumbnail: 'https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=1200&q=80',
+    excerpt: 'Da khô không phải do thiếu kem dưỡng — mà do dùng sai loại, sai thứ tự hoặc sai thời điểm. Hiểu cơ chế dưỡng ẩm theo khoa học giúp bạn chọn đúng sản phẩm và tiết kiệm chi phí đáng kể.',
+    readTime: 7, published: true,
+    publishedAt: new Date('2026-04-02'),
+    tags: ['Dưỡng ẩm', 'Da khô', 'Skincare', 'Humectant', 'Chăm sóc da'],
+    content: `<p>Hàng rào bảo vệ da (skin barrier) hoạt động như một lớp gạch-vữa: tế bào sừng là "gạch", lớp lipid (ceramide, cholesterol, fatty acid) là "vữa". Khi hàng rào này bị tổn thương, nước bốc hơi qua da (TEWL — transepidermal water loss) tăng cao, gây khô, bong tróc, kích ứng.</p>
+
+<img src="https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=900&q=80" alt="Dưỡng ẩm da đúng cách" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>3 loại thành phần dưỡng ẩm — và tại sao bạn cần cả 3</h2>
+
+<h3>Humectants (Chất giữ ẩm)</h3>
+<p>Hút nước từ không khí và tầng bì vào tầng biểu bì. Gồm: <strong>Hyaluronic acid, Glycerin, Panthenol, Aloe vera, Urea</strong>. Dùng trên da ẩm (sau rửa mặt, chưa lau khô hoàn toàn) để hút nước tốt hơn. Nhược điểm: nếu dùng một mình trong môi trường khô, có thể hút nước ngược từ da ra ngoài.</p>
+
+<h3>Emollients (Chất làm mềm)</h3>
+<p>Lấp đầy "khe hở" giữa các tế bào sừng, làm da mềm mịn và giảm TEWL. Gồm: <strong>Squalane, Jojoba oil, Ceramide, Fatty acid</strong>. Đây là thành phần tạo cảm giác da mềm ngay sau khi dùng.</p>
+
+<h3>Occlusives (Chất khóa ẩm)</h3>
+<p>Tạo màng vật lý trên bề mặt da, ngăn nước bốc hơi. Gồm: <strong>Petrolatum (vaseline), Beeswax, Dimethicone, Lanolin</strong>. Petrolatum hiệu quả nhất — giảm TEWL đến 99% — nhưng nhiều người ngại dùng vì texture nặng.</p>
+
+<blockquote style="border-left:4px solid #e91e8c;padding:1rem 1.5rem;background:#fff0f7;border-radius:0 .5rem .5rem 0;margin:1.5rem 0">
+<p style="margin:0;font-style:italic;color:#555">"Công thức lý tưởng cho một sản phẩm dưỡng ẩm là kết hợp cả 3 loại: humectant hút nước vào, emollient làm mềm, occlusive giữ ẩm không thoát ra. Dùng riêng lẻ bất kỳ loại nào cũng kém hiệu quả hơn."</p>
+<p style="margin:.5rem 0 0;font-weight:700;color:#e91e8c">— GS. Patricia Farris, Đại học Tulane, chuyên gia da liễu</p>
+</blockquote>
+
+<img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=900&q=80" alt="Sản phẩm dưỡng da" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>Thứ tự dưỡng ẩm đúng</h2>
+<p>Quy tắc: <strong>thoa từ loãng đến đặc</strong>, từ hoạt chất đến khóa ẩm.</p>
+<ol>
+<li>Toner / Essence (pH thấp, nước)</li>
+<li>Serum (hyaluronic acid, vitamin C...)</li>
+<li>Kem mắt (eye cream)</li>
+<li>Moisturizer (kem dưỡng — kết hợp 3 loại)</li>
+<li>Dầu dưỡng (facial oil — occlusive cuối cùng, ban đêm)</li>
+<li>Kem chống nắng (buổi sáng, bước cuối)</li>
+</ol>
+
+<h2>Những lý do da vẫn khô dù dưỡng ẩm đều đặn</h2>
+<ul>
+<li><strong>Dùng sản phẩm có cồn denatured:</strong> Cồn biến tính bốc hơi nhanh, kéo nước từ da theo — cảm giác tươi mát tức thì nhưng gây khô lâu dài</li>
+<li><strong>Rửa mặt quá kỹ / quá nhiều lần:</strong> Phá hủy lớp dầu tự nhiên và hàng rào lipid</li>
+<li><strong>Thoa quá ít sản phẩm:</strong> Không đủ tạo hiệu ứng màng bảo vệ</li>
+<li><strong>Không thoa khi da còn ẩm:</strong> Humectant kém hiệu quả khi da đã khô hoàn toàn</li>
+<li><strong>Hàng rào da tổn thương:</strong> Tẩy tế bào chết quá nhiều, dùng retinol sai cách, dị ứng — cần phục hồi barrier trước</li>
+<li><strong>Thiếu nước từ bên trong:</strong> Uống đủ 2–2.5L nước/ngày là nền tảng của mọi routine</li>
+</ul>
+
+<h2>Phục hồi hàng rào bảo vệ da (Skin Barrier Repair)</h2>
+<p>Nếu da đang trong tình trạng kích ứng, bong tróc, châm chích — tạm ngừng tất cả hoạt chất, chỉ dùng:</p>
+<ul>
+<li>Sữa rửa mặt dịu nhẹ không sulfate, pH 4.5–5.5</li>
+<li>Kem dưỡng chứa <strong>Ceramide + Cholesterol + Fatty acid</strong> (tỷ lệ vàng 3:1:1 theo nghiên cứu Elias et al.)</li>
+<li>Tránh nước nóng, tránh tẩy da chết</li>
+<li>Petrolatum hoặc vaseline phủ lên ban đêm (slugging)</li>
+</ul>
+<p>Hàng rào da thường phục hồi sau 2–4 tuần nếu được chăm sóc đúng cách.</p>
+
+<hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
+<p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
+• Elias P.M.: "Skin barrier function" — Current Allergy and Asthma Reports (2008)<br/>
+• Sethi A. et al.: "Moisturizers: The Slippery Road" — Indian Journal of Dermatology (2016)<br/>
+• Draelos Z.D.: "The science behind skin care: Moisturizers" — JAAD (2018)<br/>
+• Bệnh viện Da liễu Hà Nội: Hướng dẫn chăm sóc da khô (2023)</p>`
+  },
+
+  // ── BÀI 5: LÀM ĐẸP TỪ BÊN TRONG ─────────────────────────────────────────
+  {
+    title: 'Làm đẹp từ bên trong: 8 thực phẩm khoa học chứng minh giúp da sáng khỏe tự nhiên',
+    category: 'Góc làm đẹp', topic: 'Làm đẹp', featured: false,
+    thumbnail: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80',
+    excerpt: 'Không có loại kem dưỡng nào bù đắp được chế độ ăn kém. Da là tấm gương phản chiếu sức khỏe nội tạng — và khoa học dinh dưỡng ngày càng chứng minh điều này. Khám phá 8 nhóm thực phẩm được nghiên cứu lâm sàng, thực sự mang lại làn da sáng khỏe từ bên trong.',
+    readTime: 8, published: true,
+    publishedAt: new Date('2026-04-02'),
+    tags: ['Làm đẹp', 'Dinh dưỡng cho da', 'Da đẹp', 'Chống lão hóa', 'Thực phẩm'],
+    content: `<p>Ngành dinh dưỡng da liễu (nutricosmetics) đang bùng nổ với hàng trăm nghiên cứu mỗi năm. Kết quả ngày càng rõ: những gì bạn ăn ảnh hưởng đến da nhiều hơn những gì bạn thoa lên mặt. Đây là 8 nhóm thực phẩm được hỗ trợ bởi bằng chứng lâm sàng.</p>
+
+<img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=900&q=80" alt="Thực phẩm làm đẹp da tự nhiên" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>1. Cà chua — Chống oxy hóa và bảo vệ khỏi UV</h2>
+<p>Cà chua giàu <strong>lycopene</strong> — carotenoid mạnh nhất trong rau củ. Nghiên cứu của Stahl W. et al. (2001) cho thấy tiêu thụ 40g cà chua cô đặc mỗi ngày trong 10 tuần giảm 33% tổn thương da do UV. Lycopene hấp thu tốt hơn khi nấu chín và kết hợp dầu ô liu.</p>
+
+<h2>2. Cá hồi và cá béo — Omega-3 chống viêm</h2>
+<p>Omega-3 (EPA và DHA) ức chế cytokine gây viêm — nguyên nhân của mụn, đỏ da, và lão hóa da. Nghiên cứu đăng trên <em>American Journal of Clinical Nutrition</em> (2012): người ăn cá béo 3 lần/tuần có da đàn hồi tốt hơn và ít nếp nhăn hơn đáng kể sau 3 tháng.</p>
+
+<h2>3. Quả bơ — Vitamin E và chất béo lành mạnh</h2>
+<p>Bơ chứa vitamin E (chống oxy hóa bảo vệ màng tế bào), lutein (chống tia xanh), và chất béo không bão hòa đơn giúp hấp thu các vitamin tan trong dầu (A, D, E, K). Một nghiên cứu 2022 trên <em>Journal of Cosmetic Dermatology</em> kết luận: bổ sung bơ hàng ngày cải thiện độ đàn hồi và độ ẩm da sau 8 tuần.</p>
+
+<blockquote style="border-left:4px solid #e91e8c;padding:1rem 1.5rem;background:#fff0f7;border-radius:0 .5rem .5rem 0;margin:1.5rem 0">
+<p style="margin:0;font-style:italic;color:#555">"Da là cơ quan chịu hậu quả cuối cùng của tình trạng dinh dưỡng. Khi cơ thể thiếu hụt, các cơ quan thiết yếu (tim, não, thận) được ưu tiên — da là nơi đầu tiên nhường nhịn."</p>
+<p style="margin:.5rem 0 0;font-weight:700;color:#e91e8c">— GS. Rajani Katta, Đại học McGovern Medical School</p>
+</blockquote>
+
+<img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=900&q=80" alt="Rau quả tươi tốt cho da" style="max-width:100%;border-radius:0.75rem;margin:1.5rem 0"/>
+
+<h2>4. Rau lá xanh đậm — Vitamin C và folate</h2>
+<p>Rau chân vịt, cải xoăn, bó xôi cung cấp vitamin C (tổng hợp collagen), folate (phân chia tế bào da), và beta-carotene (tiền chất vitamin A). Lutein và zeaxanthin trong rau lá xanh còn bảo vệ da khỏi tổn thương oxy hóa do ánh sáng xanh từ màn hình.</p>
+
+<h2>5. Quả mọng (Berry) — Anthocyanin mạnh</h2>
+<p>Việt quất, dâu tây, mâm xôi giàu anthocyanin — flavonoid có tác dụng chống viêm và bảo vệ collagen mạnh hơn vitamin C đến 20 lần ở một số nghiên cứu. Chúng còn ức chế enzyme MMP (matrix metalloproteinase) phân hủy collagen và elastin.</p>
+
+<h2>6. Trà xanh — EGCG bảo vệ DNA</h2>
+<p>EGCG (epigallocatechin gallate) là polyphenol đặc trưng của trà xanh. Nghiên cứu lâm sàng cho thấy uống 2–3 tách trà xanh/ngày trong 12 tuần cải thiện độ đàn hồi da, giảm đỏ da do UV và tăng độ ẩm da. EGCG còn ức chế sản xuất androgen — giảm nguy cơ mụn do hormone.</p>
+
+<h2>7. Hạt óc chó và hạt bí — Kẽm và Selen</h2>
+<p><strong>Kẽm</strong> cần thiết cho tổng hợp keratin, phân chia tế bào da và kiểm soát tuyến bã nhờn. Nghiên cứu trên bệnh nhân mụn trứng cá cho thấy bổ sung kẽm hỗ trợ cải thiện mụn mức độ nhẹ-vừa. <strong>Selen</strong> trong hạt Brazil (chỉ 2 hạt/ngày đủ nhu cầu) bảo vệ da khỏi tổn thương UV thông qua enzyme glutathione peroxidase.</p>
+
+<h2>8. Nước và thực phẩm giàu nước</h2>
+<p>Da cần nước từ bên trong: dưa hấu (92% nước), dưa leo (96%), cần tây. Uống đủ 2–2.5L nước/ngày (tương đương 8–10 ly) giúp duy trì độ ẩm da, thải độc và cải thiện tuần hoàn máu nuôi da.</p>
+
+<h2>Thực phẩm cần hạn chế vì tác hại với da</h2>
+<table style="width:100%;border-collapse:collapse;margin:1.5rem 0">
+<tr style="background:#fce4ec">
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Thực phẩm</th>
+<th style="padding:.75rem;text-align:left;border:1px solid #f8bbd0">Tác hại với da</th>
+</tr>
+<tr><td style="padding:.75rem;border:1px solid #f8bbd0">Đường tinh luyện, GI cao</td><td style="padding:.75rem;border:1px solid #f8bbd0">Glycation — collagen bị "đường hóa", cứng và dễ gãy</td></tr>
+<tr style="background:#fafafa"><td style="padding:.75rem;border:1px solid #f8bbd0">Sữa bò (đặc biệt skim milk)</td><td style="padding:.75rem;border:1px solid #f8bbd0">Tăng IGF-1, kích thích tiết bã nhờn</td></tr>
+<tr><td style="padding:.75rem;border:1px solid #f8bbd0">Thức ăn chế biến sẵn</td><td style="padding:.75rem;border:1px solid #f8bbd0">Omega-6 cao, gây viêm mạn tính</td></tr>
+<tr style="background:#fafafa"><td style="padding:.75rem;border:1px solid #f8bbd0">Rượu bia</td><td style="padding:.75rem;border:1px solid #f8bbd0">Mất nước, giảm vitamin A, gây giãn mao mạch</td></tr>
+</table>
+
+<h2>Thực đơn mẫu "beauty diet" trong một ngày</h2>
+<ul>
+<li><strong>Sáng:</strong> Yến mạch + việt quất + hạt chia + sữa hạt</li>
+<li><strong>Trưa:</strong> Cơm gạo lứt + cá hồi áp chảo + rau cải xào tỏi + salad bơ</li>
+<li><strong>Tối:</strong> Súp bí đỏ + đậu phụ + rau xanh luộc + 2 hạt óc chó</li>
+<li><strong>Snack:</strong> Trà xanh + cà chua bi + dâu tây tươi</li>
+</ul>
+
+<hr style="margin:2rem 0;border:none;border-top:1px solid #eee"/>
+<p style="font-size:.82rem;color:#888"><strong>Nguồn tham khảo:</strong><br/>
+• Stahl W. et al.: "Dietary tomato paste protects against ultraviolet light–induced erythema in humans" — JNutr (2001)<br/>
+• Katta R., Desai S.P.: "Diet and dermatology: the role of dietary intervention in skin disease" — JClinAesthetDermatol (2014)<br/>
+• Boelsma E. et al.: "Nutritional skin care" — AmJClinNutr (2001)<br/>
+• Cao C. et al.: "Diet and skin aging—From the perspective of food nutrition" — Nutrients (2020)<br/>
+• Bộ Y tế Việt Nam: Bảng nhu cầu dinh dưỡng khuyến nghị (2016)</p>`
   }
 
 ];
+
+module.exports = { SEED_DATA: posts };
 
 async function seed() {
   await mongoose.connect(process.env.MONGODB_URI);
@@ -372,8 +387,10 @@ async function seed() {
     console.log('✅ Đã thêm:', p.title);
     added++;
   }
-  console.log(`\nHoàn thành: thêm ${added}/${posts.length} bài`);
+  console.log(`\nHoàn tất: ${added} bài đã thêm.`);
   process.exit(0);
 }
 
-seed().catch(e => { console.error(e); process.exit(1); });
+if (require.main === module) {
+  seed().catch(e => { console.error(e); process.exit(1); });
+}

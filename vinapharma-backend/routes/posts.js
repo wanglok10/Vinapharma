@@ -145,11 +145,15 @@ router.patch('/admin-fix-dates', protect, adminOnly, async (req, res) => {
 router.post('/admin-seed', protect, adminOnly, async (req, res) => {
   try {
     const { seedKey } = req.body;
-    if (seedKey !== 'goc-suc-khoe-2') return res.status(400).json({ success: false, message: 'seedKey không hợp lệ' });
+    const seedFiles = {
+      'goc-suc-khoe-2': '../seed-goc-suc-khoe-2',
+      'goc-lam-dep':    '../seed-goc-lam-dep',
+    };
+    if (!seedFiles[seedKey]) return res.status(400).json({ success: false, message: 'seedKey không hợp lệ' });
     const admin = await User.findOne({ role: 'admin' });
     if (!admin) return res.status(500).json({ success: false, message: 'Không tìm thấy admin' });
 
-    const SEED_POSTS = require('../seed-goc-suc-khoe-2').SEED_DATA;
+    const SEED_POSTS = require(seedFiles[seedKey]).SEED_DATA;
     const results = [];
 
     for (const p of SEED_POSTS) {

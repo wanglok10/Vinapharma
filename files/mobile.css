@@ -147,24 +147,26 @@
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
-    background: #fff !important;
+    align-items: stretch !important;
   }
   #homeHero .hero-bg {
-    display: none !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center top !important;
   }
   #homeHero.hero::after {
-    display: none !important;
+    height: 80px !important;
+    background: linear-gradient(to bottom, transparent 0%, rgba(255,245,245,.35) 35%, rgba(255,235,235,.7) 60%, rgba(255,255,255,.92) 82%, #fff 100%) !important;
   }
   #homeHero .hero-inner {
     height: auto !important;
     min-height: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    margin: 0 auto !important;
+    padding: 120px 0 1.35rem !important;
     gap: .4rem !important;
-    justify-content: flex-start !important;
-    background: #fff !important;
+    justify-content: flex-end !important;
   }
   #homeHero .hero-main-area {
     flex: 0 0 auto !important;

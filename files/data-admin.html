@@ -1183,6 +1183,10 @@ i.fa-solid,i.fa-regular{line-height:1}
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000'
   : 'https://api.vinapharmajsc.vn';
+function resolveMediaUrl(path) {
+  if (!path) return '';
+  return /^https?:\/\//i.test(path) ? path : API + path;
+}
 let token = null;
 
 // ── AUTHENTICATED FETCH dùng AuthClient ──
@@ -3590,7 +3594,7 @@ function renderPromos(list) {
     <tr>
       <td><b style="font-size:.83rem">${p.title}</b></td>
       <td><span class="badge ${p.type==='khach-si'?'badge-blue':'badge-green'}">${p.type==='khach-si'?'Khách sỉ':'Khách lẻ'}</span></td>
-      <td>${p.image ? `<img src="${API}${p.image}" style="width:60px;height:40px;object-fit:cover;border-radius:.3rem"/>` : '<span style="color:#bbb;font-size:.78rem">Không có</span>'}</td>
+      <td>${p.image ? `<img src="${resolveMediaUrl(p.image)}" style="width:60px;height:40px;object-fit:cover;border-radius:.3rem"/>` : '<span style="color:#bbb;font-size:.78rem">Không có</span>'}</td>
       <td><span class="badge ${p.published?'badge-green':'badge-gray'}">${p.published?'Hiển thị':'Ẩn'}</span></td>
       <td style="color:#888;font-size:.78rem">${formatDate(p.createdAt)}</td>
       <td><div style="display:flex;gap:.4rem">
@@ -3617,7 +3621,7 @@ function openPromoModal(p = null) {
   document.getElementById('promoPublished').value = String(p?.published !== false);
   document.getElementById('promoContent').innerHTML = p?.content || '';
   document.getElementById('promoImgPreview').style.display = p?.image ? 'block' : 'none';
-  if (p?.image) document.getElementById('promoImgPreview').src = API + p.image;
+  if (p?.image) document.getElementById('promoImgPreview').src = resolveMediaUrl(p.image);
   document.getElementById('promoImgText').innerHTML = 'Bấm để chọn ảnh<br/><span style="font-size:.72rem;color:#bbb">Khuyến nghị: 1200×600px · JPG/PNG/WEBP</span>';
   selectedFiles['promo'] = null;
   document.getElementById('promoOverlay').classList.add('show');

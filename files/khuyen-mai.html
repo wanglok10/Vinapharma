@@ -400,6 +400,11 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#fff;color:var(--dark);o
 <script>
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000' : 'https://api.vinapharmajsc.vn';
 
+function resolveMediaUrl(path) {
+  if (!path) return '';
+  return /^https?:\/\//i.test(path) ? path : API + path;
+}
+
 async function loadPromos() {
   try {
     const res = await fetch(API + '/api/promotions');
@@ -420,7 +425,7 @@ function renderCol(id, list, emptyIcon) {
   }
   el.innerHTML = list.map(p => `
     <div class="promo-card">
-      ${p.image ? `<img src="${API}${p.image}" alt="${p.title}" class="promo-card-img"/>` : ''}
+      ${p.image ? `<img src="${resolveMediaUrl(p.image)}" alt="${p.title}" class="promo-card-img"/>` : ''}
       <div class="promo-card-title">${p.title}</div>
       <div class="promo-card-content">${p.content || ''}</div>
       <div class="promo-card-date">${new Date(p.createdAt).toLocaleDateString('vi-VN')}</div>

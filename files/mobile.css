@@ -196,9 +196,15 @@
     overflow: hidden !important;
   }
   #homeHero .hero-sub-frame,
-  #homeHero .hero-sub-slides,
+  #homeHero .hero-sub-slides {
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+  }
   #homeHero .hero-sub-slides > div,
-  #homeHero .hero-sub-slides a,
+  #homeHero .hero-sub-slides a {
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+  }
   #homeHero .hero-sub-slides img {
     border-radius: 1rem !important;
     object-fit: contain !important;

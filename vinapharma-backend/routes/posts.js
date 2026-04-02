@@ -148,6 +148,7 @@ router.post('/admin-seed', protect, adminOnly, async (req, res) => {
     const seedFiles = {
       'goc-suc-khoe-2': '../seed-goc-suc-khoe-2',
       'goc-lam-dep':    '../seed-goc-lam-dep',
+      'goc-dinh-duong': '../seed-goc-dinh-duong',
     };
     if (!seedFiles[seedKey]) return res.status(400).json({ success: false, message: 'seedKey không hợp lệ' });
     const admin = await User.findOne({ role: 'admin' });

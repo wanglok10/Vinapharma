@@ -21,7 +21,7 @@ router.post('/upload-image', protect, adminOnly, upload.single('image'), (req, r
 // GET public list
 router.get('/', async (req, res) => {
   try {
-    const { category, topic, tag, search, page = 1, limit = 10, featured } = req.query;
+    const { category, topic, tag, search, page = 1, limit = 10, featured, sort } = req.query;
     const filter = { published: true };
     if (category) filter.category = category;
     if (topic) filter.topic = topic;
@@ -35,9 +35,10 @@ router.get('/', async (req, res) => {
     ];
     const skip = (page - 1) * limit;
     const total = await Post.countDocuments(filter);
+    const sortObj = sort === '-publishedAt' ? { publishedAt: -1 } : { featured: -1, publishedAt: -1 };
     const posts = await Post.find(filter)
       .populate('author', 'name')
-      .sort({ featured: -1, publishedAt: -1 })
+      .sort(sortObj)
       .skip(skip).limit(Number(limit))
       .select('-content');
     res.json({ success: true, total, page: Number(page), totalPages: Math.ceil(total / limit), data: posts });

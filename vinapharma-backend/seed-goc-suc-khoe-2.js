@@ -13,7 +13,7 @@ const posts = [
   // ── BÀI 1: XƯƠNG KHỚP / LOÃNG XƯƠNG ─────────────────────────────────────
   {
     title: 'Loãng xương thầm lặng: Dấu hiệu nhận biết sớm và 8 cách bảo vệ xương chắc khỏe suốt đời',
-    category: 'Góc sức khỏe', topic: 'Xương khớp', featured: false,
+    category: 'Góc sức khỏe', topic: 'Sức khỏe', featured: false,
     thumbnail: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&q=80',
     excerpt: 'Loãng xương được gọi là "kẻ trộm thầm lặng" vì không gây đau đớn cho đến khi xương gãy. Tại Việt Nam, ước tính 3,6 triệu người mắc loãng xương, trong đó hơn 70% là phụ nữ sau mãn kinh. Bài viết giải mã cơ chế, dấu hiệu cảnh báo và chiến lược khoa học để bảo vệ xương từ hôm nay.',
     readTime: 8, published: true,
@@ -88,7 +88,7 @@ const posts = [
   // ── BÀI 2: ĐƯỜNG HUYẾT / TIỂU ĐƯỜNG TYPE 2 ──────────────────────────────
   {
     title: 'Tiểu đường type 2 hoàn toàn có thể phòng ngừa: 7 thay đổi lối sống giảm nguy cơ đến 58%',
-    category: 'Góc sức khỏe', topic: 'Nội tiết', featured: false,
+    category: 'Góc sức khỏe', topic: 'Sức khỏe', featured: false,
     thumbnail: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1200&q=80',
     excerpt: 'Việt Nam đang trong "cơn bão" tiểu đường: hơn 7 triệu người mắc, 55% chưa được chẩn đoán. Nhưng nghiên cứu Diabetes Prevention Program nổi tiếng chứng minh: chỉ với thay đổi lối sống, nguy cơ mắc tiểu đường type 2 giảm đến 58% — hiệu quả hơn cả thuốc metformin.',
     readTime: 9, published: true,
@@ -160,7 +160,7 @@ const posts = [
   // ── BÀI 3: SỨC KHỎE GAN ─────────────────────────────────────────────────
   {
     title: 'Gan nhiễm mỡ không do rượu (NAFLD): Nguyên nhân, dấu hiệu và cách phục hồi gan hoàn toàn tự nhiên',
-    category: 'Góc sức khỏe', topic: 'Tiêu hóa – Gan', featured: false,
+    category: 'Góc sức khỏe', topic: 'Sức khỏe', featured: false,
     thumbnail: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&q=80',
     excerpt: 'Gan nhiễm mỡ không do rượu (NAFLD) đang ảnh hưởng đến 25% dân số toàn cầu và 30% người Việt Nam trưởng thành. Điều đáng lo là bệnh không gây triệu chứng ở giai đoạn đầu, nhưng nếu không can thiệp có thể tiến triển thành xơ gan và ung thư gan. Tin tốt: ở giai đoạn sớm, gan hoàn toàn có thể phục hồi.',
     readTime: 8, published: true,
@@ -236,7 +236,7 @@ const posts = [
   // ── BÀI 4: ĐAU LƯNG MẠN TÍNH ────────────────────────────────────────────
   {
     title: 'Đau lưng mạn tính: Nguyên nhân thực sự, khi nào cần lo và phương pháp điều trị hiệu quả nhất 2024',
-    category: 'Góc sức khỏe', topic: 'Cơ xương khớp', featured: false,
+    category: 'Góc sức khỏe', topic: 'Sức khỏe', featured: false,
     thumbnail: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&q=80',
     excerpt: 'Đau lưng là nguyên nhân gây mất khả năng lao động hàng đầu thế giới, ảnh hưởng 80% dân số ít nhất một lần trong đời. Nhưng phần lớn trường hợp đau lưng không cần phẫu thuật hay thuốc giảm đau mạnh — và nhiều người đang điều trị sai cách làm bệnh nặng hơn.',
     readTime: 9, published: true,
@@ -320,7 +320,7 @@ const posts = [
   // ── BÀI 5: SỨC KHỎE MẮT ─────────────────────────────────────────────────
   {
     title: 'Bảo vệ mắt trong thời đại màn hình: Khô mắt, cận thị tiến triển và cách giữ thị lực tốt đến tuổi già',
-    category: 'Góc sức khỏe', topic: 'Mắt – Thị lực', featured: false,
+    category: 'Góc sức khỏe', topic: 'Sức khỏe', featured: false,
     thumbnail: 'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?w=1200&q=80',
     excerpt: 'Người Việt Nam dành trung bình 6,5 giờ/ngày nhìn màn hình. Hệ quả: tỷ lệ cận thị ở trẻ em tăng chóng mặt, hội chứng thị giác máy tính bùng phát và thoái hóa điểm vàng ngày càng trẻ hóa. Bài viết cung cấp hướng dẫn khoa học để bảo vệ đôi mắt trong môi trường kỹ thuật số.',
     readTime: 7, published: true,

@@ -186,13 +186,13 @@
   }
   #homeHero .hero-sub-area {
     display: block !important;
-    width: 100% !important;
+    width: 92% !important;
     max-width: 100% !important;
     height: auto !important;
     aspect-ratio: 10 / 6 !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     transform: none !important;
-    border-radius: 0 !important;
+    border-radius: 1rem !important;
     overflow: hidden !important;
   }
   #homeHero .hero-sub-frame,
@@ -200,7 +200,7 @@
   #homeHero .hero-sub-slides > div,
   #homeHero .hero-sub-slides a,
   #homeHero .hero-sub-slides img {
-    border-radius: 0 !important;
+    border-radius: 1rem !important;
     object-fit: contain !important;
   }
   #stripBannerWrap,
@@ -286,7 +286,7 @@
     min-height: 0 !important;
   }
   #homeHero .hero-main-area { flex: 0 0 auto !important; width: 100% !important; aspect-ratio: 16 / 9.3 !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
-  #homeHero .hero-sub-area { width: 100% !important; height: auto !important; aspect-ratio: 10 / 6 !important; }
+  #homeHero .hero-sub-area { width: 92% !important; height: auto !important; aspect-ratio: 10 / 6 !important; border-radius: 1rem !important; }
   .slide-title { font-size: 1.05rem !important; }
   .products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: .5rem !important; }
   .more-grid { grid-template-columns: 1fr !important; }

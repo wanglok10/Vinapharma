@@ -147,22 +147,24 @@
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
-    align-items: stretch !important;
+    background: #fff !important;
   }
   #homeHero .hero-bg {
-    display: block !important;
-    object-fit: cover !important;
-    object-position: center top !important;
+    display: none !important;
+  }
+  #homeHero.hero::after {
+    display: none !important;
   }
   #homeHero .hero-inner {
     height: auto !important;
     min-height: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 120px 0 1.35rem !important;
-    gap: .85rem !important;
-    justify-content: flex-end !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: .4rem !important;
+    justify-content: flex-start !important;
+    background: #fff !important;
   }
   #homeHero .hero-main-area {
     flex: 0 0 auto !important;
@@ -174,39 +176,30 @@
     overflow: hidden !important;
     box-shadow: none !important;
   }
-  #homeHero .hero-inner.no-sub .hero-main-area {
-    flex: 0 0 auto !important;
+  #homeHero .hero-left-col {
     width: 100% !important;
-    aspect-ratio: 16 / 8.8 !important;
-    margin: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    flex-direction: column !important;
+    flex: 0 0 auto !important;
+    height: auto !important;
   }
   #homeHero .hero-sub-area {
     display: block !important;
-    width: 90% !important;
-    max-width: 100% !important;
-    height: 160px !important;
-    aspect-ratio: unset !important;
-    margin: 0 auto !important;
-    transform: none !important;
-    border-radius: 1rem !important;
-    overflow: hidden !important;
-  }
-  #homeHero .hero-inner.no-main .hero-sub-area {
     width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 5 / 1 !important;
+    margin: 0 !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
   }
   #homeHero .hero-sub-frame,
   #homeHero .hero-sub-slides,
   #homeHero .hero-sub-slides > div,
   #homeHero .hero-sub-slides a,
   #homeHero .hero-sub-slides img {
-    border-radius: 1rem !important;
-    object-fit: contain !important;
-  }
-  #homeHero.hero::after {
-    height: 80px !important;
-    background: linear-gradient(to bottom, transparent 0%, rgba(255,245,245,.35) 35%, rgba(255,235,235,.7) 60%, rgba(255,255,255,.92) 82%, #fff 100%) !important;
+    border-radius: 0 !important;
+    object-fit: cover !important;
   }
   #stripBannerWrap,
   #stripBannerLink,
@@ -291,7 +284,7 @@
     min-height: 0 !important;
   }
   #homeHero .hero-main-area { flex: 0 0 auto !important; width: 100% !important; aspect-ratio: 16 / 9.3 !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
-  #homeHero .hero-sub-area { width: 100% !important; height: 140px !important; }
+  #homeHero .hero-sub-area { width: 100% !important; height: auto !important; aspect-ratio: 5 / 1 !important; }
   .slide-title { font-size: 1.05rem !important; }
   .products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: .5rem !important; }
   .more-grid { grid-template-columns: 1fr !important; }

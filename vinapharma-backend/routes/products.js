@@ -1,8 +1,24 @@
 const express = require('express');
 const router  = express.Router();
 const Product = require('../models/Product');
+const Brand   = require('../models/Brand');
 const { protect, adminOnly } = require('../middleware/auth');
 const { createUpload, fileUrl } = require('../utils/cloudinaryUpload');
+
+// Gắn brandName vào danh sách sản phẩm nếu còn trống
+async function populateBrandNames(products) {
+  const needLookup = products.filter(p => !p.brandName);
+  if (!needLookup.length) return products;
+  const brands = await Brand.find({});
+  const byId   = Object.fromEntries(brands.map(b => [b._id.toString().toUpperCase(), b.name]));
+  const byCode = Object.fromEntries(brands.map(b => [b.code.toUpperCase(), b.name]));
+  return products.map(p => {
+    if (p.brandName) return p;
+    const key = (p.brand || '').toString().toUpperCase();
+    const name = byId[key] || byCode[key] || '';
+    return { ...p.toObject(), brandName: name };
+  });
+}
 
 const upload = createUpload('products', 20);
 
@@ -25,7 +41,8 @@ router.get('/', async (req, res) => {
     ];
     const skip  = (page - 1) * limit;
     const total = await Product.countDocuments(filter);
-    const products = await Product.find(filter).sort({ createdAt: -1 }).skip(skip).limit(Number(limit));
+    const raw      = await Product.find(filter).sort({ createdAt: -1 }).skip(skip).limit(Number(limit));
+    const products = await populateBrandNames(raw);
     res.json({ success: true, total, page: Number(page), totalPages: Math.ceil(total / limit), data: products });
   } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 });

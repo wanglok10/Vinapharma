@@ -218,7 +218,7 @@
     width: 100% !important;
     height: 100% !important;
     border-radius: 1rem !important;
-    object-fit: contain !important;
+    object-fit: cover !important;
   }
   #stripBannerWrap,
   #stripBannerLink,

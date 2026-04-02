@@ -201,7 +201,7 @@
   #homeHero .hero-sub-slides a,
   #homeHero .hero-sub-slides img {
     border-radius: 0 !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
   }
   #stripBannerWrap,
   #stripBannerLink,

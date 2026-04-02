@@ -189,7 +189,7 @@
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
-    aspect-ratio: 5 / 1 !important;
+    aspect-ratio: 10 / 3 !important;
     margin: 0 !important;
     transform: none !important;
     border-radius: 0 !important;
@@ -286,7 +286,7 @@
     min-height: 0 !important;
   }
   #homeHero .hero-main-area { flex: 0 0 auto !important; width: 100% !important; aspect-ratio: 16 / 9.3 !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
-  #homeHero .hero-sub-area { width: 100% !important; height: auto !important; aspect-ratio: 5 / 1 !important; }
+  #homeHero .hero-sub-area { width: 100% !important; height: auto !important; aspect-ratio: 10 / 3 !important; }
   .slide-title { font-size: 1.05rem !important; }
   .products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: .5rem !important; }
   .more-grid { grid-template-columns: 1fr !important; }

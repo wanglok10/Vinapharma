@@ -387,8 +387,7 @@ i.fa-solid,i.fa-regular{line-height:1}
             <div class="section-title"><i class="fa-solid fa-newspaper ic-gray"></i> Bài viết tin tức</div>
             <div class="section-actions">
               <div class="search-box"><input placeholder="Tìm bài viết..." id="postSearch" oninput="filterPosts(this.value)"/></div>
-              <button class="btn btn-outline" onclick="runSeedPosts()" id="btnSeedPosts" style="font-size:.78rem"><i class="fa-solid fa-database"></i> Seed bài mẫu</button>
-              <button class="btn btn-red" onclick="openPostModal()">+ Viết bài mới</button>
+<button class="btn btn-red" onclick="openPostModal()">+ Viết bài mới</button>
             </div>
           </div>
           <div style="padding:.5rem 1.2rem;border-bottom:1px solid #f0f0f0;display:flex;flex-wrap:wrap;gap:.3rem" id="postCatTabs">
@@ -1942,21 +1941,6 @@ async function deleteProduct(id, name) {
 }
 
 // ── POSTS ──
-async function runSeedPosts() {
-  const btn = document.getElementById('btnSeedPosts');
-  btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang seed...';
-  try {
-    const res  = await authFetch(`${API}/api/posts/admin-seed`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ seedKey:'goc-suc-khoe-2' }) });
-    const data = await res.json();
-    if (!data.success) { showToast(data.message, 'error'); return; }
-    const added  = data.results.filter(r => r.status === 'added').length;
-    const skipped = data.results.filter(r => r.status === 'skip').length;
-    showToast(`Seed xong: ${added} bài mới, ${skipped} bài đã tồn tại`, 'success');
-    loadPosts();
-  } catch(e) { showToast('Lỗi kết nối', 'error'); }
-  finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-database"></i> Seed bài mẫu'; }
-}
-
 async function loadPosts() {
   const tbody = document.getElementById('postTable');
   tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Đang tải...</td></tr>';

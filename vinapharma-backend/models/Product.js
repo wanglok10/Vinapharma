@@ -54,7 +54,7 @@ const productSchema = new mongoose.Schema({
     default: ''
   },
   weight: {
-    type: String, // VD: "60 viên · 500mg"
+    type: String,
     required: true
   },
   price: {
@@ -63,23 +63,23 @@ const productSchema = new mongoose.Schema({
     min: 0
   },
   originalPrice: {
-    type: Number, // Giá gốc (nếu đang giảm)
+    type: Number,
     min: 0
   },
   badge: {
     type: String,
-    enum: ['Bán chạy', 'Mới', 'Hot', 'Sale', ''],
+    trim: true,
     default: ''
   },
   icon: {
-    type: String, // emoji hoặc URL ảnh
+    type: String,
     default: '💊'
   },
   image: {
-    type: String // URL ảnh thật (ảnh đầu tiên, backward compat)
+    type: String
   },
   images: {
-    type: [String], // Mảng URL nhiều ảnh
+    type: [String],
     default: []
   },
   inStock: {
@@ -98,7 +98,7 @@ const productSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Tự tạo slug từ tên sản phẩm, tự xử lý trùng
+// Tu dong tao slug tu ten san pham va xu ly trung lap.
 productSchema.pre('save', async function() {
   if (this.isModified('name')) {
     const base = this.name
@@ -110,6 +110,7 @@ productSchema.pre('save', async function() {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .trim();
+
     let slug = base;
     let count = 1;
     while (await mongoose.model('Product').findOne({ slug, _id: { $ne: this._id } })) {

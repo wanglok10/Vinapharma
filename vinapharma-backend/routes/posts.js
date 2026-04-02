@@ -128,6 +128,35 @@ async function replaceContentImages(html, folder) {
   return updated;
 }
 
+// POST fix ảnh Unsplash → Cloudinary cho tất cả bài viết
+router.post('/admin-fix-images', protect, adminOnly, async (req, res) => {
+  try {
+    const posts = await Post.find({
+      $or: [
+        { thumbnail: /unsplash\.com/ },
+        { content:   /unsplash\.com/ }
+      ]
+    });
+    if (!posts.length) return res.json({ success: true, message: 'Không có bài nào cần sửa', fixed: 0 });
+
+    const results = [];
+    for (const post of posts) {
+      const update = {};
+      if (post.thumbnail && /unsplash\.com/.test(post.thumbnail)) {
+        try { update.thumbnail = await uploadToCloudinary(post.thumbnail, 'vinapharma/posts'); } catch (e) {}
+      }
+      if (post.content && /unsplash\.com/.test(post.content)) {
+        try { update.content = await replaceContentImages(post.content, 'vinapharma/posts'); } catch (e) {}
+      }
+      if (Object.keys(update).length) {
+        await Post.findByIdAndUpdate(post._id, update);
+        results.push({ title: post.title, status: 'fixed' });
+      }
+    }
+    res.json({ success: true, fixed: results.length, results });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+});
+
 // PATCH fix publishedAt cho các bài đã seed
 router.patch('/admin-fix-dates', protect, adminOnly, async (req, res) => {
   try {

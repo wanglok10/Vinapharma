@@ -1,6 +1,8 @@
-const express = require('express');
-const router  = express.Router();
-const Post    = require('../models/Post');
+const express    = require('express');
+const router     = express.Router();
+const Post       = require('../models/Post');
+const User       = require('../models/User');
+const cloudinary = require('cloudinary').v2;
 const { protect, adminOnly } = require('../middleware/auth');
 const { createUpload, fileUrl } = require('../utils/cloudinaryUpload');
 
@@ -101,6 +103,58 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Đã xóa bài viết' });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+});
+
+// ── SEED: upload ảnh lên Cloudinary + lưu bài vào MongoDB ──
+async function uploadToCloudinary(url, folder = 'vinapharma/posts') {
+  const result = await cloudinary.uploader.upload(url, {
+    folder,
+    transformation: [{ quality: 'auto', fetch_format: 'auto' }]
+  });
+  return result.secure_url;
+}
+
+async function replaceContentImages(html, folder) {
+  const regex = /src="(https:\/\/images\.unsplash\.com\/[^"]+)"/g;
+  const matches = [...new Set([...html.matchAll(regex)].map(m => m[1]))];
+  let updated = html;
+  for (const url of matches) {
+    try {
+      const cdnUrl = await uploadToCloudinary(url, folder);
+      updated = updated.replaceAll(url, cdnUrl);
+    } catch (e) { /* giữ nguyên nếu upload lỗi */ }
+  }
+  return updated;
+}
+
+router.post('/admin-seed', protect, adminOnly, async (req, res) => {
+  try {
+    const { seedKey } = req.body;
+    if (seedKey !== 'goc-suc-khoe-2') return res.status(400).json({ success: false, message: 'seedKey không hợp lệ' });
+    const admin = await User.findOne({ role: 'admin' });
+    if (!admin) return res.status(500).json({ success: false, message: 'Không tìm thấy admin' });
+
+    const SEED_POSTS = require('../seed-goc-suc-khoe-2').SEED_DATA;
+    const results = [];
+
+    for (const p of SEED_POSTS) {
+      const exists = await Post.findOne({ title: p.title });
+      if (exists) { results.push({ title: p.title, status: 'skip' }); continue; }
+
+      // Upload thumbnail
+      let thumbnail = p.thumbnail;
+      try { thumbnail = await uploadToCloudinary(p.thumbnail, 'vinapharma/posts'); } catch (e) {}
+
+      // Upload ảnh trong content
+      let content = p.content;
+      try { content = await replaceContentImages(p.content, 'vinapharma/posts'); } catch (e) {}
+
+      await Post.create({ ...p, thumbnail, content, author: admin._id });
+      results.push({ title: p.title, status: 'added' });
+    }
+
+    res.json({ success: true, results });
   } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 });
 

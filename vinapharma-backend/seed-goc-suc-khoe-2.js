@@ -1,5 +1,9 @@
 // Seed 5 bài Góc Sức Khỏe (phần 2) — node seed-goc-suc-khoe-2.js
-require('dotenv').config();
+// Có thể chạy: node seed-goc-suc-khoe-2.js
+// Hoặc gọi qua API endpoint: POST /api/posts/admin-seed { seedKey: 'goc-suc-khoe-2' }
+if (require.main === module) {
+  require('dotenv').config();
+}
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Post = require('./models/Post');
@@ -410,6 +414,8 @@ const posts = [
   }
 
 ];
+
+module.exports = { SEED_DATA: posts };
 
 async function seed() {
   await mongoose.connect(process.env.MONGODB_URI);

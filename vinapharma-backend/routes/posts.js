@@ -37,7 +37,9 @@ router.get('/', async (req, res) => {
     ];
     const skip = (page - 1) * limit;
     const total = await Post.countDocuments(filter);
-    const sortObj = sort === '-publishedAt' ? { publishedAt: -1 } : { featured: -1, publishedAt: -1 };
+    const sortObj = sort === '-publishedAt'
+      ? { publishedAt: -1, _id: -1 }
+      : { featured: -1, publishedAt: -1, _id: -1 };
     const posts = await Post.find(filter)
       .populate('author', 'name')
       .sort(sortObj)
